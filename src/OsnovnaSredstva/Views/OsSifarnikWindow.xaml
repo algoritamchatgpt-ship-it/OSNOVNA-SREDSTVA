@@ -1,0 +1,318 @@
+<Window x:Class="OsnovnaSredstva.Views.OsSifarnikWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sifarnici - Osnovna sredstva"
+        Width="1100" Height="700"
+        MinWidth="980" MinHeight="620"
+        WindowStartupLocation="CenterScreen"
+        Background="#F1F4F8">
+
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SacuvajCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding OsveziCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <Style x:Key="TabDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#1E3A5F"/>
+            <Setter Property="Background" Value="#DCE8F5"/>
+            <Setter Property="BorderBrush" Value="#A8C1DD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,7"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="AkcijaDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="MinWidth" Value="128"/>
+        </Style>
+
+        <Style x:Key="GridStil" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F7FAFF"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#1F5F9D">
+            <Grid Margin="16,0">
+                <TextBlock Text="SIFARNICI OSNOVNIH SREDSTAVA"
+                           FontFamily="Tahoma"
+                           FontSize="17"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Ctrl+S Sacuvaj | F5 Osvezi"
+                           FontFamily="Tahoma"
+                           FontSize="10"
+                           Foreground="#BFD9F2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Background="#E8EEF5" BorderBrush="#D0DBE7" BorderThickness="0,0,0,1" Padding="12,10">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Content="Vrste OS" Command="{Binding PrikaziTabCommand}" CommandParameter="0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabDugme}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AktivniTab}" Value="0">
+                                        <Setter Property="Background" Value="#1F5F9D"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="#1F5F9D"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Content="Grupe za amortizaciju" Command="{Binding PrikaziTabCommand}" CommandParameter="1">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabDugme}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AktivniTab}" Value="1">
+                                        <Setter Property="Background" Value="#1F5F9D"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="#1F5F9D"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Content="Podgrupe amortizacije" Command="{Binding PrikaziTabCommand}" CommandParameter="2">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabDugme}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AktivniTab}" Value="2">
+                                        <Setter Property="Background" Value="#1F5F9D"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="#1F5F9D"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Content="Grupe OS" Command="{Binding PrikaziTabCommand}" CommandParameter="3">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabDugme}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AktivniTab}" Value="3">
+                                        <Setter Property="Background" Value="#1F5F9D"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="#1F5F9D"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Content="Osnov koriscenja" Command="{Binding PrikaziTabCommand}" CommandParameter="4" Margin="0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TabDugme}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AktivniTab}" Value="4">
+                                        <Setter Property="Background" Value="#1F5F9D"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="#1F5F9D"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="2" Margin="10" Background="White" BorderBrush="#CED9E4" BorderThickness="1">
+            <Grid>
+                <DataGrid ItemsSource="{Binding VrsteOs}"
+                          SelectedItem="{Binding IzabranaVrsta}">
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid" BasedOn="{StaticResource GridStil}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AktivniTab}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Vrsta" Binding="{Binding Vrsta, UpdateSourceTrigger=PropertyChanged}" Width="90"/>
+                        <DataGridTextColumn Header="Naziv vrste sredstava" Binding="{Binding Naziv, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid ItemsSource="{Binding AmortGrupe}"
+                          SelectedItem="{Binding IzabranaAmortGrupa}">
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid" BasedOn="{StaticResource GridStil}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AktivniTab}" Value="1">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="AG" Binding="{Binding Ag, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                        <DataGridTextColumn Header="Stopa (%)" Binding="{Binding AgStopa, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="120"/>
+                        <DataGridTextColumn Header="Opis" Binding="{Binding Opis, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                        <DataGridTextColumn Header="Vrsta" Binding="{Binding Vrsta, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid ItemsSource="{Binding AmortPodgrupe}"
+                          SelectedItem="{Binding IzabranaAmortPodgrupa}">
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid" BasedOn="{StaticResource GridStil}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AktivniTab}" Value="2">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Podgrupa" Binding="{Binding AgPod, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        <DataGridTextColumn Header="AG" Binding="{Binding Ag, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                        <DataGridTextColumn Header="Opis podgrupe" Binding="{Binding Opis, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid ItemsSource="{Binding GrupeOs}"
+                          SelectedItem="{Binding IzabranaGrupa}">
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid" BasedOn="{StaticResource GridStil}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AktivniTab}" Value="3">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Grupa" Binding="{Binding Grupa, UpdateSourceTrigger=PropertyChanged}" Width="90"/>
+                        <DataGridTextColumn Header="Naziv grupe" Binding="{Binding Naziv, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid ItemsSource="{Binding OsnKoriscenja}"
+                          SelectedItem="{Binding IzabraniOsnov}">
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid" BasedOn="{StaticResource GridStil}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AktivniTab}" Value="4">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Osnov" Binding="{Binding OsnovKor, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        <DataGridTextColumn Header="Opis osnova koriscenja" Binding="{Binding Naziv, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="3" Background="#ECF2F8" BorderBrush="#D0DBE7" BorderThickness="1,1,1,0" Padding="12,10">
+            <DockPanel>
+                <TextBlock Text="{Binding Poruka}"
+                           FontFamily="Tahoma"
+                           FontSize="11"
+                           Foreground="#355070"
+                           VerticalAlignment="Center"
+                           Margin="0,0,16,0"/>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Border Background="#E5EDF6" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="4" Padding="8,8" Margin="0,0,10,0">
+                        <UniformGrid Rows="1" Columns="4">
+                            <Button Content="DOLE"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#708090"
+                                    Command="{Binding DoleCommand}"/>
+                            <Button Content="GORE"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#708090"
+                                    Command="{Binding GoreCommand}"/>
+                            <Button Content="ZADNJI"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#708090"
+                                    Command="{Binding ZadnjiCommand}"/>
+                            <Button Content="PRVI"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#708090"
+                                    Margin="0"
+                                    Command="{Binding PrviCommand}"/>
+                        </UniformGrid>
+                    </Border>
+
+                    <Border Background="#E5EDF6" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="4" Padding="8,8" Margin="0,0,10,0">
+                        <UniformGrid Rows="1" Columns="3">
+                            <Button Content="Dodaj"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#2C7BE5"
+                                    Command="{Binding DodajCommand}"/>
+                            <Button Content="Obrisi"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#D64545"
+                                    Command="{Binding ObrisiCommand}"/>
+                            <Button Content="Sacuvaj (Ctrl+S)"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#2F9E44"
+                                    Command="{Binding SacuvajCommand}"
+                                    Margin="0"/>
+                        </UniformGrid>
+                    </Border>
+
+                    <Border Background="#E5EDF6" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="4" Padding="8,8">
+                        <UniformGrid Rows="1" Columns="2">
+                            <Button Content="Osvezi (F5)"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#4B6B88"
+                                    Command="{Binding OsveziCommand}"/>
+                            <Button Content="Zatvori"
+                                    Style="{StaticResource AkcijaDugme}"
+                                    Background="#495057"
+                                    Margin="0"
+                                    Click="OnZatvoriClick"/>
+                        </UniformGrid>
+                    </Border>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>
