@@ -1,0 +1,258 @@
+<Window x:Class="OsnovnaSredstva.Views.OsSifarnikKarticaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Naslov}"
+        Width="480" Height="Auto"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Background="#F1F4F8"
+        ContentRendered="OnContentRendered">
+
+    <Window.Resources>
+        <Style x:Key="EtiketaStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily"         Value="Tahoma"/>
+            <Setter Property="FontSize"           Value="11"/>
+            <Setter Property="Foreground"         Value="#37474F"/>
+            <Setter Property="VerticalAlignment"  Value="Center"/>
+            <Setter Property="Margin"             Value="0,0,8,0"/>
+        </Style>
+
+        <Style x:Key="PoljeStyle" TargetType="TextBox">
+            <Setter Property="FontFamily"   Value="Tahoma"/>
+            <Setter Property="FontSize"     Value="12"/>
+            <Setter Property="Padding"      Value="6,4"/>
+            <Setter Property="BorderBrush"  Value="#90CAF9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background"   Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel>
+
+        <!-- ═══ HEADER ═══ -->
+        <Border DockPanel.Dock="Top" Background="#1F5F9D" Padding="16,12">
+            <TextBlock Text="{Binding Naslov}"
+                       FontFamily="Tahoma" FontSize="15" FontWeight="Bold"
+                       Foreground="White"/>
+        </Border>
+
+        <!-- ═══ DUGMAD ═══ -->
+        <Border DockPanel.Dock="Bottom" Background="#E5EDF6"
+                BorderBrush="#C4D4E5" BorderThickness="0,1,0,0"
+                Padding="16,10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="POTVRDI"
+                        FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
+                        Foreground="White" Background="#2F9E44"
+                        BorderThickness="0" Width="100" Height="34"
+                        Cursor="Hand" IsDefault="True"
+                        Command="{Binding PotvrdiCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="3">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Opacity" Value="0.85"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Bd" Property="Opacity" Value="0.65"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Content="Otkaži" Margin="8,0,0,0"
+                        FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
+                        Foreground="White" Background="#546E7A"
+                        BorderThickness="0" Width="90" Height="34"
+                        Cursor="Hand" IsCancel="True"
+                        Command="{Binding OtkaziCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="3">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Opacity" Value="0.85"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Bd" Property="Opacity" Value="0.65"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- ═══ FORMA ═══ -->
+        <Grid Margin="20,16,20,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ─── TAB 0: Vrsta OS ─── -->
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2"
+                        Visibility="{Binding JeVrsta, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Šifra vrste *:"/>
+                    <TextBox x:Name="PrvoPoljeVrsta" Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding VrstaKod, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="10"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Naziv vrste *:"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding VrstaNaziv, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="60"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- ─── TAB 1: Amortizaciona Grupa ─── -->
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2"
+                        Visibility="{Binding JeAg, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Šifra grupe *:"/>
+                    <TextBox x:Name="PrvoPoljeAg" Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding AgKod, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="10"/>
+                </Grid>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Stopa amort. (%):"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding AgStopa, UpdateSourceTrigger=PropertyChanged, StringFormat=N4}"/>
+                </Grid>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Opis grupe *:"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding AgOpis, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="80"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Vrsta OS:"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding AgVrsta, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="10"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- ─── TAB 2: Podgrupa amortizacije ─── -->
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2"
+                        Visibility="{Binding JeAgPod, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Šifra podgrupe *:"/>
+                    <TextBox x:Name="PrvoPoljeAgPod" Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding AgPodKod, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="10"/>
+                </Grid>
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Amort. grupa (AG):"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding AgPodAgKod, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="10"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Opis podgrupe *:"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding AgPodOpis, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="80"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- ─── TAB 3: Izvor finansiranja ─── -->
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2"
+                        Visibility="{Binding JeIzvor, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Šifra izvora *:"/>
+                    <TextBox x:Name="PrvoPoljeIzvor" Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding IzvorKod, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="10"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Naziv izvora *:"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding IzvorNaziv, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="60"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- ─── TAB 4: Osnov korišćenja ─── -->
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2"
+                        Visibility="{Binding JeOsnov, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Šifra osnova *:"/>
+                    <TextBox x:Name="PrvoPoljeOsnov" Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding OsnovKorKod, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="10"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource EtiketaStyle}" Text="Naziv osnova *:"/>
+                    <TextBox Grid.Column="1" Style="{StaticResource PoljeStyle}"
+                             Text="{Binding OsnovKorNaziv, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="60"/>
+                </Grid>
+            </StackPanel>
+
+        </Grid>
+    </DockPanel>
+</Window>

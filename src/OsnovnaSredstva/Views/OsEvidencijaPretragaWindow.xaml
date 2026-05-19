@@ -1,0 +1,48 @@
+<Window x:Class="OsnovnaSredstva.Views.OsEvidencijaPretragaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Trazenje"
+        Width="560" Height="130"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="#C0C0C0">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="LblPrompt"
+                   Grid.Row="0" Grid.Column="0"
+                   VerticalAlignment="Center"
+                   FontFamily="Tahoma"
+                   FontSize="11"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Background="#FF0000"
+                   Padding="4,2"/>
+
+        <TextBox x:Name="TxtUnos"
+                 Grid.Row="0" Grid.Column="1"
+                 Margin="8,0,0,0"
+                 Height="25"
+                 FontFamily="Tahoma"
+                 FontSize="11"
+                 VerticalContentAlignment="Center"
+                 Padding="6,2"/>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,0,0">
+            <Button Content="OK" Width="90" Height="25" Margin="0,0,6,0" IsDefault="True" Click="OnOkClick"/>
+            <Button Content="OTKAZI" Width="90" Height="25" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

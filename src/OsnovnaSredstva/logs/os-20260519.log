@@ -1,0 +1,116 @@
+[2026-05-19 10:36:06 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 10:36:07 INF] Otvaram početni ekran
+[2026-05-19 10:36:08 INF] Otvaram login
+[2026-05-19 10:36:10 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 10:36:11 INF] Otvaram izbor firme
+[2026-05-19 10:36:11 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 10:36:11 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 10:36:39 INF] Otvaram početni ekran
+[2026-05-19 10:36:40 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 10:38:30 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 10:38:30 INF] Otvaram početni ekran
+[2026-05-19 10:38:32 INF] Otvaram login
+[2026-05-19 10:38:34 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 10:38:34 INF] Otvaram izbor firme
+[2026-05-19 10:38:34 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 10:38:34 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 10:38:37 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 10:38:37 INF] Otvaram glavni meni OS
+[2026-05-19 10:39:16 INF] Otvaram početni ekran
+[2026-05-19 10:39:18 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 10:41:11 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 10:41:11 INF] Otvaram početni ekran
+[2026-05-19 10:41:13 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 10:41:29 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 10:41:29 INF] Otvaram početni ekran
+[2026-05-19 10:47:24 INF] Otvaram login
+[2026-05-19 10:47:27 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 10:47:27 INF] Otvaram izbor firme
+[2026-05-19 10:47:27 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 10:47:27 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 10:47:39 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 10:47:39 INF] Otvaram glavni meni OS
+[2026-05-19 10:48:29 INF] Otvaram početni ekran
+[2026-05-19 10:48:31 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 10:59:54 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 10:59:54 INF] Otvaram početni ekran
+[2026-05-19 10:59:55 INF] Otvaram login
+[2026-05-19 10:59:57 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 10:59:57 INF] Otvaram izbor firme
+[2026-05-19 10:59:57 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 10:59:57 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 10:59:59 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 10:59:59 INF] Otvaram glavni meni OS
+[2026-05-19 11:07:35 INF] Otvaram početni ekran
+[2026-05-19 11:07:37 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 11:33:40 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 11:33:40 INF] Otvaram početni ekran
+[2026-05-19 11:33:41 INF] Otvaram login
+[2026-05-19 11:33:43 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 11:33:43 INF] Otvaram izbor firme
+[2026-05-19 11:33:43 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 11:33:43 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 11:33:44 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 11:33:44 INF] Otvaram glavni meni OS
+[2026-05-19 11:35:02 INF] Otvaram početni ekran
+[2026-05-19 11:35:04 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 11:57:04 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 11:57:04 INF] Otvaram početni ekran
+[2026-05-19 11:57:05 INF] Otvaram login
+[2026-05-19 11:57:10 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 11:57:10 INF] Otvaram izbor firme
+[2026-05-19 11:57:10 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 11:57:10 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 11:57:11 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 11:57:11 INF] Otvaram glavni meni OS
+[2026-05-19 12:01:11 INF] Otvaram početni ekran
+[2026-05-19 12:01:12 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 12:06:05 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 12:06:05 INF] Otvaram početni ekran
+[2026-05-19 12:06:10 INF] Otvaram login
+[2026-05-19 12:06:12 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 12:06:12 INF] Otvaram izbor firme
+[2026-05-19 12:06:12 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 12:06:13 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 12:06:18 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 12:06:18 INF] Otvaram glavni meni OS
+[2026-05-19 12:15:16 INF] Otvaram početni ekran
+[2026-05-19 12:15:17 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 12:15:21 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 12:15:21 INF] Otvaram početni ekran
+[2026-05-19 12:15:24 INF] Otvaram login
+[2026-05-19 12:15:26 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 12:15:26 INF] Otvaram izbor firme
+[2026-05-19 12:15:26 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 12:15:26 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 12:15:28 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 12:15:28 INF] Otvaram glavni meni OS
+[2026-05-19 13:00:57 INF] Otvaram početni ekran
+[2026-05-19 13:00:59 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 13:01:02 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 13:01:02 INF] Otvaram početni ekran
+[2026-05-19 13:01:03 INF] Otvaram login
+[2026-05-19 13:01:06 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 13:01:06 INF] Otvaram izbor firme
+[2026-05-19 13:01:06 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 13:01:06 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 13:01:08 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 13:01:08 INF] Otvaram glavni meni OS
+[2026-05-19 13:42:47 INF] Otvaram početni ekran
+[2026-05-19 13:42:50 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 13:42:55 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 13:42:55 INF] Otvaram početni ekran
+[2026-05-19 13:42:56 INF] Otvaram login
+[2026-05-19 13:42:58 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 13:42:58 INF] Otvaram izbor firme
+[2026-05-19 13:42:58 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 13:42:58 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 13:42:59 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 13:42:59 INF] Otvaram glavni meni OS
+[2026-05-19 13:51:52 INF] Otvaram izbor firme
+[2026-05-19 13:51:52 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 13:51:52 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 13:51:53 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 13:51:53 INF] Otvaram glavni meni OS
+[2026-05-19 14:04:18 INF] Otvaram početni ekran
+[2026-05-19 14:04:44 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===

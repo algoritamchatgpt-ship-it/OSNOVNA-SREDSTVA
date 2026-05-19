@@ -1,0 +1,48 @@
+PUSH KEY CLEAR
+SELECT OSPODACI
+MEDAT0=EDAT0
+MEDAT1=EDAT1
+MEMES=EMES
+
+SELECT OS
+DELETE ALL FOR YEAR(datprod)<YEAR(medat0)  AND !EMPTY(datprod)
+SET DELETED on
+   GO TOP
+   DO WHILE.NOT.EOF()
+         *----------AKO JE POCETNI DATUM  MANJI OD EDAT0
+         IF DATNAB=CTOD('')
+            REPLACE DATNAB WITH MEDAT0-1
+         ENDIF
+         *----------AKO JE ZADNJI DATUM  MANJI OD EDAT1
+         IF DATPROD=CTOD('')
+            REPLACE DATPROD WITH MEDAT1
+         ENDIF
+         *-------UNOS POCETNOG DATUMA---------
+         IF DATNAB<MEDAT0
+            REPLACE DATUM0 WITH MEDAT0
+         ELSE
+            REPLACE DATUM0 WITH DATNAB
+         ENDIF
+         *------KRAJ UNOSA POCETNOG DATUMA-----
+         *-------UNOS ZADNJEG DATUMA---------
+         IF DATPROD<MEDAT1
+            REPLACE DATUM1 WITH DATPROD
+         ELSE
+            REPLACE DATUM1 WITH MEDAT1
+         ENDIF
+         *------KRAJ UNOSA ZADNJEG DATUMA-----
+         IF DATUM0=MEDAT0.AND.DATUM1=MEDAT1
+            REPLACE BRMES WITH MEMES
+         ELSE
+            MMES1=MONTH(DATUM1)
+            MMES0=MONTH(DATUM0)
+            MEMES2=MMES1-MMES0
+            IF MEMES2 > 0
+            	REPLACE BRMES WITH MEMES2
+            ELSE
+            	REPLACE BRMES WITH 0
+            ENDIF
+         ENDIF
+      SKIP
+   ENDDO
+POP KEY

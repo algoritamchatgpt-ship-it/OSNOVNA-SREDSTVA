@@ -1,0 +1,339 @@
+<Window x:Class="OsnovnaSredstva.Views.FirmaIzborWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Izbor firme"
+        Width="780" Height="480"
+        MinWidth="680" MinHeight="420"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Background="#F0F0F0"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <!-- Mali akcijski dugmici u toolbaru liste -->
+        <Style x:Key="ToolbarDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.70"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Glavni dugmici (ULAZ / IZLAZ) -->
+        <Style x:Key="GlavniDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="22,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.88"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.72"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Zaglavlje kolona liste -->
+        <Style x:Key="GridHeaderStyle" TargetType="GridViewColumnHeader">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#444444"/>
+            <Setter Property="Background" Value="#EBEBEB"/>
+            <Setter Property="BorderBrush" Value="#D0D0D0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+
+        <!-- Redovi liste -->
+        <Style TargetType="ListViewItem">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#222222"/>
+            <Setter Property="Padding" Value="5,3"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E3F0FB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>   <!-- header traka -->
+            <RowDefinition Height="*"/>    <!-- sadrzaj -->
+            <RowDefinition Height="44"/>   <!-- footer -->
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Border Grid.Row="0" Background="#2E7D32">
+            <DockPanel Margin="14,0">
+                <TextBlock Text="Izbor firme"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding KorisnikInfo}"
+                           DockPanel.Dock="Right"
+                           FontSize="12"
+                           Foreground="#BBDEFB"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"/>
+            </DockPanel>
+        </Border>
+
+        <!-- SADRZAJ: lista lijevo + detalji desno -->
+        <Grid Grid.Row="1" Background="#F5F5F5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="310"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Leva kolona: toolbar + lista -->
+            <Grid Grid.Column="0" Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="38"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Toolbar liste -->
+                <Border Grid.Row="0" Background="#F7F7F7" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
+                        <TextBlock Text="Firme"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   Foreground="#333333"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0"/>
+                        <Button Content="+ Dodaj"
+                                Background="#43A047"
+                                Style="{StaticResource ToolbarDugme}"
+                                Margin="0,0,5,0"
+                                Command="{Binding DodajFirmuCommand}"/>
+                        <Button Content="Arhiviraj"
+                                Background="#1E88E5"
+                                Style="{StaticResource ToolbarDugme}"
+                                Margin="0,0,5,0"
+                                Command="{Binding ArhivirajFirmuCommand}"/>
+                        <Button Content="Briši"
+                                Background="#E53935"
+                                Style="{StaticResource ToolbarDugme}"
+                                Command="{Binding ObrisiFirmuCommand}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Lista firmi -->
+                <ListView x:Name="LstFirme"
+                          Grid.Row="1"
+                          ItemsSource="{Binding Firme}"
+                          SelectedItem="{Binding SelektovanaFirma}"
+                          BorderThickness="0"
+                          Background="White"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListView.View>
+                        <GridView ColumnHeaderContainerStyle="{StaticResource GridHeaderStyle}">
+                            <GridViewColumn Header="Naziv firme" Width="222" DisplayMemberBinding="{Binding Naziv}"/>
+                            <GridViewColumn Header="Grad"        Width="76"  DisplayMemberBinding="{Binding Mesto}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+
+            <!-- Separator -->
+            <Border Grid.Column="1" Background="#D5D5D5"/>
+
+            <!-- Desna kolona: detalji firme -->
+            <Border Grid.Column="2" Background="#FAFAFA">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                              Padding="16,12,12,12">
+                    <StackPanel>
+                        <TextBlock Text="Podaci o firmi"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2E7D32"
+                                   Margin="0,0,0,12"/>
+
+                        <!-- Naziv firme -->
+                        <TextBlock Text="Naziv firme"
+                                   FontSize="11"
+                                   Foreground="#757575"/>
+                        <TextBlock Text="{Binding SelektovanaFirma.Naziv}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#1A1A1A"
+                                   Margin="0,1,0,8"/>
+
+                        <!-- Puni naziv -->
+                        <TextBlock Text="Puni naziv"
+                                   FontSize="11"
+                                   Foreground="#757575"/>
+                        <TextBlock Text="{Binding SelektovanaFirma.Naziv2}"
+                                   FontSize="13"
+                                   Foreground="#333333"
+                                   Margin="0,1,0,8"/>
+
+                        <!-- Folder -->
+                        <TextBlock Text="Folder podataka"
+                                   FontSize="11"
+                                   Foreground="#757575"/>
+                        <TextBlock Text="{Binding SelektovanaFirma.FolderPath}"
+                                   FontSize="12"
+                                   FontFamily="Consolas"
+                                   Foreground="#1565C0"
+                                   TextWrapping="Wrap"
+                                   Margin="0,1,0,10"/>
+
+                        <Separator Margin="0,2,0,10" Background="#E0E0E0"/>
+
+                        <!-- Ulica i broj -->
+                        <TextBlock Text="Ulica i broj"
+                                   FontSize="11"
+                                   Foreground="#757575"/>
+                        <TextBlock Text="{Binding SelektovanaFirma.AdresaUlica}"
+                                   FontSize="13"
+                                   Foreground="#333333"
+                                   Margin="0,1,0,8"/>
+
+                        <!-- Mesto -->
+                        <TextBlock Text="Mesto"
+                                   FontSize="11"
+                                   Foreground="#757575"/>
+                        <TextBlock Text="{Binding SelektovanaFirma.AdresaMesto}"
+                                   FontSize="13"
+                                   Foreground="#333333"
+                                   Margin="0,1,0,8"/>
+
+                        <!-- PIB + Maticni broj -->
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="PIB" FontSize="11" Foreground="#757575"/>
+                                <TextBlock Text="{Binding SelektovanaFirma.Pib}"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           Foreground="#1A1A1A"
+                                           Margin="0,1,0,0"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Matični broj" FontSize="11" Foreground="#757575"/>
+                                <TextBlock Text="{Binding SelektovanaFirma.MatBr}"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           Foreground="#1A1A1A"
+                                           Margin="0,1,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Ziro racun -->
+                        <TextBlock Text="Žiro račun" FontSize="11" Foreground="#757575"/>
+                        <TextBlock Text="{Binding SelektovanaFirma.ZiroRacun}"
+                                   FontSize="13"
+                                   Foreground="#333333"
+                                   Margin="0,1,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- FOOTER -->
+        <Border Grid.Row="2" Background="#EEEEEE" BorderBrush="#D5D5D5" BorderThickness="0,1,0,0">
+            <Grid Margin="12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Dvaput kliknite na firmu ili izaberite i pritisnite Ulaz"
+                               FontSize="12"
+                               Foreground="#666666"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding StatusPoruka}"
+                               Margin="12,0,0,0"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="#2E7D32"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding StatusPoruka, Converter={StaticResource StringToVisibilityConverter}}"/>
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Margin="0,0,8,0"
+                        Width="90"
+                        Content="Ulaz"
+                        IsDefault="True"
+                        Background="#388E3C"
+                        Style="{StaticResource GlavniDugme}"
+                        Command="{Binding PotvrdiCommand}"/>
+
+                <Button Grid.Column="2"
+                        Width="80"
+                        Content="Izlaz"
+                        Background="#757575"
+                        Style="{StaticResource GlavniDugme}"
+                        Command="{Binding OtkaciCommand}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

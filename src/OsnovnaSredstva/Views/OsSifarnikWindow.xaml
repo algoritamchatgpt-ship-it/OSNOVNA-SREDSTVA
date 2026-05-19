@@ -1,0 +1,251 @@
+<Window x:Class="OsnovnaSredstva.Views.OsSifarnikWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sifarnici - Osnovna sredstva"
+        Width="1100" Height="700"
+        MinWidth="980" MinHeight="620"
+        WindowStartupLocation="CenterScreen"
+        Background="#F1F4F8">
+
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SacuvajCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding OsveziCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <Style x:Key="AkcijaDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+
+        <Style x:Key="GridStil" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F7FAFF"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <!-- TabControl stil -->
+        <Style x:Key="TabKontrolStil" TargetType="TabControl">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CED9E4"/>
+            <Setter Property="BorderThickness" Value="0,1,0,0"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
+        <Style x:Key="TabStavkaStil" TargetType="TabItem">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#1E3A5F"/>
+            <Setter Property="Background" Value="#DCE8F5"/>
+            <Setter Property="BorderBrush" Value="#A8C1DD"/>
+            <Setter Property="BorderThickness" Value="1,1,1,0"/>
+            <Setter Property="Padding" Value="14,7"/>
+            <Setter Property="Margin" Value="0,0,2,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                Margin="{TemplateBinding Margin}"
+                                CornerRadius="3,3,0,0">
+                            <ContentPresenter ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#1F5F9D"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#1F5F9D"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#B8D0EC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#1F5F9D">
+            <Grid Margin="16,0">
+                <TextBlock Text="SIFARNICI OSNOVNIH SREDSTAVA"
+                           FontFamily="Tahoma"
+                           FontSize="17"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Ctrl+S Sacuvaj | F5 Osvezi"
+                           FontFamily="Tahoma"
+                           FontSize="10"
+                           Foreground="#BFD9F2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- TabControl -->
+        <TabControl Grid.Row="1"
+                    Style="{StaticResource TabKontrolStil}"
+                    ItemContainerStyle="{StaticResource TabStavkaStil}"
+                    SelectedIndex="{Binding AktivniTab, Mode=TwoWay}"
+                    Margin="8,6,8,0">
+
+            <!-- Vrste OS -->
+            <TabItem Header="Vrste OS">
+                <DataGrid x:Name="GridVrste"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding VrsteOs}"
+                          SelectedItem="{Binding IzabranaVrsta}"
+                          MouseDoubleClick="OnGridDvoklik">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="VRSTA"                Binding="{Binding Vrsta,   UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        <DataGridTextColumn Header="NAZIV VRSTE SREDSTAVA" Binding="{Binding Naziv,   UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO"              Binding="{Binding Preneto, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Grupe za amortizaciju -->
+            <TabItem Header="Grupe za amortizaciju">
+                <DataGrid x:Name="GridGrupe"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding AmortGrupe}"
+                          SelectedItem="{Binding IzabranaAmortGrupa}"
+                          MouseDoubleClick="OnGridDvoklik">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="AG"         Binding="{Binding Ag,      UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                        <DataGridTextColumn Header="STOPA (%)"  Binding="{Binding AgStopa, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="110"/>
+                        <DataGridTextColumn Header="OPIS"       Binding="{Binding Opis,    UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                        <DataGridTextColumn Header="VRSTA"      Binding="{Binding Vrsta,   UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        <DataGridTextColumn Header="PRENETO"    Binding="{Binding Preneto, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Podgrupe amortizacije -->
+            <TabItem Header="Podgrupe amortizacije">
+                <DataGrid x:Name="GridPodgrupe"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding AmortPodgrupe}"
+                          SelectedItem="{Binding IzabranaAmortPodgrupa}"
+                          MouseDoubleClick="OnGridDvoklik">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="PODGRUPA"      Binding="{Binding AgPod,   UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <DataGridTextColumn Header="AG"            Binding="{Binding Ag,      UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                        <DataGridTextColumn Header="OPIS PODGRUPE" Binding="{Binding Opis,    UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO"       Binding="{Binding Preneto, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Izvor finansiranja -->
+            <TabItem Header="Izvor finansiranja">
+                <DataGrid x:Name="GridIzvori"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding IzvoriFinansiranja}"
+                          SelectedItem="{Binding IzabraniIzvor}"
+                          MouseDoubleClick="OnGridDvoklik">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="IZVOR"                    Binding="{Binding Izvor,   UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <DataGridTextColumn Header="NAZIV IZVORA FINANSIRANJA" Binding="{Binding Naziv,   UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO"                  Binding="{Binding Preneto, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <!-- Osnov koriscenja -->
+            <TabItem Header="Osnov koriscenja">
+                <DataGrid x:Name="GridOsnovi"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding OsnKoriscenja}"
+                          SelectedItem="{Binding IzabraniOsnov}"
+                          MouseDoubleClick="OnGridDvoklik">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="OSNOV"                    Binding="{Binding OsnovKor, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <DataGridTextColumn Header="OPIS OSNOVA KORISCENJA"   Binding="{Binding Naziv,    UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO"                  Binding="{Binding Preneto,  UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+        </TabControl>
+
+        <!-- Button bar -->
+        <Border Grid.Row="2" Background="#E5EDF6" BorderBrush="#C4D4E5" BorderThickness="0,1,0,0" Padding="10,8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                <Border Background="#DCE8F5" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="3" Padding="6,4" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="DOLE"   Style="{StaticResource AkcijaDugme}" Background="#708090" Command="{Binding DoleCommand}"/>
+                        <Button Content="GORE"   Style="{StaticResource AkcijaDugme}" Background="#708090" Command="{Binding GoreCommand}"/>
+                        <Button Content="ZADNJI" Style="{StaticResource AkcijaDugme}" Background="#708090" Command="{Binding ZadnjiCommand}"/>
+                        <Button Content="PRVI"   Style="{StaticResource AkcijaDugme}" Background="#708090" Margin="0" Command="{Binding PrviCommand}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#DCE8F5" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="3" Padding="6,4" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="DODAJ"  Style="{StaticResource AkcijaDugme}" Background="#2C7BE5" Click="OnDodajClick"/>
+                        <Button Content="OBRISI" Style="{StaticResource AkcijaDugme}" Background="#D64545" Command="{Binding ObrisiCommand}" Margin="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#DCE8F5" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="3" Padding="6,4" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="KARTICA"       Style="{StaticResource AkcijaDugme}" Background="#6C757D" Command="{Binding KarticaCommand}"/>
+                        <Button Content="POPISNA LISTA" Style="{StaticResource AkcijaDugme}" Background="#6C757D" Command="{Binding PopisnaListaCommand}" Margin="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#DCE8F5" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="3" Padding="6,4">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="SACUVAJ" Style="{StaticResource AkcijaDugme}" Background="#2F9E44" Command="{Binding SacuvajCommand}"/>
+                        <Button Content="OSVEZI"  Style="{StaticResource AkcijaDugme}" Background="#4B6B88" Command="{Binding OsveziCommand}"/>
+                        <Button Content="IZLAZ"   Style="{StaticResource AkcijaDugme}" Background="#495057" Margin="0" Click="OnZatvoriClick"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </Border>
+
+        <!-- Status bar -->
+        <Border Grid.Row="3" Background="#ECF2F8" BorderBrush="#D0DBE7" BorderThickness="0,1,0,0" Padding="12,5">
+            <TextBlock Text="{Binding Poruka}"
+                       FontFamily="Tahoma"
+                       FontSize="11"
+                       Foreground="#355070"
+                       VerticalAlignment="Center"/>
+        </Border>
+
+    </Grid>
+</Window>

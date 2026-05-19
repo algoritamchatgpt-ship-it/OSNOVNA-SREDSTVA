@@ -1,0 +1,191 @@
+[2026-05-15 10:26:00 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 10:26:00 INF] Otvaram početni ekran
+[2026-05-15 10:26:03 INF] Otvaram login
+[2026-05-15 10:26:05 INF] Otvaram izbor firme
+[2026-05-15 10:26:05 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 10:26:05 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-15 10:26:06 INF] Firma izabrana: F1 (C:\OSproba\F1)
+[2026-05-15 10:26:06 INF] Otvaram glavni meni OS
+[2026-05-15 10:37:46 INF] Otvaram početni ekran
+[2026-05-15 10:37:47 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 10:37:53 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 10:37:53 INF] Otvaram početni ekran
+[2026-05-15 10:37:55 INF] Otvaram login
+[2026-05-15 10:37:55 INF] Otvaram izbor firme
+[2026-05-15 10:37:56 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 10:37:56 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-15 10:37:56 INF] Firma izabrana: F1 (C:\OSproba\F1)
+[2026-05-15 10:37:56 INF] Otvaram glavni meni OS
+[2026-05-15 10:43:56 INF] Otvaram početni ekran
+[2026-05-15 10:43:58 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 10:44:02 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 10:44:02 INF] Otvaram početni ekran
+[2026-05-15 10:44:04 INF] Otvaram login
+[2026-05-15 10:44:05 INF] Otvaram izbor firme
+[2026-05-15 10:44:05 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 10:44:05 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-15 10:44:06 INF] Firma izabrana: F1 (C:\OSproba\F1)
+[2026-05-15 10:44:06 INF] Otvaram glavni meni OS
+[2026-05-15 10:55:56 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 10:55:56 INF] Otvaram početni ekran
+[2026-05-15 10:55:58 INF] Otvaram login
+[2026-05-15 10:55:59 INF] Otvaram izbor firme
+[2026-05-15 10:55:59 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 10:55:59 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-15 10:56:00 INF] Firma izabrana: F1 (C:\OSproba\F1)
+[2026-05-15 10:56:00 INF] Otvaram glavni meni OS
+[2026-05-15 10:56:44 INF] Otvaram početni ekran
+[2026-05-15 10:57:16 INF] Otvaram login
+[2026-05-15 10:57:40 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 10:57:47 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 10:57:47 INF] Otvaram početni ekran
+[2026-05-15 10:58:18 INF] Otvaram login
+[2026-05-15 10:58:37 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 11:04:31 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:04:31 INF] Otvaram početni ekran
+[2026-05-15 11:04:32 INF] Otvaram login
+[2026-05-15 11:04:35 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.DBF
+[2026-05-15 11:04:35 WRN] Prijava: korisnik Filip nije pronađen u C:\fin26\data00\LOZINKE.DBF.
+[2026-05-15 11:04:37 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.DBF
+[2026-05-15 11:04:37 WRN] Prijava: korisnik Filip nije pronađen u C:\fin26\data00\LOZINKE.DBF.
+[2026-05-15 11:04:38 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.DBF
+[2026-05-15 11:04:38 WRN] Prijava: korisnik Filip nije pronađen u C:\fin26\data00\LOZINKE.DBF.
+[2026-05-15 11:04:41 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 11:06:31 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:06:31 INF] Otvaram početni ekran
+[2026-05-15 11:06:33 INF] Otvaram login
+[2026-05-15 11:06:34 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.DBF
+[2026-05-15 11:06:34 WRN] Prijava: korisnik Filip nije pronađen u C:\fin26\data00\LOZINKE.DBF.
+[2026-05-15 11:06:36 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 11:09:35 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:09:35 INF] Otvaram početni ekran
+[2026-05-15 11:09:36 INF] Otvaram login
+[2026-05-15 11:09:38 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.DBF
+[2026-05-15 11:09:38 WRN] Prijava: korisnik Filip nije pronađen u C:\fin26\data00\LOZINKE.DBF. Ukupno zapisa: 3
+[2026-05-15 11:09:45 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 11:17:30 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:17:30 INF] Otvaram početni ekran
+[2026-05-15 11:17:31 INF] Otvaram login
+[2026-05-15 11:17:34 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.DBF
+[2026-05-15 11:17:34 ERR] Prijava: greška pri čitanju C:\fin26\data00\LOZINKE.DBF
+System.IO.IOException: The process cannot access the file 'C:\fin26\data00\LOZINKE.DBF' because it is being used by another process.
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.File.ReadAllBytes(String path)
+   at OsnovnaSredstva.Services.Dbf.SimpleDbfReader..ctor(String filePath, Encoding encoding) in C:\osnovnasredstva\src\OsnovnaSredstva\Services\Dbf\SimpleDbfReader.cs:line 24
+   at OsnovnaSredstva.Services.OsAuthService.Prijava(String korisnikIme, String lozinka) in C:\osnovnasredstva\src\OsnovnaSredstva\Services\OsAuthService.cs:line 49
+[2026-05-15 11:17:47 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 11:17:54 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:17:54 INF] Otvaram početni ekran
+[2026-05-15 11:17:56 INF] Otvaram login
+[2026-05-15 11:17:58 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.DBF
+[2026-05-15 11:17:58 DBG] Prijava: polje za ime=KORIME, lozinku=LOZINKA. Sva polja: PAS, KORISNIK, LOZINKA, PASSGK, PASSAN, PASSBL, PASSTV, PASSTVRA, PASSTVKAL, PASSTVRAC, PASSTVNIV, PASSTM, PASSTMRA, PASSTMKAL, PASSTMRAC, PASSTMNIV, PASSUS, PASSOS, PASSLD, PASSPRO, PASSOST, PASSPRN, PASSPROF, PASSDEL, PASSNIVO, AKTIVAN, DATUM, VREME0, VREME1, SLIKE, MAGACIN, PUTANJA, KORIME, FOXY, PDFPRINT, PRENETO, IDBR
+[2026-05-15 11:17:58 WRN] Prijava: korisnik Filip nije pronađen u C:\fin26\data00\LOZINKE.DBF. Pročitano zapisa: 3/3
+[2026-05-15 11:44:44 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:44:44 INF] Otvaram početni ekran
+[2026-05-15 11:44:49 INF] Otvaram login
+[2026-05-15 11:44:52 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 11:44:52 INF] Otvaram izbor firme
+[2026-05-15 11:44:52 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 11:44:52 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 11:44:57 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 11:44:57 INF] Otvaram glavni meni OS
+[2026-05-15 11:46:06 INF] Otvaram početni ekran
+[2026-05-15 11:46:08 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 11:48:12 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:48:12 INF] Otvaram početni ekran
+[2026-05-15 11:48:13 INF] Otvaram login
+[2026-05-15 11:48:15 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 11:48:15 INF] Otvaram izbor firme
+[2026-05-15 11:48:15 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 11:48:15 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 11:48:16 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 11:48:16 INF] Otvaram glavni meni OS
+[2026-05-15 11:59:14 INF] Otvaram početni ekran
+[2026-05-15 11:59:16 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 11:59:22 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 11:59:22 INF] Otvaram početni ekran
+[2026-05-15 11:59:24 INF] Otvaram login
+[2026-05-15 11:59:31 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 11:59:31 INF] Otvaram izbor firme
+[2026-05-15 11:59:31 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 11:59:31 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 11:59:42 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 11:59:42 INF] Otvaram glavni meni OS
+[2026-05-15 12:02:31 INF] Otvaram početni ekran
+[2026-05-15 12:02:32 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 12:25:17 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 12:25:17 INF] Otvaram početni ekran
+[2026-05-15 12:25:19 INF] Otvaram login
+[2026-05-15 12:25:20 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 12:25:20 INF] Otvaram izbor firme
+[2026-05-15 12:25:20 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 12:25:20 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 12:25:23 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 12:25:23 INF] Otvaram glavni meni OS
+[2026-05-15 12:32:05 INF] Otvaram početni ekran
+[2026-05-15 12:32:07 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 12:32:58 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 12:32:58 INF] Otvaram početni ekran
+[2026-05-15 12:33:01 INF] Otvaram login
+[2026-05-15 12:33:06 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 12:33:06 INF] Otvaram izbor firme
+[2026-05-15 12:33:06 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 12:33:06 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 12:33:08 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 12:33:08 INF] Otvaram glavni meni OS
+[2026-05-15 12:34:20 INF] Otvaram početni ekran
+[2026-05-15 12:34:23 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 12:35:36 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 12:35:36 INF] Otvaram početni ekran
+[2026-05-15 12:35:38 INF] Otvaram login
+[2026-05-15 12:35:43 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 12:35:43 INF] Otvaram izbor firme
+[2026-05-15 12:35:43 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 12:35:43 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 12:35:44 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 12:35:44 INF] Otvaram glavni meni OS
+[2026-05-15 12:50:17 INF] Otvaram početni ekran
+[2026-05-15 12:50:19 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 13:44:29 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 13:44:29 INF] Otvaram početni ekran
+[2026-05-15 13:44:30 INF] Otvaram login
+[2026-05-15 13:44:33 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 13:44:33 INF] Otvaram izbor firme
+[2026-05-15 13:44:33 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 13:44:33 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 13:44:36 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 13:44:36 INF] Otvaram glavni meni OS
+[2026-05-15 13:45:38 INF] Otvaram početni ekran
+[2026-05-15 13:45:40 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 13:53:55 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 13:53:55 INF] Otvaram početni ekran
+[2026-05-15 13:53:56 INF] Otvaram login
+[2026-05-15 13:53:59 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 13:53:59 INF] Otvaram izbor firme
+[2026-05-15 13:53:59 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 13:53:59 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 13:54:00 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 13:54:00 INF] Otvaram glavni meni OS
+[2026-05-15 13:54:29 INF] Otvaram početni ekran
+[2026-05-15 13:54:30 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 13:57:29 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 13:57:29 INF] Otvaram početni ekran
+[2026-05-15 13:57:31 INF] Otvaram login
+[2026-05-15 13:57:33 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 13:57:33 INF] Otvaram izbor firme
+[2026-05-15 13:57:33 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 13:57:33 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 13:57:35 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 13:57:35 INF] Otvaram glavni meni OS
+[2026-05-15 13:58:11 INF] Otvaram početni ekran
+[2026-05-15 13:58:12 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-15 13:58:17 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-15 13:58:17 INF] Otvaram početni ekran
+[2026-05-15 13:58:18 INF] Otvaram login
+[2026-05-15 13:58:20 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-15 13:58:20 INF] Otvaram izbor firme
+[2026-05-15 13:58:20 DBG] FirmaIzbor — učitavam firme...
+[2026-05-15 13:58:20 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-15 13:58:21 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-15 13:58:21 INF] Otvaram glavni meni OS

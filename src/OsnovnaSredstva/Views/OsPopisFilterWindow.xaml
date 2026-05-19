@@ -1,0 +1,83 @@
+<Window x:Class="OsnovnaSredstva.Views.OsPopisFilterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PREGLED OSNOVNIH SREDSTAVA"
+        Width="760" Height="260"
+        MinWidth="700" MinHeight="240"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#E9ECD8">
+
+    <Window.Resources>
+        <Style x:Key="FoxDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Background" Value="#C0C0C0"/>
+            <Setter Property="BorderBrush" Value="#707070"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+        <Style x:Key="Lbl" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#AB212C"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource Lbl}" Text="MESTO"/>
+        <TextBox x:Name="TxtMesto" Grid.Row="0" Grid.Column="1" Height="25" MaxLength="4" Padding="6,2"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource Lbl}" Text="MESTO TROSKOVA"/>
+        <TextBox x:Name="TxtMtr" Grid.Row="0" Grid.Column="4" Height="25" MaxLength="5" Padding="6,2"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="6" Style="{StaticResource Lbl}" Text="KONTO"/>
+        <TextBox x:Name="TxtKonto" Grid.Row="0" Grid.Column="7" Height="25" MaxLength="10" Padding="6,2"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Lbl}" Text="AMORTIZACIONA GRUPA" Margin="0,8,0,0"/>
+        <TextBox x:Name="TxtAg" Grid.Row="1" Grid.Column="1" Height="25" MaxLength="1" Padding="6,2" Margin="0,8,0,0"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="3" Style="{StaticResource Lbl}" Text="PODGRUPA" Margin="0,8,0,0"/>
+        <TextBox x:Name="TxtAgPod" Grid.Row="1" Grid.Column="4" Height="25" MaxLength="2" Padding="6,2" Margin="0,8,0,0"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="6" Style="{StaticResource Lbl}" Text="GRUPA" Margin="0,8,0,0"/>
+        <TextBox x:Name="TxtGrupa" Grid.Row="1" Grid.Column="7" Height="25" MaxLength="4" Padding="6,2" Margin="0,8,0,0"/>
+
+        <Border Grid.Row="3" Grid.ColumnSpan="8" Margin="0,10,0,10"
+                Background="#88FD82" BorderBrush="#5AA95A" BorderThickness="1" Padding="8,6">
+            <TextBlock x:Name="TxtInfo"
+                       FontFamily="Tahoma"
+                       FontSize="11"
+                       Foreground="#7A0000"
+                       Text="Unesite kriterijume (prazno polje = svi)."/>
+        </Border>
+
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="8" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button x:Name="BtnPregledSve" Content="PREGLED SVE" Style="{StaticResource FoxDugme}" Width="130" Click="OnPregledSveClick"/>
+            <Button x:Name="BtnPregledSkr" Content="PREGLED SKRACENI" Style="{StaticResource FoxDugme}" Width="160" Click="OnPregledSkraceniClick"/>
+            <Button x:Name="BtnIzlaz" Content="IZLAZ" Style="{StaticResource FoxDugme}" Width="90" Margin="0" Click="OnIzlazClick"/>
+        </StackPanel>
+    </Grid>
+</Window>

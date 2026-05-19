@@ -1,0 +1,187 @@
+<Window x:Class="OsnovnaSredstva.Views.FormiranjeLozinkiWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FORMIRANJE LOZINKI — KORISNICI"
+        Width="780" Height="540"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        MinWidth="640" MinHeight="440"
+        Background="#EEF2FF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="56"/>
+        </Grid.RowDefinitions>
+
+        <!-- ═══ HEADER ═══ -->
+        <Border Grid.Row="0" Background="#1565C0">
+            <Grid Margin="16,0">
+                <TextBlock Text="KORISNICI I LOZINKE"
+                           FontFamily="Tahoma" FontSize="18" FontWeight="Bold"
+                           Foreground="White" VerticalAlignment="Center"/>
+                <ProgressBar HorizontalAlignment="Right" Width="180" Height="4"
+                             IsIndeterminate="True" Foreground="#90CAF9" Background="#0D47A1"
+                             BorderThickness="0" VerticalAlignment="Center"
+                             Visibility="{Binding Ucitava, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══ SADRZAJ ═══ -->
+        <Grid Grid.Row="1" Margin="12,12,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista korisnika -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Korisnici:"
+                           FontFamily="Tahoma" FontSize="11" FontWeight="SemiBold"
+                           Foreground="#0D47A1" Margin="0,0,0,4"/>
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding Stavke}"
+                         SelectedItem="{Binding Selektovana}"
+                         FontFamily="Tahoma" FontSize="12"
+                         BorderBrush="#90CAF9" BorderThickness="1"
+                         Background="White">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="2,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Id}"
+                                           FontWeight="Bold" Foreground="#1565C0"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Korisnik}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="4,2"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#BBDEFB"/>
+                                    <Setter Property="Foreground" Value="#0D47A1"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+
+            <!-- Forma za unos -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Detalji korisnika:"
+                           FontFamily="Tahoma" FontSize="11" FontWeight="SemiBold"
+                           Foreground="#0D47A1"/>
+
+                <!-- ID -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="ID (01–99):" FontFamily="Tahoma" FontSize="11"
+                               VerticalAlignment="Center" Foreground="#37474F"/>
+                    <TextBox Grid.Column="1" Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="Tahoma" FontSize="12"
+                             Padding="6,4" BorderBrush="#90CAF9" BorderThickness="1"
+                             MaxLength="2"/>
+                </Grid>
+
+                <!-- Korisnik -->
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Korisnik:" FontFamily="Tahoma" FontSize="11"
+                               VerticalAlignment="Center" Foreground="#37474F"/>
+                    <TextBox Grid.Column="1" Text="{Binding Korisnik, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="Tahoma" FontSize="12"
+                             Padding="6,4" BorderBrush="#90CAF9" BorderThickness="1"
+                             MaxLength="20"/>
+                </Grid>
+
+                <!-- Lozinka -->
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Lozinka:" FontFamily="Tahoma" FontSize="11"
+                               VerticalAlignment="Center" Foreground="#37474F"/>
+                    <TextBox Grid.Column="1" Text="{Binding Lozinka, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="Tahoma" FontSize="12"
+                             Padding="6,4" BorderBrush="#90CAF9" BorderThickness="1"
+                             MaxLength="20"/>
+                </Grid>
+
+            </Grid>
+        </Grid>
+
+        <!-- ═══ PORUKA ═══ -->
+        <Border Grid.Row="2" Background="#E8EAF6" Padding="12,6"
+                Visibility="{Binding Poruka, Converter={StaticResource StringToVisibilityConverter}}">
+            <TextBlock Text="{Binding Poruka}" FontFamily="Tahoma" FontSize="11" Foreground="#37474F"/>
+        </Border>
+
+        <!-- ═══ DUGMAD ═══ -->
+        <Grid Grid.Row="3" Margin="12,0,12,12" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Novi"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#388E3C" Foreground="White" BorderBrush="#2E7D32"
+                    Width="80" Command="{Binding NoviCommand}"/>
+
+            <Button Grid.Column="2" Content="SAČUVAJ"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#1565C0" Foreground="White" BorderBrush="#0D47A1"
+                    Width="90" IsDefault="True"
+                    Command="{Binding SacuvajCommand}"/>
+
+            <Button Grid.Column="4" Content="Obriši"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#D32F2F" Foreground="White" BorderBrush="#B71C1C"
+                    Width="80" Command="{Binding ObrisiCommand}"/>
+
+            <Button Grid.Column="6" Content="Osveži"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#546E7A" Foreground="White" BorderBrush="#37474F"
+                    Width="80" Command="{Binding OsveziCommand}"/>
+        </Grid>
+    </Grid>
+</Window>

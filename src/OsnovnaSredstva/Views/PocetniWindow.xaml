@@ -1,0 +1,305 @@
+<Window x:Class="OsnovnaSredstva.Views.PocetniWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FIN OSNOVNA SREDSTVA"
+        Width="780" Height="520"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border CornerRadius="8" ClipToBounds="True">
+        <Grid>
+
+            <!-- Pozadina -->
+            <Border>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#0A1628" Offset="0"/>
+                        <GradientStop Color="#1A3255" Offset="0.5"/>
+                        <GradientStop Color="#0A1628" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <!-- Dekorativni okvir — plavi -->
+            <Rectangle VerticalAlignment="Top"    Height="6" Fill="#1565C0"/>
+            <Rectangle VerticalAlignment="Bottom" Height="6" Fill="#1565C0"/>
+            <Rectangle HorizontalAlignment="Left"  Width="6" Fill="#1565C0" Margin="0,6,0,6"/>
+            <Rectangle HorizontalAlignment="Right" Width="6" Fill="#1565C0" Margin="0,6,0,6"/>
+
+            <!-- X dugme -->
+            <Button x:Name="BtnZatvori"
+                    Content="✕"
+                    Width="28" Height="28"
+                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Margin="0,10,10,0"
+                    Cursor="Hand" FontSize="12"
+                    Foreground="#546E7A" Background="Transparent" BorderThickness="0"/>
+
+            <!-- Sadrzaj -->
+            <Grid Margin="36,20,36,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- ═══ NASLOV ═══ -->
+                <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,4,0,0">
+                    <Border HorizontalAlignment="Center" Margin="0,0,0,6">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#1565C0" BlurRadius="30"
+                                             Opacity="0.6" ShadowDepth="0"/>
+                        </Border.Effect>
+                        <!-- Ikonica: placeholder tekst umjesto slike -->
+                        <Border Width="82" Height="82" CornerRadius="41"
+                                Background="#1565C0">
+                            <TextBlock Text="OS" FontFamily="Tahoma" FontSize="28" FontWeight="Bold"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Border>
+
+                    <TextBlock Text="FIN OSNOVNA SREDSTVA"
+                               FontFamily="Tahoma" FontSize="24" FontWeight="Bold"
+                               HorizontalAlignment="Center">
+                        <TextBlock.Foreground>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#90CAF9" Offset="0"/>
+                                <GradientStop Color="White"   Offset="0.5"/>
+                                <GradientStop Color="#90CAF9" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+
+                    <TextBlock Text="Softver za upravljanje osnovnim sredstvima"
+                               FontFamily="Tahoma" FontSize="11"
+                               Foreground="#90A4AE"
+                               HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                </StackPanel>
+
+                <!-- ═══ CENTAR: dugme ULAZ ═══ -->
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                    <Rectangle Height="1" Width="180" Margin="0,0,0,28" HorizontalAlignment="Center">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="Transparent" Offset="0"/>
+                                <GradientStop Color="#1565C0"     Offset="0.5"/>
+                                <GradientStop Color="Transparent" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+
+                    <Button x:Name="BtnUlaz"
+                            Width="180" Height="52" Cursor="Hand" IsDefault="True"
+                            IsEnabled="{Binding PutanjaPostavljena}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Bd" Background="#1565C0" CornerRadius="26"
+                                        BorderThickness="2" BorderBrush="#90CAF9">
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="▶" FontSize="13" Foreground="White"
+                                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                        <TextBlock Text="ULAZ" FontFamily="Tahoma" FontSize="17"
+                                                   FontWeight="Bold" Foreground="White"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="#1976D2"/>
+                                        <Setter TargetName="Bd" Property="BorderBrush" Value="White"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="#0D47A1"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter TargetName="Bd" Property="Opacity" Value="0.4"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <TextBlock Text="Najpre postavite putanju do FIN instalacije"
+                               FontFamily="Tahoma" FontSize="10"
+                               Foreground="#90CAF9"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0"
+                               Visibility="{Binding PutanjaPostavljena,
+                                   Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+
+                    <Rectangle Height="1" Width="180" Margin="0,28,0,0" HorizontalAlignment="Center">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="Transparent" Offset="0"/>
+                                <GradientStop Color="#1565C0"     Offset="0.5"/>
+                                <GradientStop Color="Transparent" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </StackPanel>
+
+                <!-- ═══ PUTANJA ZONA ═══ -->
+                <Border Grid.Row="2"
+                        Background="#060F1C" CornerRadius="6"
+                        Padding="14,10" Margin="0,0,0,4">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="FIN Putanja:"
+                                   FontFamily="Tahoma" FontSize="10"
+                                   Foreground="#546E7A" Margin="0,0,0,3"/>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0"
+                                    Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Width="18" Height="18" CornerRadius="9"
+                                    Margin="0,0,8,0" VerticalAlignment="Center"
+                                    Background="{Binding PutanjaBoja}">
+                                <TextBlock Text="{Binding PutanjaIkonica}"
+                                           FontSize="9" FontWeight="Bold"
+                                           Foreground="#0A1628"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding PutanjaPrikazana}"
+                                       FontFamily="Consolas" FontSize="11"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"
+                                       Foreground="{Binding PutanjaBoja}"/>
+                        </StackPanel>
+
+                        <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                                Content="Postavi putanju..."
+                                FontFamily="Tahoma" FontSize="11"
+                                Foreground="#90A4AE"
+                                Background="Transparent"
+                                BorderBrush="#37474F" BorderThickness="1"
+                                Padding="10,6" Cursor="Hand"
+                                VerticalAlignment="Center" Margin="12,0,0,0"
+                                Command="{Binding PostaviPutanjuCommand}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                   Text="{Binding StatusPoruka}"
+                                   FontFamily="Tahoma" FontSize="10"
+                                   Foreground="#EF9A9A"
+                                   Margin="0,4,0,0"
+                                   Visibility="{Binding StatusPoruka,
+                                        Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                   Text="Kliknite ovde ako nemate FIN instalaciju (kreiraće se lokalna)"
+                                   FontFamily="Tahoma" FontSize="10"
+                                   Foreground="#64B5F6"
+                                   Margin="0,6,0,0"
+                                   TextDecorations="Underline" Cursor="Hand">
+                            <TextBlock.InputBindings>
+                                <MouseBinding MouseAction="LeftClick"
+                                              Command="{Binding KreirajLokalnuInstalacijuCommand}"/>
+                            </TextBlock.InputBindings>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+
+                <!-- ═══ ARHIVA PUTANJA ═══ -->
+                <Border Grid.Row="3"
+                        Background="#060F1C" CornerRadius="6"
+                        Padding="14,10" Margin="0,0,0,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="Folder za arhiviranje:"
+                                   FontFamily="Tahoma" FontSize="10"
+                                   Foreground="#546E7A" Margin="0,0,0,3"/>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0"
+                                    Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Width="18" Height="18" CornerRadius="9"
+                                    Margin="0,0,8,0" VerticalAlignment="Center"
+                                    Background="{Binding ArhivaPutanjaBoja}">
+                                <TextBlock Text="{Binding ArhivaPutanjaIkonica}"
+                                           FontSize="9" FontWeight="Bold"
+                                           Foreground="#0A1628"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding ArhivaPutanjaPrikazana}"
+                                       FontFamily="Consolas" FontSize="11"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"
+                                       Foreground="{Binding ArhivaPutanjaBoja}"/>
+                        </StackPanel>
+
+                        <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                                Content="Postavi arhivu..."
+                                FontFamily="Tahoma" FontSize="11"
+                                Foreground="#90A4AE"
+                                Background="Transparent"
+                                BorderBrush="#37474F" BorderThickness="1"
+                                Padding="10,6" Cursor="Hand"
+                                VerticalAlignment="Center" Margin="12,0,0,0"
+                                Command="{Binding PostaviArhivaPutanjuCommand}"/>
+                    </Grid>
+                </Border>
+
+                <!-- ═══ FOOTER ═══ -->
+                <Grid Grid.Row="4">
+                    <TextBlock Text="Agencija Kocka  ·  Paraćin  ·  063/601-025"
+                               FontFamily="Tahoma" FontSize="10"
+                               Foreground="#37474F" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Verzija 2026.1"
+                               FontFamily="Tahoma" FontSize="10"
+                               Foreground="#37474F" HorizontalAlignment="Right"/>
+                </Grid>
+
+            </Grid>
+
+            <!-- ═══ LOADING OVERLAY ═══ -->
+            <Border CornerRadius="8"
+                    Background="#CC0A1628"
+                    Panel.ZIndex="20"
+                    Visibility="{Binding Ucitava, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True"
+                                 Width="280" Height="4"
+                                 Foreground="#1565C0"
+                                 Background="#1A3255"
+                                 BorderThickness="0"
+                                 Margin="0,0,0,16"/>
+                    <TextBlock Text="{Binding StatusPoruka}"
+                               FontFamily="Tahoma" FontSize="12"
+                               Foreground="#90CAF9"
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap"
+                               MaxWidth="300"
+                               TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </Border>
+</Window>

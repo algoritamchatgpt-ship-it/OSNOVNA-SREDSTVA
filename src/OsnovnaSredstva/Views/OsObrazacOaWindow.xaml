@@ -1,0 +1,175 @@
+﻿<Window x:Class="OsnovnaSredstva.Views.OsObrazacOaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Osnovna sredstva - Obrazac OA"
+        Width="1520" Height="820"
+        MinWidth="1100" MinHeight="620"
+        WindowStartupLocation="CenterScreen"
+        Background="#B9B6F1">
+
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SacuvajCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding OsveziCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <Style x:Key="FoxDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#C0C0C0"/>
+            <Setter Property="BorderBrush" Value="#707070"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#D8D8D8"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#A0A0A0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- LBLNAZIV â€” Å¾uta traka gore -->
+            <RowDefinition Height="*"/>     <!-- GRD0 -->
+            <RowDefinition Height="Auto"/>  <!-- Label1 â€” zelena traka ispod grida -->
+            <RowDefinition Height="Auto"/>  <!-- Dugmad -->
+            <RowDefinition Height="Auto"/>  <!-- Status bar -->
+        </Grid.RowDefinitions>
+
+        <!-- LBLNAZIV: Å¾uta traka (BackColor=248,250,184, ForeColor=255,0,0) -->
+        <Border Grid.Row="0" Background="#F8FAB8" BorderBrush="#C0C000" BorderThickness="0,0,0,1">
+            <TextBlock Text="{Binding InfoIzabrane}"
+                       FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
+                       Foreground="#CC0000" Padding="8,3" MinHeight="22"/>
+        </Border>
+
+        <!-- GRD0: DataGrid â€” 11 kolona taÄno po SCT -->
+        <DataGrid Grid.Row="1"
+                  x:Name="GridStavke"
+                  ItemsSource="{Binding Stavke}"
+                  SelectedItem="{Binding IzabranaStavka}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  GridLinesVisibility="All"
+                  HeadersVisibility="Column"
+                  FontFamily="Tahoma"
+                  FontSize="11"
+                  RowHeight="20"
+                  Background="#F2F2F2"
+                  AlternatingRowBackground="#F2F2F2"
+                  SelectionUnit="FullRow"
+                  BorderThickness="0"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto"
+                  MouseDoubleClick="OnGridDvoklik">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#F8FAB8"/>
+                            <Setter Property="Foreground" Value="#C60000"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <!-- Redosljed kolona iz OSOA.SCT: Ag, Pocetno, Nabavka, Prodaja, Neotpis, Agstopa, Amort2, Sad2, Preneto, Numred, Idbr -->
+                <DataGridTextColumn Header="Ag"      Binding="{Binding Ag,      UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+                <DataGridTextColumn Header="Pocetno" Binding="{Binding Pocetno, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="140"/>
+                <DataGridTextColumn Header="Nabavka" Binding="{Binding Nabavka, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="140"/>
+                <DataGridTextColumn Header="Prodaja" Binding="{Binding Prodaja, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="140"/>
+                <DataGridTextColumn Header="Neotpis" Binding="{Binding Neotpis, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="140"/>
+                <DataGridTextColumn Header="Agstopa" Binding="{Binding AgStopa, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}" Width="100"/>
+                <DataGridTextColumn Header="Amort2"  Binding="{Binding Amort2,  UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="140"/>
+                <DataGridTextColumn Header="Sad2"    Binding="{Binding Sad2,    UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="140"/>
+                <DataGridTextColumn Header="Preneto" Binding="{Binding Preneto, UpdateSourceTrigger=PropertyChanged}" Width="75"/>
+                <DataGridTextColumn Header="Numred"  Binding="{Binding Numred,  UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                <DataGridTextColumn Header="Idbr"    Binding="{Binding IDBr,    UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Label1: zelena traka ispod grida (BackColor=203,251,168) -->
+        <Border Grid.Row="2" Background="#CBFBA8" BorderBrush="#208020" BorderThickness="0,1,0,1" Height="20">
+            <TextBlock Text="{Binding Poruka}"
+                       FontFamily="Tahoma" FontSize="10"
+                       Foreground="#004400" Padding="8,2"/>
+        </Border>
+
+        <!-- â•â•â• DUGMAD â€” raspored po OSOA.SCT â•â•â• -->
+        <Border Grid.Row="3" Background="#B9B6F1" Padding="7,5,7,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>  <!-- lijeva grupa: navigacija + BRISANJE + PRERAÄŒUN -->
+                    <ColumnDefinition Width="*"/>     <!-- razmak -->
+                    <ColumnDefinition Width="Auto"/>  <!-- srednja: UÄŒITAJ GRUPE + UÄŒITAJ PODATKE -->
+                    <ColumnDefinition Width="Auto"/>  <!-- desna: PREGLEDI + SACUVAJ/IZLAZ -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Lijeva grupa -->
+                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,8,0">
+                    <!-- Red 1: navigacija + DODAJ -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Button Content="DOLE"   Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding DoleCommand}"/>
+                        <Button Content="GORE"   Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding GoreCommand}"/>
+                        <Button Content="ZADNJI" Style="{StaticResource FoxDugme}" Width="70"  Command="{Binding ZadnjiCommand}"/>
+                        <Button Content="PRVI"   Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding PrviCommand}"/>
+                        <Button Content="DODAJ"  Style="{StaticResource FoxDugme}" Width="70"  Click="OnDodajClick" Margin="0"/>
+                    </StackPanel>
+                    <!-- Red 2: BRISANJE + PRERAÄŒUN -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Button Content="BRISANJE PRAZNINA" Style="{StaticResource FoxDugme}" Width="148" Command="{Binding BrisanjePraznineCommand}"/>
+                        <Button Content="PRERAÄŒUN"          Style="{StaticResource FoxDugme}" Width="90"  Margin="0" Command="{Binding PreracunCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Srednja grupa: UÄŒITAJ -->
+                <StackPanel Grid.Column="2" Orientation="Vertical" Margin="0,0,8,0">
+                    <Button Content="UÄŒITAJ GRUPE"   Style="{StaticResource FoxDugme}" Width="140" Margin="0,0,0,4" Click="OnUcitajGrupeClick"/>
+                    <Button Content="UÄŒITAJ PODATKE" Style="{StaticResource FoxDugme}" Width="140" Margin="0"       Click="OnUcitajPodatkeClick"/>
+                </StackPanel>
+
+                <!-- Desna grupa: PREGLEDI + SACUVAJ/IZLAZ -->
+                <StackPanel Grid.Column="3" Orientation="Vertical">
+                    <Button Content="PREGLEDI OA"   Style="{StaticResource FoxDugme}" Width="130" Margin="0,0,0,4" Command="{Binding PreglediOaCommand}"/>
+                    <Button Content="PREGLEDI OA-1" Style="{StaticResource FoxDugme}" Width="130" Margin="0,0,0,4" Command="{Binding PreglediOa1Command}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="SACUVAJ" Style="{StaticResource FoxDugme}" Width="90" Command="{Binding SacuvajCommand}"/>
+                        <Button Content="IZLAZ"   Style="{StaticResource FoxDugme}" Width="80" Margin="0" Click="OnZatvoriClick"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <!-- Status bar -->
+        <Border Grid.Row="4" Background="#A0A0C0" BorderBrush="#8080A0" BorderThickness="0,1,0,0" Padding="8,3">
+            <TextBlock Text="{Binding Poruka}"
+                       FontFamily="Tahoma" FontSize="11"
+                       Foreground="Black" VerticalAlignment="Center"/>
+        </Border>
+
+    </Grid>
+</Window>
+

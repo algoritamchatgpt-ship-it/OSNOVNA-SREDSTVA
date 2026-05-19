@@ -1,0 +1,145 @@
+<Window x:Class="OsnovnaSredstva.Views.IzvozTabelaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="IZVOZ TABELA"
+        Width="760" Height="560"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        MinWidth="620" MinHeight="440"
+        Background="#EEF2FF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="56"/>
+        </Grid.RowDefinitions>
+
+        <!-- ═══ HEADER ═══ -->
+        <Border Grid.Row="0" Background="#1565C0">
+            <Grid Margin="16,0">
+                <TextBlock Text="IZVOZ TABELA"
+                           FontFamily="Tahoma" FontSize="18" FontWeight="Bold"
+                           Foreground="White" VerticalAlignment="Center"/>
+                <ProgressBar HorizontalAlignment="Right" Width="180" Height="4"
+                             IsIndeterminate="True" Foreground="#90CAF9" Background="#0D47A1"
+                             BorderThickness="0" VerticalAlignment="Center"
+                             Visibility="{Binding Radi, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══ SADRZAJ ═══ -->
+        <Grid Grid.Row="1" Margin="12,12,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista tabela -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="DBF tabele firme:" FontFamily="Tahoma" FontSize="11" FontWeight="SemiBold"
+                           Foreground="#0D47A1" Margin="0,0,0,4"/>
+                <TextBox Grid.Row="1" Text="{Binding Pretraga, UpdateSourceTrigger=PropertyChanged}"
+                         FontFamily="Tahoma" FontSize="11" Padding="5,3"
+                         BorderBrush="#90CAF9" BorderThickness="1" Margin="0,0,0,4"/>
+                <ListBox Grid.Row="2"
+                         ItemsSource="{Binding PrikazaneTabele}"
+                         SelectedItem="{Binding IzabranaTabela}"
+                         FontFamily="Tahoma" FontSize="11"
+                         BorderBrush="#90CAF9" BorderThickness="1"
+                         Background="White">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="2,1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Naziv}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding BrojZapisa}"
+                                           Foreground="#78909C" FontSize="10"
+                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="4,1"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#BBDEFB"/>
+                                    <Setter Property="Foreground" Value="#0D47A1"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+
+            <!-- Opcije izvoza -->
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Format izvoza:" FontFamily="Tahoma" FontSize="11" FontWeight="SemiBold"
+                           Foreground="#0D47A1" Margin="0,0,0,8"/>
+                <RadioButton Content="XML" IsChecked="{Binding XmlFormat}"
+                             FontFamily="Tahoma" FontSize="12" Margin="0,0,0,6"/>
+                <RadioButton Content="CSV (tačka-zarez, UTF-8)" IsChecked="{Binding CsvFormat}"
+                             FontFamily="Tahoma" FontSize="12" Margin="0,0,0,6"/>
+                <RadioButton Content="PDF (tekst)" IsChecked="{Binding PdfFormat}"
+                             FontFamily="Tahoma" FontSize="12" Margin="0,0,0,6"/>
+                <RadioButton Content="DBF (kopija fajla)" IsChecked="{Binding DbfFormat}"
+                             FontFamily="Tahoma" FontSize="12" Margin="0,0,0,16"/>
+
+                <Separator Margin="0,0,0,12"/>
+
+                <TextBlock Text="Putanja za izvoz:" FontFamily="Tahoma" FontSize="11" FontWeight="SemiBold"
+                           Foreground="#0D47A1" Margin="0,0,0,6"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding IzvozPutanja, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="Tahoma" FontSize="11"
+                             Padding="5,3" BorderBrush="#90CAF9" BorderThickness="1"/>
+                    <Button Grid.Column="2" Content="..."
+                            FontFamily="Tahoma" FontSize="12" FontWeight="Bold"
+                            Width="36" Height="28"
+                            Background="#546E7A" Foreground="White"
+                            BorderBrush="#37474F" BorderThickness="1"
+                            Command="{Binding OdaberiPutanjuCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══ PORUKA ═══ -->
+        <Border Grid.Row="2" Background="#E8EAF6" Padding="12,6" Margin="0,8,0,0"
+                Visibility="{Binding Poruka, Converter={StaticResource StringToVisibilityConverter}}">
+            <TextBlock Text="{Binding Poruka}" FontFamily="Tahoma" FontSize="11" Foreground="#37474F"
+                       TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- ═══ DUGMAD ═══ -->
+        <Grid Grid.Row="4" Margin="12,0,12,12" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Content="IZVEZI"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#1565C0" Foreground="White" BorderBrush="#0D47A1"
+                    Width="110" IsDefault="True"
+                    Command="{Binding IzveziCommand}"/>
+        </Grid>
+    </Grid>
+</Window>

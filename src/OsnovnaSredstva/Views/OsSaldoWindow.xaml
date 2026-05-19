@@ -1,0 +1,43 @@
+<Window x:Class="OsnovnaSredstva.Views.OsSaldoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Naslov}" Width="1050" Height="480"
+        WindowStartupLocation="CenterOwner"
+        Background="#EEF2F8" FontFamily="Segoe UI">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="#1565C0" Padding="12,8">
+            <TextBlock Text="{Binding Naslov}" FontSize="14" FontWeight="Bold" Foreground="White"/>
+        </Border>
+        <Border DockPanel.Dock="Bottom" Background="#D8E4F0" Padding="8,6"
+                BorderBrush="#B8CCE4" BorderThickness="0,1,0,0">
+            <DockPanel>
+                <Button Content="Zatvori" DockPanel.Dock="Right" Width="84" Height="28"
+                        Background="#C62828" Foreground="White" BorderThickness="0"
+                        Cursor="Hand" Click="OnZatvoriClick"/>
+                <TextBlock Text="{Binding Poruka}" VerticalAlignment="Center"
+                           Foreground="#333" FontSize="12"/>
+            </DockPanel>
+        </Border>
+        <DataGrid x:Name="GridSaldo"
+                  ItemsSource="{Binding Stavke}" AutoGenerateColumns="False"
+                  IsReadOnly="True" AlternatingRowBackground="#F0F4FA"
+                  HorizontalGridLinesBrush="#DDD" VerticalGridLinesBrush="#DDD"
+                  FontSize="12">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Šifra"      Binding="{Binding Sifra}"            Width="100"/>
+                <DataGridTextColumn Header="Br.kar."    Binding="{Binding BrojKartica}"       Width="60"/>
+                <DataGridTextColumn Header="Nab. poč."  Binding="{Binding Nab0, StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Isp. poč."  Binding="{Binding Isp0, StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Sad. poč."  Binding="{Binding Sad0, StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Amort MRS"  Binding="{Binding Amort,StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Isp."       Binding="{Binding Isp,  StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Sad."       Binding="{Binding Sad,  StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Sad02 PP"   Binding="{Binding Sad02,StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Nab2 PP"    Binding="{Binding Nab2, StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Isp2 PP"    Binding="{Binding Isp2, StringFormat=N2}"   Width="110"/>
+                <DataGridTextColumn Header="Amort2 PP"  Binding="{Binding Amort2,StringFormat=N2}"  Width="110"/>
+                <DataGridTextColumn Header="Sad2 PP"    Binding="{Binding Sad2, StringFormat=N2}"   Width="110"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

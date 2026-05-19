@@ -1,0 +1,110 @@
+<Window x:Class="OsnovnaSredstva.Views.GradoviWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MESTA — ŠIFARNIK"
+        Width="820" Height="580"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        MinWidth="640" MinHeight="440"
+        Background="#EEF2FF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="56"/>
+        </Grid.RowDefinitions>
+
+        <!-- ═══ HEADER ═══ -->
+        <Border Grid.Row="0" Background="#1565C0">
+            <Grid Margin="16,0">
+                <TextBlock Text="MESTA — ŠIFARNIK"
+                           FontFamily="Tahoma" FontSize="18" FontWeight="Bold"
+                           Foreground="White" VerticalAlignment="Center"/>
+                <ProgressBar HorizontalAlignment="Right" Width="180" Height="4"
+                             IsIndeterminate="True" Foreground="#90CAF9" Background="#0D47A1"
+                             BorderThickness="0" VerticalAlignment="Center"
+                             Visibility="{Binding Ucitava, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══ PRETRAGA ═══ -->
+        <Grid Grid.Row="1" Margin="12,8,12,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Pretraga:" FontFamily="Tahoma" FontSize="11"
+                       VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#37474F"/>
+            <TextBox Grid.Column="1" Text="{Binding PretragaMesta, UpdateSourceTrigger=PropertyChanged}"
+                     FontFamily="Tahoma" FontSize="12"
+                     Padding="6,4" BorderBrush="#90CAF9" BorderThickness="1"/>
+            <Button Grid.Column="2" Content="Očisti" Margin="6,0,0,0"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#546E7A" Foreground="White" BorderBrush="#37474F"
+                    Width="70" Command="{Binding OcistiPretraguCommand}"/>
+        </Grid>
+
+        <!-- ═══ TABELA ═══ -->
+        <DataGrid Grid.Row="2" Margin="12,0,12,0"
+                  ItemsSource="{Binding Stavke}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  SelectionMode="Single"
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal"
+                  FontFamily="Tahoma" FontSize="11"
+                  Background="White"
+                  BorderBrush="#90CAF9" BorderThickness="1"
+                  RowBackground="White"
+                  AlternatingRowBackground="#F8F9FF"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Pošta" Binding="{Binding Posta}" Width="70"/>
+                <DataGridTextColumn Header="Mesto" Binding="{Binding Mesto}" Width="200"/>
+                <DataGridTextColumn Header="Žiro 1" Binding="{Binding Ziro1}" Width="160"/>
+                <DataGridTextColumn Header="Žiro 2" Binding="{Binding Ziro2}" Width="160"/>
+                <DataGridTextColumn Header="Por. br." Binding="{Binding PorBroj}" Width="80"/>
+                <DataGridTextColumn Header="Reg. soc." Binding="{Binding RegSoc}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- ═══ PORUKA ═══ -->
+        <Border Grid.Row="3" Background="#E8EAF6" Padding="12,6"
+                Visibility="{Binding Poruka, Converter={StaticResource StringToVisibilityConverter}}">
+            <TextBlock Text="{Binding Poruka}" FontFamily="Tahoma" FontSize="11" Foreground="#37474F"/>
+        </Border>
+
+        <!-- ═══ DUGMAD ═══ -->
+        <Grid Grid.Row="4" Margin="12,0,12,12" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Popuni iz master"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#388E3C" Foreground="White" BorderBrush="#2E7D32"
+                    Width="130" Command="{Binding PopuniCommand}"/>
+
+            <Button Grid.Column="2" Content="Isprazni tabelu"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#D32F2F" Foreground="White" BorderBrush="#B71C1C"
+                    Width="120" Command="{Binding IsprazniCommand}"/>
+
+            <Button Grid.Column="4" Content="Osveži"
+                    Style="{StaticResource OsDugmeStyle}"
+                    Background="#546E7A" Foreground="White" BorderBrush="#37474F"
+                    Width="80" Command="{Binding OsveziCommand}"/>
+        </Grid>
+    </Grid>
+</Window>

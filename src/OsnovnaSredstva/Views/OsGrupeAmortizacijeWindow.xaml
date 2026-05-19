@@ -1,0 +1,107 @@
+<Window x:Class="OsnovnaSredstva.Views.OsGrupeAmortizacijeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Grupe za amortizaciju"
+        Width="900" Height="580"
+        MinWidth="700" MinHeight="420"
+        WindowStartupLocation="CenterScreen"
+        Background="#F1F4F8">
+
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SacuvajCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding OsveziCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <Style x:Key="AkcijaDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#1F5F9D">
+            <Grid Margin="16,0">
+                <TextBlock Text="GRUPE ZA AMORTIZACIJU"
+                           FontFamily="Tahoma" FontSize="17" FontWeight="Bold"
+                           Foreground="White" VerticalAlignment="Center"/>
+                <TextBlock Text="Ctrl+S Sacuvaj | F5 Osvezi"
+                           FontFamily="Tahoma" FontSize="10"
+                           Foreground="#BFD9F2"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- DataGrid -->
+        <DataGrid Grid.Row="1"
+                  x:Name="GridGrupe"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column"
+                  FontFamily="Tahoma" FontSize="11"
+                  RowHeight="24"
+                  Background="White"
+                  AlternatingRowBackground="#F7FAFF"
+                  SelectionUnit="FullRow"
+                  BorderThickness="0"
+                  Margin="8,6,8,0"
+                  ItemsSource="{Binding Grupe}"
+                  SelectedItem="{Binding IzabranaGrupa}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="PODGRUPA" Binding="{Binding AgPod, UpdateSourceTrigger=PropertyChanged}" Width="130"/>
+                <DataGridTextColumn Header="AG"       Binding="{Binding Ag,    UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                <DataGridTextColumn Header="OPIS"     Binding="{Binding Opis,  UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                <DataGridTextColumn Header="PRENETO"  Binding="{Binding Preneto, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Button bar -->
+        <Border Grid.Row="2" Background="#E5EDF6" BorderBrush="#C4D4E5" BorderThickness="0,1,0,0" Padding="10,8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                <Border Background="#DCE8F5" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="3" Padding="6,4" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="DOLE"   Style="{StaticResource AkcijaDugme}" Background="#708090" Command="{Binding DoleCommand}"/>
+                        <Button Content="GORE"   Style="{StaticResource AkcijaDugme}" Background="#708090" Command="{Binding GoreCommand}"/>
+                        <Button Content="ZADNJI" Style="{StaticResource AkcijaDugme}" Background="#708090" Command="{Binding ZadnjiCommand}"/>
+                        <Button Content="PRVI"   Style="{StaticResource AkcijaDugme}" Background="#708090" Margin="0" Command="{Binding PrviCommand}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#DCE8F5" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="3" Padding="6,4" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="DODAJ"  Style="{StaticResource AkcijaDugme}" Background="#2C7BE5" Click="OnDodajClick"/>
+                        <Button Content="OBRISI" Style="{StaticResource AkcijaDugme}" Background="#D64545" Command="{Binding ObrisiCommand}" Margin="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#DCE8F5" BorderBrush="#C4D4E5" BorderThickness="1" CornerRadius="3" Padding="6,4" Margin="0,0,8,0">
+                    <Button Content="SACUVAJ" Style="{StaticResource AkcijaDugme}" Background="#2E7D52" Command="{Binding SacuvajCommand}" Margin="0"/>
+                </Border>
+
+                <Button Content="ZATVORI" Style="{StaticResource AkcijaDugme}" Background="#6C757D" Click="OnZatvoriClick" Margin="0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Status bar -->
+        <Border Grid.Row="3" Background="#D6E4F0" BorderBrush="#C4D4E5" BorderThickness="0,1,0,0" Padding="10,5">
+            <TextBlock Text="{Binding Poruka}" FontFamily="Tahoma" FontSize="10" Foreground="#1E3A5F"/>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,50 @@
+<Window x:Class="OsnovnaSredstva.Views.OsSaldoKontaIzborWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PREGLED OSNOVNIH SREDSTAVA"
+        Width="430" Height="290"
+        MinWidth="430" MinHeight="290"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#E9ECD8">
+
+    <Window.Resources>
+        <Style x:Key="FoxDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Background" Value="#C0C0C0"/>
+            <Setter Property="BorderBrush" Value="#707070"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Izaberite vrstu izvestaja po kontu:"
+                   FontFamily="Tahoma"
+                   FontSize="12"
+                   FontWeight="Bold"
+                   Foreground="#AB212C"
+                   Margin="0,0,0,8"/>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <Button Content="SALDO SINTETIKA" Style="{StaticResource FoxDugme}" Margin="0,0,0,6" Click="OnSaldoSintetikaClick"/>
+            <Button Content="SALDO ANALITIKA" Style="{StaticResource FoxDugme}" Margin="0,0,0,6" Click="OnSaldoAnalitikaClick"/>
+            <Button Content="SALDO NABAVKE PO A.GRUPAMA" Style="{StaticResource FoxDugme}" Margin="0,0,0,6" Click="OnSaldoNabavkePoAgClick"/>
+            <Button Content="POCETNO STANJE" Style="{StaticResource FoxDugme}" Margin="0" Click="OnPocetnoStanjeClick"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
+            <Button Content="IZLAZ" Width="90" Style="{StaticResource FoxDugme}" Click="OnIzlazClick"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,184 @@
+<Window x:Class="OsnovnaSredstva.Views.OsSifarnikPopisnaListaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Naslov}"
+        Width="900" Height="620"
+        MinWidth="700" MinHeight="420"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="#F1F4F8">
+
+    <Window.Resources>
+        <Style x:Key="GridStil" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="RowHeight" Value="24"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F7FAFF"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <Style x:Key="HeaderStil" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#1F5F9D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8,5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#1F5F9D">
+            <TextBlock Text="{Binding Naslov}"
+                       FontFamily="Tahoma" FontSize="15" FontWeight="Bold"
+                       Foreground="White" VerticalAlignment="Center"
+                       Margin="16,0"/>
+        </Border>
+
+        <!-- Tabela -->
+        <Border Grid.Row="1" Margin="10" Background="White" BorderBrush="#CED9E4" BorderThickness="1">
+            <Grid>
+
+                <!-- Vrste OS -->
+                <DataGrid x:Name="GridVrste"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding VrsteOs}"
+                          ColumnHeaderStyle="{StaticResource HeaderStil}"
+                          Visibility="{Binding JeVrste, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="VRSTA" Binding="{Binding Vrsta}" Width="120"/>
+                        <DataGridTextColumn Header="NAZIV VRSTE SREDSTAVA" Binding="{Binding Naziv}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO" Binding="{Binding Preneto}" Width="80"/>
+                        <DataGridTextColumn Header="ID BR" Binding="{Binding IDBr}" Width="70"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Amort. grupe -->
+                <DataGrid x:Name="GridGrupe"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding AmortGrupe}"
+                          ColumnHeaderStyle="{StaticResource HeaderStil}"
+                          Visibility="{Binding JeGrupe, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="AG" Binding="{Binding Ag}" Width="80"/>
+                        <DataGridTextColumn Header="STOPA (%)" Binding="{Binding AgStopa, StringFormat=N2}" Width="100"/>
+                        <DataGridTextColumn Header="OPIS GRUPE" Binding="{Binding Opis}" Width="*"/>
+                        <DataGridTextColumn Header="VRSTA" Binding="{Binding Vrsta}" Width="80"/>
+                        <DataGridTextColumn Header="PRENETO" Binding="{Binding Preneto}" Width="80"/>
+                        <DataGridTextColumn Header="ID BR" Binding="{Binding IDBr}" Width="70"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Amort. podgrupe -->
+                <DataGrid x:Name="GridPodgrupe"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding AmortPodgrupe}"
+                          ColumnHeaderStyle="{StaticResource HeaderStil}"
+                          Visibility="{Binding JePodgrupe, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="PODGRUPA" Binding="{Binding AgPod}" Width="110"/>
+                        <DataGridTextColumn Header="AG" Binding="{Binding Ag}" Width="80"/>
+                        <DataGridTextColumn Header="OPIS PODGRUPE" Binding="{Binding Opis}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO" Binding="{Binding Preneto}" Width="80"/>
+                        <DataGridTextColumn Header="ID BR" Binding="{Binding IDBr}" Width="70"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Izvor finansiranja -->
+                <DataGrid x:Name="GridIzvori"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding IzvoriFinansiranja}"
+                          ColumnHeaderStyle="{StaticResource HeaderStil}"
+                          Visibility="{Binding JeIzvori, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="IZVOR" Binding="{Binding Izvor}" Width="120"/>
+                        <DataGridTextColumn Header="NAZIV IZVORA FINANSIRANJA" Binding="{Binding Naziv}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO" Binding="{Binding Preneto}" Width="80"/>
+                        <DataGridTextColumn Header="ID BR" Binding="{Binding IDBr}" Width="70"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Osnov koriscenja -->
+                <DataGrid x:Name="GridOsnovi"
+                          Style="{StaticResource GridStil}"
+                          ItemsSource="{Binding OsnKoriscenja}"
+                          ColumnHeaderStyle="{StaticResource HeaderStil}"
+                          Visibility="{Binding JeOsnovi, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="OSNOV" Binding="{Binding OsnovKor}" Width="120"/>
+                        <DataGridTextColumn Header="NAZIV OSNOVA KORIŠĆENJA" Binding="{Binding Naziv}" Width="*"/>
+                        <DataGridTextColumn Header="PRENETO" Binding="{Binding Preneto}" Width="80"/>
+                        <DataGridTextColumn Header="ID BR" Binding="{Binding IDBr}" Width="70"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </Border>
+
+        <!-- Dugmad -->
+        <Border Grid.Row="2" Background="#E5EDF6" BorderBrush="#C4D4E5" BorderThickness="0,1,0,0" Padding="10,8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="ŠTAMPAJ"
+                        FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
+                        Foreground="White" Background="#2F9E44"
+                        BorderThickness="0" Padding="14,7" Cursor="Hand" Margin="0,0,6,0"
+                        Click="OnStampajClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="3">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Opacity" Value="0.85"/></Trigger>
+                                <Trigger Property="IsPressed" Value="True"><Setter TargetName="Bd" Property="Opacity" Value="0.65"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Content="ZATVORI"
+                        FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
+                        Foreground="White" Background="#546E7A"
+                        BorderThickness="0" Padding="14,7" Cursor="Hand"
+                        IsCancel="True" Click="OnZatvoriClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="3">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="Opacity" Value="0.85"/></Trigger>
+                                <Trigger Property="IsPressed" Value="True"><Setter TargetName="Bd" Property="Opacity" Value="0.65"/></Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Status -->
+        <Border Grid.Row="3" Background="#ECF2F8" BorderBrush="#D0DBE7" BorderThickness="0,1,0,0" Padding="12,5">
+            <TextBlock Text="{Binding Poruka}"
+                       FontFamily="Tahoma" FontSize="11"
+                       Foreground="#355070" VerticalAlignment="Center"/>
+        </Border>
+
+    </Grid>
+</Window>

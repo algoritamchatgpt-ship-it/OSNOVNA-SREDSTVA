@@ -1,0 +1,282 @@
+<Window x:Class="OsnovnaSredstva.Views.FirmaPodaciWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Naslov}"
+        Width="980" Height="760"
+        WindowStartupLocation="CenterScreen"
+        Background="#F3F5F7">
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding OsveziCommand}"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SacuvajCommand}"/>
+        <KeyBinding Key="Escape" Command="{Binding OtkaziCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#37474F"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style x:Key="InputStyle" TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="BorderBrush" Value="#B0BEC5"/>
+        </Style>
+
+        <Style x:Key="DateStyle" TargetType="DatePicker">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style x:Key="ButtonStyleTop" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="#1565C0" Padding="18,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="PODACI O FIRMI"
+                               FontFamily="Tahoma"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <Border Margin="0,6,0,0" Padding="8,2" CornerRadius="10" HorizontalAlignment="Left">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#455A64"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding JeIzmena}" Value="True">
+                                        <Setter Property="Background" Value="#EF6C00"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock FontFamily="Tahoma" FontSize="10" FontWeight="SemiBold" Foreground="White">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="REZIM PREGLEDA"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding JeIzmena}" Value="True">
+                                            <Setter Property="Text" Value="REZIM IZMENE (NESAČUVANO)"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button Content="Izmeni"
+                            Style="{StaticResource ButtonStyleTop}"
+                            Background="#0D47A1"
+                            Command="{Binding IzmeniCommand}"/>
+                    <Button Content="Sačuvaj"
+                            Style="{StaticResource ButtonStyleTop}"
+                            Background="#2E7D32"
+                            Command="{Binding SacuvajCommand}"/>
+                    <Button Content="Otkaži"
+                            Style="{StaticResource ButtonStyleTop}"
+                            Background="#C62828"
+                            Command="{Binding OtkaziCommand}"/>
+                    <Button Content="Zatvori"
+                            Style="{StaticResource ButtonStyleTop}"
+                            Background="#546E7A"
+                            Click="OnZatvoriClick"
+                            Margin="0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Background="#ECEFF1" Padding="14,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Poruka}"
+                           FontFamily="Tahoma"
+                           FontSize="11"
+                           Foreground="#455A64"/>
+                <TextBlock Grid.Column="1"
+                           Text="Prečice: Ctrl+S Sačuvaj | Esc Otkaži | F5 Osveži"
+                           FontFamily="Tahoma"
+                           FontSize="11"
+                           Foreground="#607D8B"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid Margin="18" IsEnabled="{Binding JeIzmena}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Header="Osnovni podaci" Grid.Row="0" Grid.Column="0" Margin="0,0,10,10" FontFamily="Tahoma">
+                    <Grid Margin="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Naziv" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Naziv, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Naziv 2" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Naziv2, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Naziv latinicom" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.NazivLatinican, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Baza / šifra" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Baza, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Vlasnik" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Vlasnik, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Odgovorno lice" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.OdgovornoLice, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="PIB" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Pib, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Matični broj" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Maticni, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="PDV obveznik (D/N)" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.PdvObveznik, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Šifra delatnosti" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.SifraDelatnosti, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Naziv delatnosti" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.NazivDelatnosti, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Organizacioni oblik" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.OrganizacioniOblik, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Adresa i kontakt" Grid.Row="0" Grid.Column="1" Margin="10,0,0,10" FontFamily="Tahoma">
+                    <Grid Margin="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Poštanski broj" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.PostanskiBroj, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Mesto" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Mesto, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Ulica" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Ulica, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Broj" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.BrojUlice, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Opština" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Opstina, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Republika" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Republika, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Država" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Drzava, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Telefon 1" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Telefon1, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Telefon 2" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Telefon2, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Fax" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Fax1, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Email" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Email, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Web" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Web, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Agencija" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Agencija, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Računi i banka" Grid.Row="1" Grid.Column="0" Margin="0,0,10,0" FontFamily="Tahoma">
+                    <Grid Margin="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Žiro račun 1" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.ZiroRacun, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Žiro račun 2" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.ZiroRacun2, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Devizni račun" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.ZiroRacunDevizni, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Račun bolovanje" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.ZiroRacunBolovanje, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Banka 1" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Banka1, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Banka 2" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.Banka2, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Devizna banka" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.BankaDevizna, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Banka bolovanje" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.BankaBolovanje, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="SWIFT" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.SwiftKod, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Registracija" Grid.Row="1" Grid.Column="1" Margin="10,0,0,0" FontFamily="Tahoma">
+                    <Grid Margin="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Datum osnivanja" Style="{StaticResource LabelStyle}"/>
+                            <DatePicker Style="{StaticResource DateStyle}" SelectedDate="{Binding Firma.DatumOsnivanja}"/>
+                            <TextBlock Text="Datum registracije" Style="{StaticResource LabelStyle}"/>
+                            <DatePicker Style="{StaticResource DateStyle}" SelectedDate="{Binding Firma.DatumRegistracije}"/>
+                            <TextBlock Text="Datum upisa" Style="{StaticResource LabelStyle}"/>
+                            <DatePicker Style="{StaticResource DateStyle}" SelectedDate="{Binding Firma.DatumUpisa}"/>
+                            <TextBlock Text="Datum PDV" Style="{StaticResource LabelStyle}"/>
+                            <DatePicker Style="{StaticResource DateStyle}" SelectedDate="{Binding Firma.DatumPdv}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Reg. broj socijalno" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.RegBrojSocijalno, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Reg. broj zdravstveno" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.RegBrojZdravstveno, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Sudski registar" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Style="{StaticResource InputStyle}" Text="{Binding Firma.SudskiRegistar, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

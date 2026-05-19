@@ -1,0 +1,40 @@
+[2026-05-18 11:20:08 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-18 11:20:08 INF] Otvaram početni ekran
+[2026-05-18 11:20:11 INF] Otvaram login
+[2026-05-18 11:20:13 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-18 11:20:13 INF] Otvaram izbor firme
+[2026-05-18 11:20:13 DBG] FirmaIzbor — učitavam firme...
+[2026-05-18 11:20:13 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-18 11:20:14 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-18 11:20:15 INF] Otvaram glavni meni OS
+[2026-05-18 11:20:20 INF] Otvaram početni ekran
+[2026-05-18 11:20:21 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-18 11:32:33 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-18 11:32:33 INF] Otvaram početni ekran
+[2026-05-18 11:32:43 INF] Otvaram login
+[2026-05-18 11:32:46 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-18 11:32:46 INF] Otvaram izbor firme
+[2026-05-18 11:32:46 DBG] FirmaIzbor — učitavam firme...
+[2026-05-18 11:32:46 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-18 11:32:48 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-18 11:32:48 INF] Otvaram glavni meni OS
+[2026-05-18 11:38:38 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-18 11:38:38 INF] Otvaram početni ekran
+[2026-05-18 11:43:30 INF] Otvaram login
+[2026-05-18 11:43:38 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-18 11:43:38 INF] Otvaram izbor firme
+[2026-05-18 11:43:38 DBG] FirmaIzbor — učitavam firme...
+[2026-05-18 11:43:38 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-18 11:43:39 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-18 11:43:39 INF] Otvaram glavni meni OS
+[2026-05-18 11:54:18 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-18 11:54:18 INF] Otvaram početni ekran
+[2026-05-18 11:54:23 INF] Otvaram login
+[2026-05-18 11:54:29 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-18 11:54:29 INF] Otvaram izbor firme
+[2026-05-18 11:54:29 DBG] FirmaIzbor — učitavam firme...
+[2026-05-18 11:54:29 DBG] FirmaIzbor — učitano 2 firmi
+[2026-05-18 11:54:32 INF] Firma izabrana: F1 (C:\fin26\F1)
+[2026-05-18 11:54:32 INF] Otvaram glavni meni OS
+[2026-05-18 11:57:44 INF] Otvaram početni ekran
+[2026-05-18 11:57:45 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===

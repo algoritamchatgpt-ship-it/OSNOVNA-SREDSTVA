@@ -1,0 +1,92 @@
+<Window x:Class="OsnovnaSredstva.Views.OsPodaciWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PODACI ZA OBRACUN"
+        Width="700" Height="340"
+        MinWidth="620" MinHeight="300"
+        WindowStartupLocation="CenterOwner"
+        Background="#E9ECD8">
+
+    <Window.Resources>
+        <Style x:Key="FoxDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#C0C0C0"/>
+            <Setter Property="BorderBrush" Value="#707070"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+
+        <Style x:Key="Lbl" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#AB212C"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="35"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource Lbl}" Text="POCETNI DATUM"/>
+        <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding EDat0}" Height="26"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Lbl}" Text="ZADNJI DATUM"/>
+        <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding EDat1}" Height="26"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource Lbl}" Text="BROJ MESECI"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding EMes, UpdateSourceTrigger=PropertyChanged}" Height="26" Padding="6,3"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource Lbl}" Text="BRJ NALOGA"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding BrNal, UpdateSourceTrigger=PropertyChanged}" Height="26" Padding="6,3"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource Lbl}" Text="DATUM KNJIZENJA"/>
+        <DatePicker Grid.Row="4" Grid.Column="1" SelectedDate="{Binding DatDok}" Height="26"/>
+
+        <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource Lbl}" Text="KONTO AMORTIZACIJE"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding KonAm, UpdateSourceTrigger=PropertyChanged}" Height="26" Padding="6,3"/>
+
+        <Border Grid.Row="6" Grid.ColumnSpan="5" Margin="0,12,0,8"
+                Background="#88FD82" BorderBrush="#5AA95A" BorderThickness="1" Padding="8,6">
+            <TextBlock Text="{Binding Poruka}" FontFamily="Tahoma" FontSize="11" Foreground="#7A0000"/>
+        </Border>
+
+        <StackPanel Grid.Row="7" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Content="UNOS PODATAKA"
+                    Style="{StaticResource FoxDugme}"
+                    Width="160"
+                    Command="{Binding UnosPodatakaCommand}"/>
+            <Button Content="OSVEZI"
+                    Style="{StaticResource FoxDugme}"
+                    Width="90"
+                    Command="{Binding UcitajCommand}"/>
+            <Button Content="IZLAZ"
+                    Style="{StaticResource FoxDugme}"
+                    Width="90"
+                    Margin="0"
+                    Click="OnIzlazClick"/>
+        </StackPanel>
+    </Grid>
+</Window>

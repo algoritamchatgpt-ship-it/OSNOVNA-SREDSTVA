@@ -1,0 +1,234 @@
+<Window x:Class="OsnovnaSredstva.Views.OsEvidencijaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Osnovna sredstva - Evidencija 1"
+        Width="1520" Height="820"
+        MinWidth="1100" MinHeight="620"
+        WindowStartupLocation="CenterScreen"
+        Background="#B9B6F1">
+
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SacuvajCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding OsveziCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <Style x:Key="FoxDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Tahoma"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#C0C0C0"/>
+            <Setter Property="BorderBrush" Value="#707070"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#D8D8D8"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#A0A0A0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ZutiDugme" TargetType="Button" BasedOn="{StaticResource FoxDugme}">
+            <Setter Property="Background" Value="#FFFFC0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- txtos2: info o izabranom redu (plavo) -->
+            <RowDefinition Height="Auto"/>  <!-- LBLNAZIV: naziv OS (žuto) -->
+            <RowDefinition Height="*"/>     <!-- Grid -->
+            <RowDefinition Height="Auto"/>  <!-- zeleni label ispod grida -->
+            <RowDefinition Height="Auto"/>  <!-- Dugmad -->
+            <RowDefinition Height="Auto"/>  <!-- Status -->
+        </Grid.RowDefinitions>
+
+        <!-- txtos2: konto, mesto, invbroj, ag — plava traka -->
+        <Border Grid.Row="0" Background="#8080FF" BorderBrush="#5050CC" BorderThickness="0,0,0,1">
+            <TextBlock Text="{Binding InfoIzabrane}"
+                       FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
+                       Foreground="White" Padding="8,3" MinHeight="20"/>
+        </Border>
+
+        <!-- LBLNAZIV: naziv OS — žuta traka -->
+        <Border Grid.Row="1" Background="#FFFF80" BorderBrush="#C0C000" BorderThickness="0,0,0,1">
+            <TextBlock Text="{Binding NazivIzabrane}"
+                       FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
+                       Foreground="#800000" Padding="8,3" MinHeight="20"/>
+        </Border>
+
+        <!-- DataGrid -->
+        <DataGrid Grid.Row="2"
+                  x:Name="GridKartice"
+                  ItemsSource="{Binding Kartice}"
+                  SelectedItem="{Binding IzabranaKartica}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  GridLinesVisibility="All"
+                  HeadersVisibility="Column"
+                  FontFamily="Tahoma"
+                  FontSize="11"
+                  RowHeight="19"
+                  Background="#F2F2F2"
+                  AlternatingRowBackground="#F2F2F2"
+                  SelectionUnit="FullRow"
+                  BorderThickness="0"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto"
+                  MouseDoubleClick="OnGridDvoklik">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#F8FAB8"/>
+                            <Setter Property="Foreground" Value="#C60000"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <!-- Redosljed kolona iz OS.scx -->
+                <DataGridTextColumn Header="Osifra"    Binding="{Binding Osifra,   UpdateSourceTrigger=PropertyChanged}" Width="62"/>
+                <DataGridTextColumn Header="Naz"       Binding="{Binding Naz,      UpdateSourceTrigger=PropertyChanged}" Width="220"/>
+                <DataGridTextColumn Header="Stopaot"   Binding="{Binding StopaOt,  UpdateSourceTrigger=PropertyChanged, StringFormat=N3}" Width="90"/>
+                <DataGridTextColumn Header="Stopaot2"  Binding="{Binding ExtraPolja[STOPAOT2], UpdateSourceTrigger=PropertyChanged, StringFormat=N3}" Width="90"/>
+                <DataGridTextColumn Header="Nab0"      Binding="{Binding Nab0,     UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Isp0"      Binding="{Binding Isp0,     UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Sad0"      Binding="{Binding Sad0,     UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Procena"   Binding="{Binding ExtraPolja[PROCENA],  UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Razlproc"  Binding="{Binding ExtraPolja[RAZLPROC], UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Nab02"     Binding="{Binding ExtraPolja[NAB02],    UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Isp02"     Binding="{Binding ExtraPolja[ISP02],    UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Sad02"     Binding="{Binding ExtraPolja[SAD02],    UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Brmes"     Binding="{Binding ExtraPolja[BRMES],    UpdateSourceTrigger=PropertyChanged}" Width="62"/>
+                <DataGridTextColumn Header="Datum0"    Binding="{Binding ExtraPolja[DATUM0],   UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy}" Width="92"/>
+                <DataGridTextColumn Header="Datum1"    Binding="{Binding ExtraPolja[DATUM1],   UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy}" Width="92"/>
+                <DataGridTextColumn Header="Amort"     Binding="{Binding ExtraPolja[AMORT],    UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Amort2"    Binding="{Binding ExtraPolja[AMORT2],   UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Ispam"     Binding="{Binding ExtraPolja[ISPAM],    UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Nab"       Binding="{Binding ExtraPolja[NAB],      UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Isp"       Binding="{Binding ExtraPolja[ISP],      UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Sad"       Binding="{Binding ExtraPolja[SAD],      UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Nab2"      Binding="{Binding ExtraPolja[NAB2],     UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Isp2"      Binding="{Binding ExtraPolja[ISP2],     UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Sad2"      Binding="{Binding ExtraPolja[SAD2],     UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Invbroj"   Binding="{Binding InvBroj,  UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                <DataGridTextColumn Header="Mesto"     Binding="{Binding Mesto,    UpdateSourceTrigger=PropertyChanged}" Width="62"/>
+                <DataGridTextColumn Header="Mtr"       Binding="{Binding ExtraPolja[MTR],      UpdateSourceTrigger=PropertyChanged}" Width="62"/>
+                <DataGridTextColumn Header="Konto"     Binding="{Binding Konto,    UpdateSourceTrigger=PropertyChanged}" Width="88"/>
+                <DataGridTextColumn Header="Ag"        Binding="{Binding Ag,       UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+                <DataGridTextColumn Header="Agpod"     Binding="{Binding AgPod,    UpdateSourceTrigger=PropertyChanged}" Width="62"/>
+                <DataGridTextColumn Header="Procgod"   Binding="{Binding ExtraPolja[PROCGOD],  UpdateSourceTrigger=PropertyChanged}" Width="72"/>
+                <DataGridTextColumn Header="Grupa"     Binding="{Binding ExtraPolja[GRUPA],    UpdateSourceTrigger=PropertyChanged}" Width="72"/>
+                <DataGridTextColumn Header="Datnab"    Binding="{Binding DatNab,   UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy}" Width="90"/>
+                <DataGridTextColumn Header="Godpro"    Binding="{Binding ExtraPolja[GODPRO],   UpdateSourceTrigger=PropertyChanged}" Width="62"/>
+                <DataGridTextColumn Header="Datobr"    Binding="{Binding ExtraPolja[DATOBR],   UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy}" Width="90"/>
+                <DataGridTextColumn Header="Datprod"   Binding="{Binding ExtraPolja[DATPROD],  UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy}" Width="90"/>
+                <DataGridTextColumn Header="Oper"      Binding="{Binding ExtraPolja[OPER],     UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+                <DataGridTextColumn Header="Kurs"      Binding="{Binding ExtraPolja[KURS],     UpdateSourceTrigger=PropertyChanged, StringFormat=N6}" Width="90"/>
+                <DataGridTextColumn Header="Preneto"   Binding="{Binding Preneto,  UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                <DataGridTextColumn Header="Numred"    Binding="{Binding ExtraPolja[NUMRED],   UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                <DataGridTextColumn Header="Idbr"      Binding="{Binding IDBr,     UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                <DataGridTextColumn Header="Datstartam" Binding="{Binding ExtraPolja[DATSTARTAM],UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy}" Width="96"/>
+                <DataGridTextColumn Header="Iznosulag"  Binding="{Binding ExtraPolja[IZNOSULAG], UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Datulag"    Binding="{Binding ExtraPolja[DATULAG],   UpdateSourceTrigger=PropertyChanged, StringFormat=dd.MM.yyyy}" Width="90"/>
+                <DataGridTextColumn Header="Nacinob"    Binding="{Binding ExtraPolja[NACINOB],   UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                <DataGridTextColumn Header="PAM"        Binding="{Binding ExtraPolja[PAM],       UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="RAM"        Binding="{Binding ExtraPolja[RAM],       UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Obezvredj"  Binding="{Binding ExtraPolja[OBEZVREDJ], UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Br. dana"   Binding="{Binding ExtraPolja[POLJE1],    UpdateSourceTrigger=PropertyChanged}" Width="72"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Zeleni label ispod grida (kao u FoxPro) -->
+        <Border Grid.Row="3" Background="#40C040" BorderBrush="#208020" BorderThickness="0,1,0,1" Height="20">
+            <TextBlock Text="{Binding FilterText, StringFormat='Pretraga: {0}'}"
+                       FontFamily="Tahoma" FontSize="10"
+                       Foreground="White" Padding="8,2"/>
+        </Border>
+
+        <!-- ═══ DUGMAD — tačan raspored iz OS.scx ═══ -->
+        <Border Grid.Row="4" Background="#B9B6F1" Padding="7,5,7,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>  <!-- Col 1: DOLE/GORE/... + traženja -->
+                    <ColumnDefinition Width="Auto"/>  <!-- Col 2: SALDO KONTA, MESTA, MRS, PORESKA -->
+                    <ColumnDefinition Width="Auto"/>  <!-- Col 3: PRENOS, PODACI, OBRACUN -->
+                    <ColumnDefinition Width="*"/>     <!-- razmak -->
+                    <ColumnDefinition Width="Auto"/>  <!-- Col 4: SORT, POA, EVIDENCIJA, IZLAZ -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Kolona 1: navigacija + traženja -->
+                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Button Content="DOLE"   Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding DoleCommand}"/>
+                        <Button Content="GORE"   Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding GoreCommand}"/>
+                        <Button Content="ZADNJI" Style="{StaticResource FoxDugme}" Width="70"  Command="{Binding ZadnjiCommand}"/>
+                        <Button Content="PRVI"   Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding PrviCommand}"/>
+                        <Button Content="DODAJ"  Style="{StaticResource FoxDugme}" Width="70"  Click="OnDodajClick" Margin="0"/>
+                    </StackPanel>
+                    <Button Content="TRAŽENJE ŠIFRE"             Style="{StaticResource ZutiDugme}" Width="320" HorizontalAlignment="Left" Margin="0,0,0,4" Command="{Binding TrazenjeSifreCommand}"/>
+                    <Button Content="TRAŽENJE INVENTARNOG BROJA" Style="{StaticResource ZutiDugme}" Width="320" HorizontalAlignment="Left" Margin="0,0,0,4" Command="{Binding TrazenjeInventarnogBrojaCommand}"/>
+                    <Button Content="PREGLED KARTICA"            Style="{StaticResource ZutiDugme}" Width="320" HorizontalAlignment="Left" Margin="0,0,0,4" Command="{Binding PregledKarticaCommand}"/>
+                    <Button Content="ZADNJE U POČETNO"           Style="{StaticResource ZutiDugme}" Width="320" HorizontalAlignment="Left" Margin="0" Command="{Binding ZadnjeUPocetnoCommand}"/>
+                </StackPanel>
+
+                <!-- Kolona 2: saldo i poreska -->
+                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,0,8,0">
+                    <Button Content="SALDO KONTA"            Style="{StaticResource ZutiDugme}" Width="210" HorizontalAlignment="Left" Margin="0,28,0,4" Command="{Binding SaldoKontaCommand}"/>
+                    <Button Content="SALDO MESTA"            Style="{StaticResource ZutiDugme}" Width="210" HorizontalAlignment="Left" Margin="0,0,0,4" Command="{Binding SaldoMestaCommand}"/>
+                    <Button Content="PREGLEDI MRS"           Style="{StaticResource ZutiDugme}" Width="210" HorizontalAlignment="Left" Margin="0,0,0,4" Command="{Binding PregledMrsCommand}"/>
+                    <Button Content="PREGL. PORESKA stara OS." Style="{StaticResource ZutiDugme}" Width="210" HorizontalAlignment="Left" Margin="0,0,0,4" Command="{Binding PreglPoreskaStaraCommand}"/>
+                    <Button Content="PREGL. PORESKA nova OS."  Style="{StaticResource ZutiDugme}" Width="210" HorizontalAlignment="Left" Margin="0" Command="{Binding PreglPoreskaNovaCommand}"/>
+                </StackPanel>
+
+                <!-- Kolona 3: prenos, podaci, obracun -->
+                <StackPanel Grid.Column="2" Orientation="Vertical" Margin="0,0,0,0">
+                    <Button Content="PRENOS"   Style="{StaticResource FoxDugme}" Width="140" Margin="0,28,0,4" Command="{Binding PrenosCommand}"/>
+                    <Button Content="PODACI"   Style="{StaticResource FoxDugme}" Width="140" Margin="0,0,0,4" Command="{Binding PodaciCommand}"/>
+                    <Button Content="OBRAČUN"  Style="{StaticResource FoxDugme}" Width="140" Margin="0" Command="{Binding ObracunCommand}"/>
+                </StackPanel>
+
+                <!-- Kolona 4: sort, poa, izlaz (desno) -->
+                <StackPanel Grid.Column="4" Orientation="Vertical">
+                    <Button Content="SORT"          Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding SortCommand}"/>
+                    <Button Content="POA OBRAZAC"   Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding PoaObrazacCommand}"/>
+                    <Button Content="EVIDENCIJA POA" Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding EvidencijaPoaCommand}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="SACUVAJ" Style="{StaticResource FoxDugme}" Width="90" Command="{Binding SacuvajCommand}"/>
+                        <Button Content="IZLAZ"   Style="{StaticResource FoxDugme}" Width="90" Margin="0" Click="OnZatvoriClick"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <!-- Status bar -->
+        <Border Grid.Row="5" Background="#A0A0C0" BorderBrush="#8080A0" BorderThickness="0,1,0,0" Padding="8,3">
+            <TextBlock Text="{Binding Poruka}"
+                       FontFamily="Tahoma" FontSize="11"
+                       Foreground="Black" VerticalAlignment="Center"/>
+        </Border>
+
+    </Grid>
+</Window>
