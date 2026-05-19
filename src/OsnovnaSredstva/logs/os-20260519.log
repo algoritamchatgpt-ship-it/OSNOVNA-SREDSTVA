@@ -114,3 +114,37 @@
 [2026-05-19 13:51:53 INF] Otvaram glavni meni OS
 [2026-05-19 14:04:18 INF] Otvaram početni ekran
 [2026-05-19 14:04:44 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 14:34:41 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 14:34:41 INF] Otvaram početni ekran
+[2026-05-19 14:35:22 INF] Otvaram login
+[2026-05-19 14:35:25 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 14:35:25 INF] Otvaram izbor firme
+[2026-05-19 14:35:25 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 14:35:25 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 14:35:27 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 14:35:27 INF] Otvaram glavni meni OS
+[2026-05-19 14:35:34 INF] Otvaram početni ekran
+[2026-05-19 14:45:03 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 15:04:09 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 15:04:09 INF] Otvaram početni ekran
+[2026-05-19 15:04:12 INF] Otvaram login
+[2026-05-19 15:04:14 DBG] Prijava: čitam C:\fin26\data00\LOZINKE.dbf
+[2026-05-19 15:04:14 INF] Otvaram izbor firme
+[2026-05-19 15:04:14 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 15:04:14 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 15:04:15 INF] Firma izabrana: FIN ZARADE (C:\fin26\F1)
+[2026-05-19 15:04:15 INF] Otvaram glavni meni OS
+[2026-05-19 15:04:28 INF] Otvaram početni ekran
+[2026-05-19 15:13:03 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 15:13:07 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 15:13:07 INF] Otvaram početni ekran
+[2026-05-19 15:13:08 INF] Otvaram login
+[2026-05-19 15:13:10 INF] === FIN OSNOVNA SREDSTVA — zatvorena ===
+[2026-05-19 15:13:15 INF] === FIN OSNOVNA SREDSTVA — pokrenuta ===
+[2026-05-19 15:13:15 INF] Otvaram početni ekran
+[2026-05-19 15:13:37 INF] Otvaram login
+[2026-05-19 15:13:38 INF] Otvaram izbor firme
+[2026-05-19 15:13:38 DBG] FirmaIzbor — učitavam firme...
+[2026-05-19 15:13:38 DBG] FirmaIzbor — učitano 1 firmi
+[2026-05-19 15:13:44 INF] Firma izabrana: F1 (C:\pigi\F1)
+[2026-05-19 15:13:44 INF] Otvaram glavni meni OS

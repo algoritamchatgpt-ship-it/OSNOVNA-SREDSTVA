@@ -302,11 +302,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\osnovnasredstva\\src\\OsnovnaSredstva\\OsnovnaSredstva.csproj",
+      "projectUniqueName": "C:\\Users\\sogib\\Documents\\OSNOVNA-SREDSTVA\\src\\OsnovnaSredstva\\OsnovnaSredstva.csproj",
       "projectName": "OsnovnaSredstva",
-      "projectPath": "C:\\osnovnasredstva\\src\\OsnovnaSredstva\\OsnovnaSredstva.csproj",
+      "projectPath": "C:\\Users\\sogib\\Documents\\OSNOVNA-SREDSTVA\\src\\OsnovnaSredstva\\OsnovnaSredstva.csproj",
       "packagesPath": "C:\\Users\\sogib\\.nuget\\packages\\",
-      "outputPath": "C:\\osnovnasredstva\\src\\OsnovnaSredstva\\obj\\",
+      "outputPath": "C:\\Users\\sogib\\Documents\\OSNOVNA-SREDSTVA\\src\\OsnovnaSredstva\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
