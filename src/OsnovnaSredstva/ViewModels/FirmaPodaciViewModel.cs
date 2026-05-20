@@ -56,12 +56,8 @@ public partial class FirmaPodaciViewModel : ObservableObject
 
         try
         {
-            var dbfPath = PronadjiDbf(folderPath, "firma.dbf");
-            if (dbfPath is null)
-            {
-                Poruka = "firma.dbf nije pronađen.";
-                return Task.CompletedTask;
-            }
+            var dbfPath = PronadjiDbf(folderPath, "firma.dbf")
+                ?? FinWorkspaceResolver.EnsureFirmaDbf(folderPath);
 
             if (_firmaSnapshot != null && DbfOptimisticConcurrency.HasFileChanged(dbfPath, _firmaSnapshot))
             {

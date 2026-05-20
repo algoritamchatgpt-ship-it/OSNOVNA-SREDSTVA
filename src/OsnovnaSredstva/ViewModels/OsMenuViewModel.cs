@@ -92,35 +92,6 @@ public partial class OsMenuViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OtvoriAmortizacija()
-    {
-        MessageBox.Show("Modul Amortizacija — u razvoju.",
-            "OS — Amortizacija", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    [RelayCommand]
-    private void OtvoriGrupe()
-    {
-        var vm = new OsGrupeAmortizacijeViewModel(_appState);
-        var win = new OsGrupeAmortizacijeWindow(vm);
-        win.ShowDialog();
-    }
-
-    [RelayCommand]
-    private void OtvoriRashodovanje()
-    {
-        MessageBox.Show("Modul Rashodovanje / Otuđenje — u razvoju.",
-            "OS — Rashodovanje", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    [RelayCommand]
-    private void OtvoriPrenos()
-    {
-        MessageBox.Show("Modul Prenos podataka u novu godinu — u razvoju.",
-            "OS — Prenos", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    [RelayCommand]
     private void OtvoriStampa()
     {
         var vm = new OsObrazacOaViewModel(_appState);
@@ -129,32 +100,11 @@ public partial class OsMenuViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OtvoriInventar()
-    {
-        MessageBox.Show("Modul Inventar osnovnih sredstava — u razvoju.",
-            "OS — Inventar", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    [RelayCommand]
-    private void OtvoriKnjizenje()
-    {
-        MessageBox.Show("Modul Knjiženje u glavnu knjigu — u razvoju.",
-            "OS — Knjiženje", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    [RelayCommand]
     private void OtvoriSifarNici()
     {
         var vm = new OsSifarnikViewModel(_appState);
         var win = new OsSifarnikWindow(vm);
         win.ShowDialog();
-    }
-
-    [RelayCommand]
-    private void OtvoriParametri()
-    {
-        MessageBox.Show("Modul Parametri sistema — u razvoju.",
-            "OS — Parametri", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     [RelayCommand]

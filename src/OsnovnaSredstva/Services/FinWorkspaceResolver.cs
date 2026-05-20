@@ -301,5 +301,61 @@ public static class FinWorkspaceResolver
         writer.Write((byte)0x1A);
     }
 
+    private static readonly DbfFieldDef[] FirmaMinimalFields =
+    [
+        new("FIME",     'C', 60),
+        new("FIME2",    'C', 60),
+        new("FIMEC",    'C', 60),
+        new("FBAZA",    'C', 10),
+        new("FVLAST",   'C', 40),
+        new("FOSOBA",   'C', 40),
+        new("FOBLIK",   'C', 40),
+        new("FMAT",     'C', 20),
+        new("FPOR",     'C', 20),
+        new("FPDV",     'C',  1),
+        new("FSIF",     'C', 10),
+        new("FNAZD",    'C', 60),
+        new("FPOS",     'C', 10),
+        new("FMES",     'C', 40),
+        new("FUL",      'C', 40),
+        new("FULBR",    'C', 10),
+        new("FOPS",     'C', 40),
+        new("FREPUB",   'C', 40),
+        new("FDRZAVA",  'C', 40),
+        new("FTEL",     'C', 20),
+        new("FTEL2",    'C', 20),
+        new("FFAX",     'C', 20),
+        new("FEMAIL",   'C', 60),
+        new("FVEB",     'C', 60),
+        new("FAGENC",   'C', 40),
+        new("FZIRO",    'C', 40),
+        new("FZIRO2",   'C', 40),
+        new("FZIRODEV", 'C', 40),
+        new("FZIROBOL", 'C', 40),
+        new("FBANKA",   'C', 40),
+        new("FBANKA2",  'C', 40),
+        new("FBANKAD",  'C', 40),
+        new("FBANKAB",  'C', 40),
+        new("FSWIFT",   'C', 20),
+        new("FDAT0",    'D',  8),
+        new("FDATREG",  'D',  8),
+        new("FDATUPIS", 'D',  8),
+        new("FDATPDV",  'D',  8),
+        new("FREGSOC",  'C', 20),
+        new("FREGZDR",  'C', 20),
+        new("FREGSUD",  'C', 40),
+    ];
+
+    public static string EnsureFirmaDbf(string folderPath)
+    {
+        var putanja = Path.Combine(folderPath, "firma.dbf");
+        if (!File.Exists(putanja))
+        {
+            Directory.CreateDirectory(folderPath);
+            CreateMinimalDbf(putanja, FirmaMinimalFields);
+        }
+        return putanja;
+    }
+
     private readonly record struct DbfFieldDef(string Name, char Type, byte Length, byte Decimals = 0);
 }

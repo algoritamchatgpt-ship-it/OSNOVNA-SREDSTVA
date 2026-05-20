@@ -17,6 +17,9 @@ public partial class OsSifarnikViewModel : ObservableObject
     [ObservableProperty] private int    _aktivniTab = 0;
     [ObservableProperty] private string _poruka     = "";
 
+    private bool _izmijenjeno;
+    public bool ImaNeSnimljenih => _izmijenjeno;
+
     [ObservableProperty] private ObservableCollection<OsVrstaStavka>  _vrsteOs           = [];
     [ObservableProperty] private ObservableCollection<OsAgStavka>     _amortGrupe        = [];
     [ObservableProperty] private ObservableCollection<OsAgPodStavka>  _amortPodgrupe     = [];
@@ -47,6 +50,7 @@ public partial class OsSifarnikViewModel : ObservableObject
                  $"Podgrupe ({AmortPodgrupe.Count}), " +
                  $"Izvor fin. ({IzvoriFinansiranja.Count}), " +
                  $"Osnov korišćenja ({OsnKoriscenja.Count})";
+        _izmijenjeno = false;
     }
 
     // ═══ UČITAVANJE ═══
@@ -167,7 +171,8 @@ public partial class OsSifarnikViewModel : ObservableObject
                 var o = new OsOsnKStavka { IDBr = SledeciIdbr(OsnKoriscenja.Select(x => x.IDBr)), Preneto = "N" };
                 OsnKoriscenja.Add(o); IzabraniOsnov = o; break;
         }
-        Poruka = "Novi red dodan. Unesite podatke i kliknite Sacuvaj.";
+        Poruka = "Novi red dodan. Unesite podatke i kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     private static int SledeciIdbr(IEnumerable<int> existingIds)
@@ -237,6 +242,7 @@ public partial class OsSifarnikViewModel : ObservableObject
             case 4: OsnKoriscenja.Remove(IzabraniOsnov!);           break;
         }
         Poruka = $"Obrisan {opis}. Kliknite SAČUVAJ da sačuvate promenu.";
+        _izmijenjeno = true;
     }
 
     // ═══ SAČUVAJ ═══
@@ -252,6 +258,7 @@ public partial class OsSifarnikViewModel : ObservableObject
             case 3: SacuvajIzvorFinansiranja(); break;
             case 4: SacuvajOsnKoriscenja();     break;
         }
+        _izmijenjeno = false;
     }
 
     private void SacuvajVrsteOs()

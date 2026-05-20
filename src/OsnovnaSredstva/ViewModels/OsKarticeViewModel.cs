@@ -20,6 +20,9 @@ public partial class OsKarticeViewModel : ObservableObject
     [ObservableProperty] private string _poruka = "";
     [ObservableProperty] private string _filterText = "";
 
+    private bool _izmijenjeno;
+    public bool ImaNeSnimljenih => _izmijenjeno;
+
     public string NazivIzabrane =>
         IzabranaKartica == null ? "" : $"{IzabranaKartica.Osifra}   {IzabranaKartica.Naz}";
 
@@ -61,7 +64,7 @@ public partial class OsKarticeViewModel : ObservableObject
     private void Ucitaj()
     {
         var path = DbfPutanja("os0.dbf");
-        if (path == null) { Kartice = []; Poruka = "os0.dbf nije pronadjen u folderu firme."; return; }
+        if (path == null) { Kartice = []; Poruka = "os0.dbf nije pronađen u folderu firme."; return; }
 
         try
         {
@@ -113,13 +116,14 @@ public partial class OsKarticeViewModel : ObservableObject
 
             _sveKartice = stavke;
             PrimeniFIlter();
-            Poruka = $"Ucitano {_sveKartice.Count} kartica.";
+            Poruka = $"Učitano {_sveKartice.Count} kartica.";
+            _izmijenjeno = false;
         }
         catch (Exception ex)
         {
             _sveKartice = [];
             Kartice = [];
-            Poruka = $"Greska: {ex.Message}";
+            Poruka = $"Greška: {ex.Message}";
         }
     }
 
@@ -131,7 +135,8 @@ public partial class OsKarticeViewModel : ObservableObject
         _sveKartice.Add(nova);
         PrimeniFIlter();
         IzabranaKartica = nova;
-        Poruka = $"Nova kartica dodata sa sifrom {sledecaSifra}. Unesite podatke i kliknite Sacuvaj.";
+        Poruka = $"Nova kartica dodata sa sifrom {sledecaSifra}. Unesite podatke i kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
@@ -153,7 +158,8 @@ public partial class OsKarticeViewModel : ObservableObject
 
         _sveKartice.Remove(IzabranaKartica);
         PrimeniFIlter();
-        Poruka = $"Kartica {opis} obrisana. Kliknite Sacuvaj.";
+        Poruka = $"Kartica {opis} obrisana. Kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
@@ -166,14 +172,17 @@ public partial class OsKarticeViewModel : ObservableObject
         }
 
         var path = DbfPutanja("os0.dbf");
-        if (path == null) { Poruka = "os0.dbf nije pronadjen."; return; }
+        if (path == null) { Poruka = "os0.dbf nije pronađen."; return; }
 
         try
         {
             var vm = new OsKarticaKarticaViewModel(IzabranaKartica, _appState);
             var win = new OsKarticaKarticaWindow(vm);
             if (win.ShowDialog() == true)
-                Poruka = "Kartica je azurirana. Kliknite Sacuvaj za trajni upis u DBF.";
+            {
+                Poruka = "Kartica je ažurirana. Kliknite Sačuvaj za trajni upis u DBF.";
+                _izmijenjeno = true;
+            }
         }
         catch (Exception ex) { Poruka = $"Kartica: {ex.Message}"; }
     }
@@ -182,7 +191,7 @@ public partial class OsKarticeViewModel : ObservableObject
     private void Sacuvaj()
     {
         var path = DbfPutanja("os0.dbf");
-        if (path == null) { Poruka = "os0.dbf nije pronadjen."; return; }
+        if (path == null) { Poruka = "os0.dbf nije pronađen."; return; }
 
         try
         {
@@ -213,9 +222,10 @@ public partial class OsKarticeViewModel : ObservableObject
                     _         => k.ExtraPolja.TryGetValue(f, out var v) ? v : null
                 });
 
-            Poruka = $"Kartice sacuvane ({_sveKartice.Count} zapisa).";
+            Poruka = $"Kartice sačuvane ({_sveKartice.Count} zapisa).";
+            _izmijenjeno = false;
         }
-        catch (Exception ex) { Poruka = $"Greska: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
     }
 
     [RelayCommand]
@@ -232,8 +242,9 @@ public partial class OsKarticeViewModel : ObservableObject
         var count = _sveKartice.RemoveAll(k => string.IsNullOrWhiteSpace(k.Osifra));
         PrimeniFIlter();
         Poruka = count > 0
-            ? $"Obrisano {count} praznih kartica. Kliknite Sacuvaj."
+            ? $"Obrisano {count} praznih kartica. Kliknite Sačuvaj."
             : "Nema praznih kartica.";
+        if (count > 0) _izmijenjeno = true;
     }
 
     [RelayCommand]

@@ -34,7 +34,7 @@ public partial class OsPodaciViewModel : ObservableObject
 
         if (_ospodaciPath == null)
         {
-            Poruka = "ospodaci.dbf nije pronadjen u folderu firme.";
+            Poruka = "ospodaci.dbf nije pronađen u folderu firme.";
             return;
         }
 
@@ -60,11 +60,11 @@ public partial class OsPodaciViewModel : ObservableObject
             BrNal = DajStr(r, "BRNAL");
             DatDok = DajDate(r, "DATDOK");
             KonAm = DajStr(r, "KONAM");
-            Poruka = "Podaci ucitani.";
+            Poruka = "Podaci učitani.";
         }
         catch (Exception ex)
         {
-            Poruka = $"Greska pri ucitavanju: {ex.Message}";
+            Poruka = $"Greška pri učitavanju: {ex.Message}";
         }
     }
 
@@ -73,19 +73,19 @@ public partial class OsPodaciViewModel : ObservableObject
     {
         if (_ospodaciPath == null)
         {
-            Poruka = "ospodaci.dbf nije pronadjen.";
+            Poruka = "ospodaci.dbf nije pronađen.";
             return;
         }
 
         if (_osPath == null)
         {
-            Poruka = "os.dbf nije pronadjen.";
+            Poruka = "os.dbf nije pronađen.";
             return;
         }
 
         if (!EDat0.HasValue || !EDat1.HasValue)
         {
-            Poruka = "Unesite pocetni i zadnji datum.";
+            Poruka = "Unesite početni i zadnji datum.";
             return;
         }
 
@@ -93,7 +93,7 @@ public partial class OsPodaciViewModel : ObservableObject
         var medat1 = EDat1.Value.Date;
         if (medat1 < medat0)
         {
-            Poruka = "Zadnji datum ne moze biti manji od pocetnog.";
+            Poruka = "Zadnji datum ne može biti manji od početnog.";
             return;
         }
 
@@ -101,11 +101,11 @@ public partial class OsPodaciViewModel : ObservableObject
         {
             SacuvajOspodaci(medat0, medat1);
             var rezultat = AzurirajOs(medat0, medat1);
-            Poruka = $"UNOS PODATAKA zavrsen. Azurirano {rezultat.azurirano} zapisa, obrisano {rezultat.obrisano}.";
+            Poruka = $"UNOS PODATAKA završen. Ažurirano {rezultat.azurirano} zapisa, obrisano {rezultat.obrisano}.";
         }
         catch (Exception ex)
         {
-            Poruka = $"Greska pri obradi: {ex.Message}";
+            Poruka = $"Greška pri obradi: {ex.Message}";
         }
     }
 

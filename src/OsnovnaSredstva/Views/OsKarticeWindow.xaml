@@ -195,7 +195,7 @@
 
                     <!-- Red 2: BRISANJE PRAZNINA + TXTTRAZI -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                        <Button Content="BRISANJE PRAZNINA" Style="{StaticResource FoxDugme}" Width="148" Command="{Binding BrisanjePraznineCommand}"/>
+                        <Button Content="BRISANJE PRAZNINA" Style="{StaticResource FoxDugme}" Width="148" Command="{Binding BrisanjePrazninaCommand}"/>
                         <TextBox x:Name="TxtTrazi"
                                  Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
                                  FontFamily="Tahoma" FontSize="11"

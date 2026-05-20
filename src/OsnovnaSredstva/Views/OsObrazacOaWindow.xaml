@@ -50,21 +50,21 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>  <!-- LBLNAZIV â€” Å¾uta traka gore -->
+            <RowDefinition Height="Auto"/>  <!-- LBLNAZIV — žuta traka gore -->
             <RowDefinition Height="*"/>     <!-- GRD0 -->
-            <RowDefinition Height="Auto"/>  <!-- Label1 â€” zelena traka ispod grida -->
+            <RowDefinition Height="Auto"/>  <!-- Label1 — zelena traka ispod grida -->
             <RowDefinition Height="Auto"/>  <!-- Dugmad -->
             <RowDefinition Height="Auto"/>  <!-- Status bar -->
         </Grid.RowDefinitions>
 
-        <!-- LBLNAZIV: Å¾uta traka (BackColor=248,250,184, ForeColor=255,0,0) -->
+        <!-- LBLNAZIV: žuta traka (BackColor=248,250,184, ForeColor=255,0,0) -->
         <Border Grid.Row="0" Background="#F8FAB8" BorderBrush="#C0C000" BorderThickness="0,0,0,1">
             <TextBlock Text="{Binding InfoIzabrane}"
                        FontFamily="Tahoma" FontSize="11" FontWeight="Bold"
                        Foreground="#CC0000" Padding="8,3" MinHeight="22"/>
         </Border>
 
-        <!-- GRD0: DataGrid â€” 11 kolona taÄno po SCT -->
+        <!-- GRD0: DataGrid — 11 kolona tačno po SCT -->
         <DataGrid Grid.Row="1"
                   x:Name="GridStavke"
                   ItemsSource="{Binding Stavke}"
@@ -117,13 +117,13 @@
                        Foreground="#004400" Padding="8,2"/>
         </Border>
 
-        <!-- â•â•â• DUGMAD â€” raspored po OSOA.SCT â•â•â• -->
+        <!-- ═══ DUGMAD — raspored po OSOA.SCT ═══ -->
         <Border Grid.Row="3" Background="#B9B6F1" Padding="7,5,7,5">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>  <!-- lijeva grupa: navigacija + BRISANJE + PRERAÄŒUN -->
+                    <ColumnDefinition Width="Auto"/>  <!-- lijeva grupa: navigacija + BRISANJE + PRERAČUN -->
                     <ColumnDefinition Width="*"/>     <!-- razmak -->
-                    <ColumnDefinition Width="Auto"/>  <!-- srednja: UÄŒITAJ GRUPE + UÄŒITAJ PODATKE -->
+                    <ColumnDefinition Width="Auto"/>  <!-- srednja: UČITAJ GRUPE + UČITAJ PODATKE -->
                     <ColumnDefinition Width="Auto"/>  <!-- desna: PREGLEDI + SACUVAJ/IZLAZ -->
                 </Grid.ColumnDefinitions>
 
@@ -137,17 +137,17 @@
                         <Button Content="PRVI"   Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding PrviCommand}"/>
                         <Button Content="DODAJ"  Style="{StaticResource FoxDugme}" Width="70"  Click="OnDodajClick" Margin="0"/>
                     </StackPanel>
-                    <!-- Red 2: BRISANJE + PRERAÄŒUN -->
+                    <!-- Red 2: BRISANJE + PRERAČUN -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                        <Button Content="BRISANJE PRAZNINA" Style="{StaticResource FoxDugme}" Width="148" Command="{Binding BrisanjePraznineCommand}"/>
-                        <Button Content="PRERAÄŒUN"          Style="{StaticResource FoxDugme}" Width="90"  Margin="0" Command="{Binding PreracunCommand}"/>
+                        <Button Content="BRISANJE PRAZNINA" Style="{StaticResource FoxDugme}" Width="148" Command="{Binding BrisanjePrazninaCommand}"/>
+                        <Button Content="PRERAČUN"          Style="{StaticResource FoxDugme}" Width="90"  Margin="0" Command="{Binding PreracunCommand}"/>
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Srednja grupa: UÄŒITAJ -->
+                <!-- Srednja grupa: UČITAJ -->
                 <StackPanel Grid.Column="2" Orientation="Vertical" Margin="0,0,8,0">
-                    <Button Content="UÄŒITAJ GRUPE"   Style="{StaticResource FoxDugme}" Width="140" Margin="0,0,0,4" Click="OnUcitajGrupeClick"/>
-                    <Button Content="UÄŒITAJ PODATKE" Style="{StaticResource FoxDugme}" Width="140" Margin="0"       Click="OnUcitajPodatkeClick"/>
+                    <Button Content="UČITAJ GRUPE"   Style="{StaticResource FoxDugme}" Width="140" Margin="0,0,0,4" Click="OnUcitajGrupeClick"/>
+                    <Button Content="UČITAJ PODATKE" Style="{StaticResource FoxDugme}" Width="140" Margin="0"       Click="OnUcitajPodatkeClick"/>
                 </StackPanel>
 
                 <!-- Desna grupa: PREGLEDI + SACUVAJ/IZLAZ -->

@@ -21,6 +21,9 @@ public partial class OsArhivaViewModel : ObservableObject
     [ObservableProperty] private string _poruka = "";
     [ObservableProperty] private string _filterText = "";
 
+    private bool _izmijenjeno;
+    public bool ImaNeSnimljenih => _izmijenjeno;
+
     public string NazivIzabrane =>
         IzabranaKartica == null ? "" : $"{IzabranaKartica.Osifra}   {IzabranaKartica.Naz}";
 
@@ -64,7 +67,7 @@ public partial class OsArhivaViewModel : ObservableObject
     private void Ucitaj()
     {
         var path = DbfPutanja(_dbfIme);
-        if (path == null) { Kartice = []; Poruka = $"{_dbfIme} nije pronadjen u folderu firme."; return; }
+        if (path == null) { Kartice = []; Poruka = $"{_dbfIme} nije pronađen u folderu firme."; return; }
 
         try
         {
@@ -116,13 +119,14 @@ public partial class OsArhivaViewModel : ObservableObject
 
             _sveKartice = stavke;
             PrimeniFiIlter();
-            Poruka = $"Ucitano {_sveKartice.Count} zapisa iz {_dbfIme}.";
+            Poruka = $"Učitano {_sveKartice.Count} zapisa iz {_dbfIme}.";
+            _izmijenjeno = false;
         }
         catch (Exception ex)
         {
             _sveKartice = [];
             Kartice = [];
-            Poruka = $"Greska: {ex.Message}";
+            Poruka = $"Greška: {ex.Message}";
         }
     }
 
@@ -136,14 +140,15 @@ public partial class OsArhivaViewModel : ObservableObject
         _sveKartice.Add(nova);
         PrimeniFiIlter();
         IzabranaKartica = nova;
-        Poruka = "Novi red dodan. Unesite podatke i kliknite Sacuvaj.";
+        Poruka = "Novi red dodan. Unesite podatke i kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
     private void Sacuvaj()
     {
         var path = DbfPutanja(_dbfIme);
-        if (path == null) { Poruka = $"{_dbfIme} nije pronadjen."; return; }
+        if (path == null) { Poruka = $"{_dbfIme} nije pronađen."; return; }
         try
         {
             var schema = DbfTableWriter.LoadSchema(path);
@@ -172,9 +177,10 @@ public partial class OsArhivaViewModel : ObservableObject
                     "IDBR"     => (object?)k.IDBr,
                     _          => k.ExtraPolja.TryGetValue(f, out var v) ? v : null
                 });
-            Poruka = $"Sacuvano ({_sveKartice.Count} zapisa).";
+            Poruka = $"Sačuvano ({_sveKartice.Count} zapisa).";
+            _izmijenjeno = false;
         }
-        catch (Exception ex) { Poruka = $"Greska: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
     }
 
     [RelayCommand]
@@ -229,7 +235,7 @@ public partial class OsArhivaViewModel : ObservableObject
         if (IzabranaKartica == null) { Poruka = "Nije izabran red."; return; }
         var vm = new OsKarticaKarticaViewModel(IzabranaKartica, _appState);
         var win = new OsKarticaKarticaWindow(vm);
-        if (win.ShowDialog() == true) Poruka = "Kartica azurirana. Kliknite Sacuvaj.";
+        if (win.ShowDialog() == true) { Poruka = "Kartica ažurirana. Kliknite Sačuvaj."; _izmijenjeno = true; }
     }
 
     [RelayCommand]
@@ -266,6 +272,7 @@ public partial class OsArhivaViewModel : ObservableObject
             k.ExtraPolja["AMORT2"] = 0m;
         }
         Poruka = $"Zadnje preneseno u početne za {_sveKartice.Count} kartica. Kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
@@ -327,23 +334,11 @@ public partial class OsArhivaViewModel : ObservableObject
     [RelayCommand]
     private void Podaci()
     {
-        var path = DbfPutanja("ospodaci.dbf");
-        if (path == null) { Poruka = "ospodaci.dbf nije pronađen u folderu firme."; return; }
-        try
-        {
-            var reader = new SimpleDbfReader(path);
-            foreach (var r in reader.Zapisi())
-            {
-                var edat0 = r.DajDate("EDAT0");
-                var edat1 = r.DajDate("EDAT1");
-                Poruka = $"Trenutni period: " +
-                         $"{(edat0.HasValue ? edat0.Value.ToString("dd.MM.yyyy") : "—")} — " +
-                         $"{(edat1.HasValue ? edat1.Value.ToString("dd.MM.yyyy") : "—")}";
-                return;
-            }
-            Poruka = "ospodaci.dbf je prazan.";
-        }
-        catch (Exception ex) { Poruka = $"Greška čitanja ospodaci: {ex.Message}"; }
+        var vm = new OsPodaciViewModel(_appState);
+        var win = new OsPodaciWindow(vm);
+        win.ShowDialog();
+        Ucitaj();
+        Poruka = vm.Poruka;
     }
 
     [RelayCommand]
@@ -387,20 +382,22 @@ public partial class OsArhivaViewModel : ObservableObject
             obradjeno++;
         }
         Poruka = $"Obračun završen — {obradjeno} kartica obrađeno. Kliknite Sačuvaj.";
+        if (obradjeno > 0) _izmijenjeno = true;
     }
 
     [RelayCommand]
     private void PoaObrazac()
     {
-        var vm = new OsObrazacOaViewModel(_appState);
-        new OsObrazacOaWindow(vm).ShowDialog();
+        var (_, periodDo) = ProcitajPeriod();
+        var vm = new OsPoaIzvestajViewModel(_sveKartice, OsPoaIzvestajViewModel.TipIzvestaja.PoaObrazac, periodDo);
+        new OsPoaIzvestajWindow(vm).ShowDialog();
     }
 
     [RelayCommand]
     private void EvidencijaPoa()
     {
-        var vm = new OsObrazacOaViewModel(_appState);
-        new OsObrazacOaWindow(vm).ShowDialog();
+        var vm = new OsPoaIzvestajViewModel(_sveKartice, OsPoaIzvestajViewModel.TipIzvestaja.EvidencijaPoa, null);
+        new OsPoaIzvestajWindow(vm).ShowDialog();
     }
 
     private (DateTime? od, DateTime? @do) ProcitajPeriod()
@@ -414,10 +411,7 @@ public partial class OsArhivaViewModel : ObservableObject
             foreach (var r in reader.Zapisi())
                 return (r.DajDate("EDAT0"), r.DajDate("EDAT1"));
         }
-        catch
-        {
-            // Saldo izvestaji rade i bez perioda.
-        }
+        catch { }
 
         return (null, null);
     }

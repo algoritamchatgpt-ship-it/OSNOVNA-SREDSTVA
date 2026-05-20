@@ -15,6 +15,21 @@ public partial class OsArhivaWindow : Window
 
     private void OnZatvoriClick(object sender, RoutedEventArgs e) => Close();
 
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        if (DataContext is OsArhivaViewModel vm && vm.ImaNeSnimljenih)
+        {
+            var odg = System.Windows.MessageBox.Show(
+                "Imate nesačuvane promjene. Zatvoriti bez čuvanja?",
+                "Nesačuvane promjene",
+                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxImage.Question);
+            if (odg != System.Windows.MessageBoxResult.Yes)
+                e.Cancel = true;
+        }
+        base.OnClosing(e);
+    }
+
     private void OnDodajClick(object sender, RoutedEventArgs e)
     {
         if (DataContext is not OsArhivaViewModel vm) return;

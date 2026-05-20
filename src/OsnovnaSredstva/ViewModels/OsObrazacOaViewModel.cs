@@ -18,6 +18,9 @@ public partial class OsObrazacOaViewModel : ObservableObject
     [ObservableProperty] private string _poruka = "";
     [ObservableProperty] private string _infoIzabrane = "";
 
+    private bool _izmijenjeno;
+    public bool ImaNeSnimljenih => _izmijenjeno;
+
     partial void OnIzabranaStavkaChanged(OsOaStavka? value)
         => InfoIzabrane = value == null ? "" : $"AG: {value.Ag}   Agstopa: {value.AgStopa:N3}   Neotpis: {value.Neotpis:N2}   Amort2: {value.Amort2:N2}   Sad2: {value.Sad2:N2}";
 
@@ -30,7 +33,7 @@ public partial class OsObrazacOaViewModel : ObservableObject
     private void Ucitaj()
     {
         var path = DbfPutanja("osoa.dbf");
-        if (path == null) { Stavke = []; Poruka = "osoa.dbf nije pronadjen u folderu firme."; return; }
+        if (path == null) { Stavke = []; Poruka = "osoa.dbf nije pronađen u folderu firme."; return; }
 
         try
         {
@@ -58,13 +61,15 @@ public partial class OsObrazacOaViewModel : ObservableObject
             _sveStavke = lista;
             Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
             IzabranaStavka = Stavke.FirstOrDefault();
-            Poruka = $"Ucitano {_sveStavke.Count} zapisa iz osoa.dbf.";
+            Poruka = $"Učitano {_sveStavke.Count} zapisa iz osoa.dbf.";
+            PretplatiSeNaIzmjene();
+            _izmijenjeno = false;
         }
         catch (Exception ex)
         {
             _sveStavke = [];
             Stavke = [];
-            Poruka = $"Greska: {ex.Message}";
+            Poruka = $"Greška: {ex.Message}";
         }
     }
 
@@ -78,14 +83,16 @@ public partial class OsObrazacOaViewModel : ObservableObject
         _sveStavke.Add(nova);
         Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
         IzabranaStavka = nova;
-        Poruka = "Novi red dodan. Unesite podatke i kliknite Sacuvaj.";
+        nova.PropertyChanged += (_, _) => _izmijenjeno = true;
+        Poruka = "Novi red dodan. Unesite podatke i kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
     private void Sacuvaj()
     {
         var path = DbfPutanja("osoa.dbf");
-        if (path == null) { Poruka = "osoa.dbf nije pronadjen."; return; }
+        if (path == null) { Poruka = "osoa.dbf nije pronađen."; return; }
         try
         {
             var schema = DbfTableWriter.LoadSchema(path);
@@ -105,16 +112,17 @@ public partial class OsObrazacOaViewModel : ObservableObject
                     "IDBR"    => (object?)s.IDBr,
                     _         => null
                 });
-            Poruka = $"Sacuvano ({_sveStavke.Count} zapisa).";
+            Poruka = $"Sačuvano ({_sveStavke.Count} zapisa).";
+            _izmijenjeno = false;
         }
-        catch (Exception ex) { Poruka = $"Greska pri snimanju: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška pri snimanju: {ex.Message}"; }
     }
 
     [RelayCommand]
     private void UcitajGrupe()
     {
         var path = DbfPutanjaZaGrupe("osag.dbf");
-        if (path == null) { Poruka = "osag.dbf nije pronadjen."; return; }
+        if (path == null) { Poruka = "osag.dbf nije pronađen."; return; }
 
         try
         {
@@ -147,9 +155,11 @@ public partial class OsObrazacOaViewModel : ObservableObject
             _sveStavke = lista;
             Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
             IzabranaStavka = Stavke.FirstOrDefault();
-            Poruka = $"Ucitano {_sveStavke.Count} amortizacionih grupa.";
+            Poruka = $"Učitano {_sveStavke.Count} amortizacionih grupa.";
+            PretplatiSeNaIzmjene();
+            _izmijenjeno = true;
         }
-        catch (Exception ex) { Poruka = $"Greska pri ucitavanju grupa: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška pri ucitavanju grupa: {ex.Message}"; }
     }
 
     [RelayCommand]
@@ -158,7 +168,7 @@ public partial class OsObrazacOaViewModel : ObservableObject
         if (_sveStavke.Count == 0) { Poruka = "Nema grupa — prvo pokrenite UCITAJ GRUPE."; return; }
 
         var osPath = DbfPutanja("os.dbf");
-        if (osPath == null) { Poruka = "os.dbf nije pronadjen u folderu firme."; return; }
+        if (osPath == null) { Poruka = "os.dbf nije pronađen u folderu firme."; return; }
 
         try
         {
@@ -224,9 +234,11 @@ public partial class OsObrazacOaViewModel : ObservableObject
 
             Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
             var datInfo = edat0.HasValue ? $" (period od {edat0:dd.MM.yyyy} do {edat1:dd.MM.yyyy})" : " (bez filtera datuma)";
-            Poruka = $"Podaci ucitani iz {Path.GetFileName(osPath)}{datInfo}.";
+            Poruka = $"Podaci učitani iz {Path.GetFileName(osPath)}{datInfo}.";
+            PretplatiSeNaIzmjene();
+            _izmijenjeno = true;
         }
-        catch (Exception ex) { Poruka = $"Greska pri ucitavanju podataka: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška pri ucitavanju podataka: {ex.Message}"; }
     }
 
     [RelayCommand]
@@ -239,7 +251,8 @@ public partial class OsObrazacOaViewModel : ObservableObject
             s.Sad2    = s.Neotpis - s.Amort2;
         }
         Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
-        Poruka = "Preracun izvrseno.";
+        Poruka = "Preračun izvršeno.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
@@ -248,10 +261,17 @@ public partial class OsObrazacOaViewModel : ObservableObject
         _sveStavke.RemoveAll(s => string.IsNullOrWhiteSpace(s.Ag));
         Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
         Poruka = "Praznine obrisane.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand] private void PreglediOa()  => IspisiIzvestaj("OA Obrazac");
     [RelayCommand] private void PreglediOa1() => IspisiIzvestaj("OA-1 Obrazac");
+
+    private void PretplatiSeNaIzmjene()
+    {
+        foreach (var s in _sveStavke)
+            s.PropertyChanged += (_, _) => _izmijenjeno = true;
+    }
 
     private void IspisiIzvestaj(string naslov)
     {

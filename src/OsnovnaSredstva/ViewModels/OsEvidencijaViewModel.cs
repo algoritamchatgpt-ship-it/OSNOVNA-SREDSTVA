@@ -23,6 +23,9 @@ public partial class OsEvidencijaViewModel : ObservableObject
     [ObservableProperty] private string _poruka = "";
     [ObservableProperty] private string _filterText = "";
 
+    private bool _izmijenjeno;
+    public bool ImaNeSnimljenih => _izmijenjeno;
+
     public string NazivIzabrane =>
         IzabranaKartica == null ? "" : $"{IzabranaKartica.Osifra}   {IzabranaKartica.Naz}";
 
@@ -66,7 +69,7 @@ public partial class OsEvidencijaViewModel : ObservableObject
     private void Ucitaj()
     {
         var path = DbfPutanja(_dbfIme);
-        if (path == null) { Kartice = []; Poruka = $"{_dbfIme} nije pronadjen u folderu firme."; return; }
+        if (path == null) { Kartice = []; Poruka = $"{_dbfIme} nije pronađen u folderu firme."; return; }
 
         try
         {
@@ -119,14 +122,15 @@ public partial class OsEvidencijaViewModel : ObservableObject
             _sveKartice = stavke;
             _osnovniPoredak = [.. stavke];
             PrimeniFiIlter();
-            Poruka = $"Ucitano {_sveKartice.Count} zapisa iz {_dbfIme}.";
+            Poruka = $"Učitano {_sveKartice.Count} zapisa iz {_dbfIme}.";
+            _izmijenjeno = false;
         }
         catch (Exception ex)
         {
             _sveKartice = [];
             _osnovniPoredak = [];
             Kartice = [];
-            Poruka = $"Greska: {ex.Message}";
+            Poruka = $"Greška: {ex.Message}";
         }
     }
 
@@ -141,14 +145,15 @@ public partial class OsEvidencijaViewModel : ObservableObject
         _osnovniPoredak.Add(nova);
         PrimeniFiIlter();
         IzabranaKartica = nova;
-        Poruka = "Novi red dodan. Unesite podatke i kliknite Sacuvaj.";
+        Poruka = "Novi red dodan. Unesite podatke i kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
     private void Sacuvaj()
     {
         var path = DbfPutanja(_dbfIme);
-        if (path == null) { Poruka = $"{_dbfIme} nije pronadjen."; return; }
+        if (path == null) { Poruka = $"{_dbfIme} nije pronađen."; return; }
         try
         {
             var schema = DbfTableWriter.LoadSchema(path);
@@ -177,9 +182,10 @@ public partial class OsEvidencijaViewModel : ObservableObject
                     "IDBR"     => (object?)k.IDBr,
                     _          => k.ExtraPolja.TryGetValue(f, out var v) ? v : null
                 });
-            Poruka = $"Sacuvano ({_sveKartice.Count} zapisa).";
+            Poruka = $"Sačuvano ({_sveKartice.Count} zapisa).";
+            _izmijenjeno = false;
         }
-        catch (Exception ex) { Poruka = $"Greska: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
     }
 
     [RelayCommand]
@@ -253,11 +259,11 @@ public partial class OsEvidencijaViewModel : ObservableObject
         if (nadjeno != null)
         {
             SelektujKarticu(nadjeno);
-            Poruka = $"Pronadjena: {nadjeno.Osifra?.Trim()} - {nadjeno.Naz}";
+            Poruka = $"Pronađena: {nadjeno.Osifra?.Trim()} - {nadjeno.Naz}";
             return;
         }
 
-        Poruka = $"Sifra '{unos}' nije pronadjena.";
+        Poruka = $"Sifra '{unos}' nije pronađena.";
     }
 
     [RelayCommand]
@@ -281,11 +287,11 @@ public partial class OsEvidencijaViewModel : ObservableObject
         if (nadjeno != null)
         {
             SelektujKarticu(nadjeno);
-            Poruka = $"Pronadjena: {nadjeno.Osifra?.Trim()} - {nadjeno.Naz} (InvBroj: {nadjeno.InvBroj?.Trim()})";
+            Poruka = $"Pronađena: {nadjeno.Osifra?.Trim()} - {nadjeno.Naz} (InvBroj: {nadjeno.InvBroj?.Trim()})";
             return;
         }
 
-        Poruka = $"Inventarski broj '{unos}' nije pronadjen.";
+        Poruka = $"Inventarski broj '{unos}' nije pronađen.";
     }
 
     [RelayCommand] private void PregledKartica()
@@ -293,16 +299,16 @@ public partial class OsEvidencijaViewModel : ObservableObject
         if (IzabranaKartica == null) { Poruka = "Nije izabran red."; return; }
         var vm = new OsKarticaKarticaViewModel(IzabranaKartica, _appState);
         var win = new OsKarticaKarticaWindow(vm);
-        if (win.ShowDialog() == true) Poruka = "Kartica azurirana. Kliknite Sacuvaj.";
+        if (win.ShowDialog() == true) { Poruka = "Kartica ažurirana. Kliknite Sačuvaj."; _izmijenjeno = true; }
     }
 
     [RelayCommand]
     private void ZadnjeUPocetno()
     {
         if (System.Windows.MessageBox.Show(
-                $"Prenos tekuÄ‡ih u poÄetne vrijednosti za SVE kartice ({_sveKartice.Count})?\n\n" +
-                "Ovo aÅ¾urira NAB0, ISP0, SAD0 i resetuje period (NAB, ISP, AMORT = 0).",
-                "Zadnje u poÄetno",
+                $"Prenos tekućih u početne vrijednosti za SVE kartice ({_sveKartice.Count})?\n\n" +
+                "Ovo ažurira NAB0, ISP0, SAD0 i resetuje period (NAB, ISP, AMORT = 0).",
+                "Zadnje u početno",
                 System.Windows.MessageBoxButton.YesNo,
                 System.Windows.MessageBoxImage.Question) != System.Windows.MessageBoxResult.Yes)
             return;
@@ -329,7 +335,8 @@ public partial class OsEvidencijaViewModel : ObservableObject
             k.ExtraPolja["SAD2"]   = sad2;
             k.ExtraPolja["AMORT2"] = 0m;
         }
-        Poruka = $"Zadnje preneseno u poÄetne za {_sveKartice.Count} kartica. Kliknite SaÄuvaj.";
+        Poruka = $"Zadnje preneseno u početne za {_sveKartice.Count} kartica. Kliknite Sačuvaj.";
+        _izmijenjeno = true;
     }
 
     [RelayCommand]
@@ -439,12 +446,12 @@ public partial class OsEvidencijaViewModel : ObservableObject
     [RelayCommand]
     private void Obracun()
     {
-        if (_sveKartice.Count == 0) { Poruka = "Nema kartica za obraÄun."; return; }
+        if (_sveKartice.Count == 0) { Poruka = "Nema kartica za obračun."; return; }
 
         if (System.Windows.MessageBox.Show(
-                $"IzraÄunati amortizaciju za sve kartice ({_sveKartice.Count})?\n\n" +
-                "AÅ¾urira AMORT, ISP, SAD (MRS) i AMORT2, ISP2, SAD2 (PP).",
-                "ObraÄun amortizacije",
+                $"Izračunati amortizaciju za sve kartice ({_sveKartice.Count})?\n\n" +
+                "Ažurira AMORT, ISP, SAD (MRS) i AMORT2, ISP2, SAD2 (PP).",
+                "Obračun amortizacije",
                 System.Windows.MessageBoxButton.YesNo,
                 System.Windows.MessageBoxImage.Question) != System.Windows.MessageBoxResult.Yes)
             return;
@@ -455,7 +462,7 @@ public partial class OsEvidencijaViewModel : ObservableObject
             var nacinob = k.ExtraPolja.TryGetValue("NACINOB", out var n) ? n?.ToString()?.Trim() : null;
             if (!string.IsNullOrWhiteSpace(nacinob)) continue;
 
-            // MRS â€” linearno na osnovu SAD0
+            // MRS — linearno na osnovu SAD0
             if (k.StopaOt > 0 && k.Sad0 > 0)
             {
                 var amort = Math.Round(k.Sad0 * k.StopaOt / 100m, 2);
@@ -465,7 +472,7 @@ public partial class OsEvidencijaViewModel : ObservableObject
                 k.ExtraPolja["SAD"]   = k.Sad0 - amort;
             }
 
-            // PP â€” linearno na osnovu SAD02
+            // PP — linearno na osnovu SAD02
             var stopaot2 = XDec(k, "STOPAOT2");
             var sad02    = XDec(k, "SAD02");
             if (stopaot2 > 0 && sad02 > 0)
@@ -478,7 +485,8 @@ public partial class OsEvidencijaViewModel : ObservableObject
             }
             obradjeno++;
         }
-        Poruka = $"ObraÄun zavrÅ¡en â€” {obradjeno} kartica obraÄ‘eno. Kliknite SaÄuvaj.";
+        Poruka = $"Obračun završen — {obradjeno} kartica obrađeno. Kliknite Sačuvaj.";
+        if (obradjeno > 0) _izmijenjeno = true;
     }
 
     [RelayCommand]

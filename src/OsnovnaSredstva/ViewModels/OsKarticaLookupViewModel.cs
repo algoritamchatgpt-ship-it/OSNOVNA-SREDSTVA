@@ -69,7 +69,7 @@ public partial class OsKarticaLookupViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(_dbfPath))
         {
-            Poruka = "Tabela nije pronadjena.";
+            Poruka = "Tabela nije pronađena.";
             return;
         }
 
@@ -86,7 +86,7 @@ public partial class OsKarticaLookupViewModel : ObservableObject
         _sveStavke.Add(nova);
         PrimeniFilter();
         IzabranaStavka = nova;
-        Poruka = "Dodat je novi red. Unesite podatke u polja ispod, pa Sacuvaj.";
+        Poruka = "Dodat je novi red. Unesite podatke u polja ispod, pa Sačuvaj.";
     }
 
     [RelayCommand]
@@ -132,7 +132,7 @@ public partial class OsKarticaLookupViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(_dbfPath))
         {
-            Poruka = "Tabela nije pronadjena.";
+            Poruka = "Tabela nije pronađena.";
             return false;
         }
 
@@ -144,13 +144,13 @@ public partial class OsKarticaLookupViewModel : ObservableObject
             var schema = DbfTableWriter.LoadSchema(_dbfPath);
             DbfTableWriter.WriteTable(_dbfPath, schema, _sveStavke, ResolveFieldValue);
             if (prikaziPorukuNaUspeh)
-                Poruka = $"Sacuvano {_sveStavke.Count} zapisa.";
+                Poruka = $"Sačuvano {_sveStavke.Count} zapisa.";
 
             return true;
         }
         catch (Exception ex)
         {
-            Poruka = $"Greska pri cuvanju: {ex.Message}";
+            Poruka = $"Greška pri cuvanju: {ex.Message}";
             return false;
         }
     }
@@ -163,7 +163,7 @@ public partial class OsKarticaLookupViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(_dbfPath))
         {
             Stavke = [];
-            Poruka = $"Tabela nije pronadjena: {string.Join(", ", _config.DbfKandidati)}";
+            Poruka = $"Tabela nije pronađena: {string.Join(", ", _config.DbfKandidati)}";
             return;
         }
 
@@ -187,12 +187,12 @@ public partial class OsKarticaLookupViewModel : ObservableObject
 
             PrimeniFilter();
             OznaciInicijalniRed();
-            Poruka = $"Ucitano {_sveStavke.Count} zapisa.";
+            Poruka = $"Učitano {_sveStavke.Count} zapisa.";
         }
         catch (Exception ex)
         {
             Stavke = [];
-            Poruka = $"Greska pri ucitavanju: {ex.Message}";
+            Poruka = $"Greška pri ucitavanju: {ex.Message}";
         }
     }
 

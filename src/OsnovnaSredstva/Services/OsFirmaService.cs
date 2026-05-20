@@ -148,6 +148,9 @@ public class OsFirmaService : IFirmaService
         if (Directory.Exists(templateData01))
             KopirajFolder(templateData01, noviFolder);
 
+        // Kopiraj OS DBF template (OSIZFINA) ako novi folder nema os DBF fajlove
+        KopirajOsTemplate(noviFolder);
+
         return new Firma
         {
             FolderPath = noviFolder,
@@ -178,5 +181,29 @@ public class OsFirmaService : IFirmaService
             File.Copy(fajl, Path.Combine(cilj, Path.GetFileName(fajl)), overwrite: true);
         foreach (var sub in Directory.GetDirectories(izvor))
             KopirajFolder(sub, Path.Combine(cilj, Path.GetFileName(sub)));
+    }
+
+    private static void KopirajOsTemplate(string cilj)
+    {
+        // Ako folder već ima OS fajlove, ne prepisuj
+        if (Directory.GetFiles(cilj, "os*.dbf", SearchOption.TopDirectoryOnly).Length > 0)
+            return;
+        if (Directory.GetFiles(cilj, "OS*.DBF", SearchOption.TopDirectoryOnly).Length > 0)
+            return;
+
+        // Traži OSIZFINA template pored exe-a ili u src projektu
+        var kandidati = new[]
+        {
+            Path.Combine(AppContext.BaseDirectory, "OSIZFINA"),
+            Path.Combine(AppContext.BaseDirectory, "osizfina"),
+        };
+
+        foreach (var template in kandidati)
+        {
+            if (!Directory.Exists(template)) continue;
+            foreach (var fajl in Directory.GetFiles(template))
+                File.Copy(fajl, Path.Combine(cilj, Path.GetFileName(fajl)), overwrite: false);
+            return;
+        }
     }
 }
