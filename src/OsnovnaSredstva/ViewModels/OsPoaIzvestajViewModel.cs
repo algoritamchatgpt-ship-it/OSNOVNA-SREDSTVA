@@ -71,6 +71,89 @@ public partial class OsPoaIzvestajViewModel : ObservableObject
     private static decimal DajDec(OsKartica k, string polje)
         => OsSaldoViewModel.DajDec(k, polje);
 
+    [CommunityToolkit.Mvvm.Input.RelayCommand]
+    private void Stampaj()
+    {
+        var dlg = new System.Windows.Controls.PrintDialog();
+        if (dlg.ShowDialog() != true) return;
+        try
+        {
+            var doc = new System.Windows.Documents.FlowDocument
+            {
+                PageWidth   = dlg.PrintableAreaWidth,
+                PageHeight  = dlg.PrintableAreaHeight,
+                ColumnWidth = dlg.PrintableAreaWidth,
+                FontFamily  = new System.Windows.Media.FontFamily("Courier New"),
+                FontSize    = 9
+            };
+            doc.Blocks.Add(new System.Windows.Documents.Paragraph(
+                new System.Windows.Documents.Run(Naslov))
+                { FontSize = 13, FontWeight = System.Windows.FontWeights.Bold });
+
+            var tbl = new System.Windows.Documents.Table { CellSpacing = 0 };
+            foreach (var w in new double[] { 65, 200, 100, 85, 75, 90, 90, 90, 90, 100 })
+                tbl.Columns.Add(new System.Windows.Documents.TableColumn
+                    { Width = new System.Windows.GridLength(w) });
+
+            var rg = new System.Windows.Documents.TableRowGroup();
+            tbl.RowGroups.Add(rg);
+
+            void DodajRed(string[] c, bool header = false)
+            {
+                var row = new System.Windows.Documents.TableRow();
+                foreach (var cel in c)
+                {
+                    var para = new System.Windows.Documents.Paragraph(
+                        new System.Windows.Documents.Run(cel))
+                        { Padding = new System.Windows.Thickness(2, 1, 2, 1), TextAlignment = System.Windows.TextAlignment.Right };
+                    if (header) { para.FontWeight = System.Windows.FontWeights.Bold; para.TextAlignment = System.Windows.TextAlignment.Left; }
+                    row.Cells.Add(new System.Windows.Documents.TableCell(para)
+                    {
+                        BorderBrush = System.Windows.Media.Brushes.Black,
+                        BorderThickness = new System.Windows.Thickness(0, 0, 0, header ? 1 : 0)
+                    });
+                }
+                rg.Rows.Add(row);
+            }
+
+            DodajRed(["Osifra", "Naziv", "InvBroj", "DatProd", "NacinOb", "Sad", "Sad2", "PAM", "RAM", "Obezvredj"], header: true);
+            foreach (var s in Stavke)
+                DodajRed([s.Osifra, s.Naziv, s.InvBroj,
+                    s.DatProd?.ToString("dd.MM.yyyy") ?? "",
+                    s.NacinOb,
+                    s.Sad.ToString("N2"), s.Sad2.ToString("N2"),
+                    s.Pam.ToString("N2"), s.Ram.ToString("N2"), s.Obezvredj.ToString("N2")]);
+
+            doc.Blocks.Add(tbl);
+            var paginator = ((System.Windows.Documents.IDocumentPaginatorSource)doc).DocumentPaginator;
+            dlg.PrintDocument(paginator, Naslov);
+            Poruka = $"Štampanje završeno ({Stavke.Count} redova).";
+        }
+        catch (Exception ex) { Poruka = $"Greška štampanja: {ex.Message}"; }
+    }
+
+    [CommunityToolkit.Mvvm.Input.RelayCommand]
+    private void IzveziCsv()
+    {
+        var dlg = new Microsoft.Win32.SaveFileDialog
+        {
+            Title = "Izvoz u CSV",
+            Filter = "CSV (*.csv)|*.csv|Svi fajlovi (*.*)|*.*",
+            DefaultExt = ".csv",
+            FileName = Naslov.Replace(" ", "_") + ".csv"
+        };
+        if (dlg.ShowDialog() != true) return;
+        try
+        {
+            using var sw = new System.IO.StreamWriter(dlg.FileName, false, new System.Text.UTF8Encoding(true));
+            sw.WriteLine("Osifra;Naziv;InvBroj;DatProd;NacinOb;Sad;Sad2;PAM;RAM;Obezvredj");
+            foreach (var s in Stavke)
+                sw.WriteLine($"{s.Osifra};{s.Naziv};{s.InvBroj};{s.DatProd?.ToString("dd.MM.yyyy") ?? ""};{s.NacinOb};{s.Sad:N2};{s.Sad2:N2};{s.Pam:N2};{s.Ram:N2};{s.Obezvredj:N2}");
+            Poruka = $"CSV izvoz završen: {dlg.FileName} ({Stavke.Count} redova).";
+        }
+        catch (Exception ex) { Poruka = $"Greška izvoza: {ex.Message}"; }
+    }
+
     private static DateTime? DajDate(OsKartica k, string polje)
     {
         if (!k.ExtraPolja.TryGetValue(polje, out var v) || v == null) return null;

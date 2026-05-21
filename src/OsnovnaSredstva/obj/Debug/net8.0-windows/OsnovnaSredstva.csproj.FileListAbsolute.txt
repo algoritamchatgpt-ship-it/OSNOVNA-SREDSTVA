@@ -314,6 +314,7 @@ C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-w
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPoaIzvestajWindow.baml
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPodaciWindow.baml
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPopisFilterWindow.baml
+C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPreglediWindow.baml
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPrenosaWindow.baml
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsSaldoKontaIzborWindow.baml
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsSaldoWindow.baml
@@ -342,6 +343,7 @@ C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-w
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPoaIzvestajWindow.g.cs
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPodaciWindow.g.cs
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPopisFilterWindow.g.cs
+C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPreglediWindow.g.cs
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsPrenosaWindow.g.cs
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsSaldoKontaIzborWindow.g.cs
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\obj\Debug\net8.0-windows\Views\OsSaldoWindow.g.cs

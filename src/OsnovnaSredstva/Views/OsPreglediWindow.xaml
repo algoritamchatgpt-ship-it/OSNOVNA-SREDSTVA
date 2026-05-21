@@ -1,0 +1,137 @@
+<Window x:Class="OsnovnaSredstva.Views.OsPreglediWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Pregledi OS"
+        Width="460" Height="640"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#F0F4FA"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="GrupaDugme" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Margin" Value="4,3"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.65"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GrupaHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="Margin" Value="4,10,4,2"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel>
+        <!-- Header -->
+        <Border DockPanel.Dock="Top" Background="#1565C0" Padding="14,10">
+            <TextBlock Text="Pregledi OS" FontSize="15" FontWeight="Bold" Foreground="White"/>
+        </Border>
+
+        <!-- Footer -->
+        <Border DockPanel.Dock="Bottom" Background="#D8E4F0"
+                BorderBrush="#B8CCE4" BorderThickness="0,1,0,0" Padding="10,8">
+            <DockPanel>
+                <Button Content="Zatvori" DockPanel.Dock="Right"
+                        Width="88" Height="30"
+                        Background="#B71C1C" Foreground="White"
+                        BorderThickness="0" Cursor="Hand"
+                        Click="OnZatvoriClick"/>
+                <TextBlock Text="{Binding Poruka}" VerticalAlignment="Center"
+                           Foreground="#444" FontSize="11"/>
+            </DockPanel>
+        </Border>
+
+        <!-- Sadržaj -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,6">
+            <StackPanel>
+
+                <!-- MRS pregledi -->
+                <TextBlock Style="{StaticResource GrupaHeader}" Text="MRS PREGLEDI"/>
+                <Separator Background="#C5D5E8" Margin="4,0,4,4"/>
+                <Button Content="MRS pregled — Osnovna sredstva"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#1565C0"
+                        Command="{Binding OtMrsCommand}"/>
+                <Button Content="MRS pregled — Skraćeni"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#1565C0"
+                        Command="{Binding OtMrsSkraceniCommand}"/>
+                <Button Content="Poreska — Početne vrednosti (PP)"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#0D47A1"
+                        Command="{Binding OtPoreskaStaraCommand}"/>
+                <Button Content="Poreska — Tekuće vrednosti (PP)"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#0D47A1"
+                        Command="{Binding OtPoreskaNovaCommand}"/>
+
+                <!-- Saldo pregledi -->
+                <TextBlock Style="{StaticResource GrupaHeader}" Text="SALDO PREGLEDI"/>
+                <Separator Background="#C5D5E8" Margin="4,0,4,4"/>
+                <Button Content="Saldo analitika — po kontu"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#00695C"
+                        Command="{Binding OtSaldoAnalitikaCommand}"/>
+                <Button Content="Saldo sintetika — po kontu"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#00695C"
+                        Command="{Binding OtSaldoSintetikaCommand}"/>
+                <Button Content="Saldo po mestu troškova"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#2E7D32"
+                        Command="{Binding OtSaldoPoMestuCommand}"/>
+                <Button Content="Nabavke po amortizacionim grupama"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#2E7D32"
+                        Command="{Binding OtSaldoNabavkePoAgCommand}"/>
+                <Button Content="Početno stanje po AG"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#388E3C"
+                        Command="{Binding OtPocetnoStanjeCommand}"/>
+
+                <!-- POA izveštaji -->
+                <TextBlock Style="{StaticResource GrupaHeader}" Text="POA IZVEŠTAJI"/>
+                <Separator Background="#C5D5E8" Margin="4,0,4,4"/>
+                <Button Content="POA obrazac"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#E65100"
+                        Command="{Binding OtPoaObrazacCommand}"/>
+                <Button Content="Evidencija POA"
+                        Style="{StaticResource GrupaDugme}"
+                        Background="#BF360C"
+                        Command="{Binding OtEvidencijaPoaCommand}"/>
+
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

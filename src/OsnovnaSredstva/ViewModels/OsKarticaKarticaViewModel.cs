@@ -5,7 +5,6 @@ using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
 using OsnovnaSredstva.Views;
 using System.Globalization;
-using System.IO;
 using System.Windows;
 
 namespace OsnovnaSredstva.ViewModels;
@@ -455,50 +454,11 @@ public partial class OsKarticaKarticaViewModel : ObservableObject
 
     private string? PronadjiDbf(IEnumerable<string> kandidati)
     {
-        var folderFirme = _appState.AktivnaFirma?.FolderPath;
-
-        var folderKandidati = new List<string>();
-
-        void DodajFolder(string? f)
+        foreach (var ime in kandidati)
         {
-            if (!string.IsNullOrWhiteSpace(f) &&
-                !folderKandidati.Any(x => string.Equals(x, f, StringComparison.OrdinalIgnoreCase)))
-                folderKandidati.Add(f);
+            var hit = DbfHelper.NadjiDbf(_appState, ime);
+            if (hit != null) return hit;
         }
-
-        if (!string.IsNullOrWhiteSpace(folderFirme))
-        {
-            DodajFolder(folderFirme);
-            DodajFolder(Path.Combine(folderFirme, "data00"));
-            var root = FinWorkspaceResolver.NormalizeRootPath(folderFirme);
-            DodajFolder(Path.Combine(root, "data00"));
-            DodajFolder(root);
-        }
-
-        DodajFolder(Path.Combine(AppContext.BaseDirectory, "data00"));
-        DodajFolder(AppContext.BaseDirectory);
-
-        var kandidatiLista = kandidati.ToList();
-        foreach (var folder in folderKandidati)
-        {
-            if (!Directory.Exists(folder)) continue;
-            foreach (var ime in kandidatiLista)
-            {
-                foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-                {
-                    var putanja = Path.Combine(folder, naziv);
-                    if (File.Exists(putanja)) return putanja;
-                }
-            }
-            var svi = Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly);
-            foreach (var ime in kandidatiLista)
-            {
-                var nadjen = svi.FirstOrDefault(f =>
-                    Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-                if (nadjen != null) return nadjen;
-            }
-        }
-
         return null;
     }
 

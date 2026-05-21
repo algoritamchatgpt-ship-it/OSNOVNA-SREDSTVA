@@ -190,7 +190,8 @@
                         <Button Content="GORE"    Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding GoreCommand}"/>
                         <Button Content="ZADNJI"  Style="{StaticResource FoxDugme}" Width="70"  Command="{Binding ZadnjiCommand}"/>
                         <Button Content="PRVI"    Style="{StaticResource FoxDugme}" Width="60"  Command="{Binding PrviCommand}"/>
-                        <Button Content="DODAJ"   Style="{StaticResource FoxDugme}" Width="70"  Click="OnDodajClick" Margin="0"/>
+                        <Button Content="DODAJ"   Style="{StaticResource FoxDugme}" Width="70"  Click="OnDodajClick"/>
+                        <Button Content="OBRISI"  Style="{StaticResource FoxDugme}" Width="70"  Command="{Binding ObrisiCommand}" Margin="0"/>
                     </StackPanel>
 
                     <!-- Red 2: BRISANJE PRAZNINA + TXTTRAZI -->

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using OsnovnaSredstva.Models;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -10,6 +11,7 @@ namespace OsnovnaSredstva.ViewModels;
 
 public partial class OsObrazacOaViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<OsObrazacOaViewModel>();
     private readonly AppState _appState;
     private List<OsOaStavka> _sveStavke = [];
 
@@ -32,7 +34,7 @@ public partial class OsObrazacOaViewModel : ObservableObject
 
     private void Ucitaj()
     {
-        var path = DbfPutanja("osoa.dbf");
+        var path = DbfHelper.NadjiDbf(_appState, "osoa.dbf");
         if (path == null) { Stavke = []; Poruka = "osoa.dbf nije pronađen u folderu firme."; return; }
 
         try
@@ -62,6 +64,7 @@ public partial class OsObrazacOaViewModel : ObservableObject
             Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
             IzabranaStavka = Stavke.FirstOrDefault();
             Poruka = $"Učitano {_sveStavke.Count} zapisa iz osoa.dbf.";
+            _log.Debug("osoa.dbf: učitano {Count} stavki", _sveStavke.Count);
             PretplatiSeNaIzmjene();
             _izmijenjeno = false;
         }
@@ -70,6 +73,7 @@ public partial class OsObrazacOaViewModel : ObservableObject
             _sveStavke = [];
             Stavke = [];
             Poruka = $"Greška: {ex.Message}";
+            _log.Error(ex, "Greška pri čitanju osoa.dbf");
         }
     }
 
@@ -91,7 +95,7 @@ public partial class OsObrazacOaViewModel : ObservableObject
     [RelayCommand]
     private void Sacuvaj()
     {
-        var path = DbfPutanja("osoa.dbf");
+        var path = DbfHelper.NadjiDbf(_appState, "osoa.dbf");
         if (path == null) { Poruka = "osoa.dbf nije pronađen."; return; }
         try
         {
@@ -114,8 +118,9 @@ public partial class OsObrazacOaViewModel : ObservableObject
                 });
             Poruka = $"Sačuvano ({_sveStavke.Count} zapisa).";
             _izmijenjeno = false;
+            _log.Information("osoa.dbf: sačuvano {Count} zapisa", _sveStavke.Count);
         }
-        catch (Exception ex) { Poruka = $"Greška pri snimanju: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška pri snimanju: {ex.Message}"; _log.Error(ex, "Greška pri snimanju osoa.dbf"); }
     }
 
     [RelayCommand]
@@ -156,10 +161,11 @@ public partial class OsObrazacOaViewModel : ObservableObject
             Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
             IzabranaStavka = Stavke.FirstOrDefault();
             Poruka = $"Učitano {_sveStavke.Count} amortizacionih grupa.";
+            _log.Debug("osag.dbf: učitano {Count} amortizacionih grupa", _sveStavke.Count);
             PretplatiSeNaIzmjene();
             _izmijenjeno = true;
         }
-        catch (Exception ex) { Poruka = $"Greška pri ucitavanju grupa: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška pri ucitavanju grupa: {ex.Message}"; _log.Error(ex, "Greška pri čitanju osag.dbf"); }
     }
 
     [RelayCommand]
@@ -167,14 +173,14 @@ public partial class OsObrazacOaViewModel : ObservableObject
     {
         if (_sveStavke.Count == 0) { Poruka = "Nema grupa — prvo pokrenite UCITAJ GRUPE."; return; }
 
-        var osPath = DbfPutanja("os.dbf");
+        var osPath = DbfHelper.NadjiDbf(_appState, "os.dbf");
         if (osPath == null) { Poruka = "os.dbf nije pronađen u folderu firme."; return; }
 
         try
         {
             // Čitamo period datume iz ospodaci.dbf ako postoji
             DateTime? edat0 = null, edat1 = null;
-            var podaciPath = DbfPutanja("ospodaci.dbf");
+            var podaciPath = DbfHelper.NadjiDbf(_appState, "ospodaci.dbf");
             if (podaciPath != null)
             {
                 var podaciReader = new SimpleDbfReader(podaciPath);
@@ -235,10 +241,11 @@ public partial class OsObrazacOaViewModel : ObservableObject
             Stavke = new ObservableCollection<OsOaStavka>(_sveStavke);
             var datInfo = edat0.HasValue ? $" (period od {edat0:dd.MM.yyyy} do {edat1:dd.MM.yyyy})" : " (bez filtera datuma)";
             Poruka = $"Podaci učitani iz {Path.GetFileName(osPath)}{datInfo}.";
+            _log.Debug("os.dbf: agregirano {Count} stavki za OA obrazac{DatInfo}", _sveStavke.Count, datInfo);
             PretplatiSeNaIzmjene();
             _izmijenjeno = true;
         }
-        catch (Exception ex) { Poruka = $"Greška pri ucitavanju podataka: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška pri ucitavanju podataka: {ex.Message}"; _log.Error(ex, "Greška pri ucitavanju podataka iz os.dbf"); }
     }
 
     [RelayCommand]
@@ -382,97 +389,14 @@ public partial class OsObrazacOaViewModel : ObservableObject
         string? prviPronadjen = null;
         foreach (var folder in kandidatiFoldera)
         {
-            var putanja = PronadjiDbfUFolderu(folder, ime);
+            var putanja = DbfHelper.NadjiDbfUFolderu(folder, ime);
             if (string.IsNullOrWhiteSpace(putanja)) continue;
 
             prviPronadjen ??= putanja;
-            if (ImaZapisaDbf(putanja)) return putanja;
+            if (DbfHelper.ImaZapisaDbf(putanja)) return putanja;
         }
 
         return prviPronadjen;
     }
 
-    private string? DbfPutanjaAny(params string[] imena)
-    {
-        string? prviPronadjen = null;
-        foreach (var ime in imena)
-        {
-            var putanja = DbfPutanja(ime);
-            if (string.IsNullOrWhiteSpace(putanja)) continue;
-
-            prviPronadjen ??= putanja;
-            if (ImaZapisaDbf(putanja)) return putanja;
-        }
-        return prviPronadjen;
-    }
-
-    private string? DbfPutanja(string ime)
-    {
-        var kandidatiFoldera = new List<string>();
-
-        static bool IstaPutanja(string left, string right)
-            => string.Equals(left, right, StringComparison.OrdinalIgnoreCase);
-
-        void DodajFolder(string? folder)
-        {
-            if (string.IsNullOrWhiteSpace(folder)) return;
-            if (kandidatiFoldera.Any(x => IstaPutanja(x, folder))) return;
-            kandidatiFoldera.Add(folder);
-        }
-
-        var folderFirme = _appState.AktivnaFirma?.FolderPath;
-        if (!string.IsNullOrWhiteSpace(folderFirme))
-        {
-            DodajFolder(folderFirme);
-            DodajFolder(Path.Combine(folderFirme, "data00"));
-
-            var root = FinWorkspaceResolver.NormalizeRootPath(folderFirme);
-            DodajFolder(root);
-            DodajFolder(Path.Combine(root, "data00"));
-            DodajFolder(Path.Combine(root, "data01"));
-        }
-
-        DodajFolder(Directory.GetCurrentDirectory());
-        DodajFolder(Path.Combine(Directory.GetCurrentDirectory(), "data00"));
-        DodajFolder(AppContext.BaseDirectory);
-        DodajFolder(Path.Combine(AppContext.BaseDirectory, "data00"));
-
-        foreach (var folder in kandidatiFoldera)
-        {
-            var putanja = PronadjiDbfUFolderu(folder, ime);
-            if (!string.IsNullOrWhiteSpace(putanja)) return putanja;
-        }
-
-        return null;
-    }
-
-    private static string? PronadjiDbfUFolderu(string folder, string ime)
-    {
-        if (!Directory.Exists(folder)) return null;
-
-        foreach (var naziv in new[] { ime, ime.ToUpperInvariant(), ime.ToLowerInvariant() })
-        {
-            var putanja = Path.Combine(folder, naziv);
-            if (File.Exists(putanja)) return putanja;
-        }
-
-        return Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private static bool ImaZapisaDbf(string path)
-    {
-        try
-        {
-            using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            var header = new byte[12];
-            if (fs.Read(header, 0, header.Length) < header.Length) return false;
-            var recordCount = BitConverter.ToInt32(header, 4);
-            return recordCount > 0;
-        }
-        catch
-        {
-            return false;
-        }
-    }
 }

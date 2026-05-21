@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -9,6 +10,7 @@ namespace OsnovnaSredstva.ViewModels;
 
 public partial class OsPrenosaViewModel : ObservableObject
 {
+    private static readonly ILogger _logger = Serilog.Log.ForContext<OsPrenosaViewModel>();
     private readonly AppState _appState;
 
     [ObservableProperty]
@@ -41,6 +43,7 @@ public partial class OsPrenosaViewModel : ObservableObject
         Uspjesno = false;
         UToku = true;
         StatusPoruka = "Prenos u toku...";
+        _logger.Information("Pokrenuti prenos na godinu {Godina}", NovaGodina);
 
         try
         {
@@ -80,11 +83,13 @@ public partial class OsPrenosaViewModel : ObservableObject
             DodajLog($"Prenos u {NovaGodina}. godinu završen.");
             StatusPoruka = $"Prenos uspješno završen. Aktivna godina: {NovaGodina}.";
             Uspjesno = true;
+            _logger.Information("Prenos na godinu {Godina} uspješno završen", NovaGodina);
         }
         catch (Exception ex)
         {
             DodajLog($"GREŠKA: {ex.Message}");
             StatusPoruka = $"Prenos nije završen — {ex.Message}";
+            _logger.Error(ex, "Greška pri prenosu na godinu {Godina}", NovaGodina);
         }
         finally
         {
@@ -215,30 +220,5 @@ public partial class OsPrenosaViewModel : ObservableObject
         StatusPoruka = poruka;
     }
 
-    private string? DbfPutanja(string ime)
-    {
-        var folder = _appState.AktivnaFirma?.FolderPath;
-        if (string.IsNullOrWhiteSpace(folder)) return null;
-
-        var hit = NadjiDbf(folder, ime);
-        if (hit != null) return hit;
-
-        var root = FinWorkspaceResolver.NormalizeRootPath(folder);
-        hit = NadjiDbf(Path.Combine(root, "data00"), ime);
-        if (hit != null) return hit;
-
-        return NadjiDbf(Path.Combine(AppContext.BaseDirectory, "data00"), ime);
-    }
-
-    private static string? NadjiDbf(string folder, string ime)
-    {
-        if (!Directory.Exists(folder)) return null;
-        foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-        {
-            var p = Path.Combine(folder, naziv);
-            if (File.Exists(p)) return p;
-        }
-        return Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-    }
+    private string? DbfPutanja(string ime) => DbfHelper.NadjiDbf(_appState, ime);
 }

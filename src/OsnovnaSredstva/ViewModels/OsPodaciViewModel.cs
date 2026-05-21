@@ -2,12 +2,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
-using System.IO;
+using Serilog;
 
 namespace OsnovnaSredstva.ViewModels;
 
 public partial class OsPodaciViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<OsPodaciViewModel>();
     private readonly AppState _appState;
     private string? _ospodaciPath;
     private string? _osPath;
@@ -61,10 +62,12 @@ public partial class OsPodaciViewModel : ObservableObject
             DatDok = DajDate(r, "DATDOK");
             KonAm = DajStr(r, "KONAM");
             Poruka = "Podaci učitani.";
+            _log.Debug("ospodaci.dbf: učitani podaci (EDAT0={Edat0}, EDAT1={Edat1})", EDat0, EDat1);
         }
         catch (Exception ex)
         {
             Poruka = $"Greška pri učitavanju: {ex.Message}";
+            _log.Error(ex, "Greška pri učitavanju ospodaci.dbf");
         }
     }
 
@@ -102,10 +105,12 @@ public partial class OsPodaciViewModel : ObservableObject
             SacuvajOspodaci(medat0, medat1);
             var rezultat = AzurirajOs(medat0, medat1);
             Poruka = $"UNOS PODATAKA završen. Ažurirano {rezultat.azurirano} zapisa, obrisano {rezultat.obrisano}.";
+            _log.Information("UNOS PODATAKA: ažurirano {Azurirano}, obrisano {Obrisano}; period {Od}–{Do}", rezultat.azurirano, rezultat.obrisano, medat0, medat1);
         }
         catch (Exception ex)
         {
             Poruka = $"Greška pri obradi: {ex.Message}";
+            _log.Error(ex, "Greška pri UNOS PODATAKA (period {Od}–{Do})", medat0, medat1);
         }
     }
 
@@ -211,32 +216,7 @@ public partial class OsPodaciViewModel : ObservableObject
         return svi;
     }
 
-    private string? DbfPutanja(string ime)
-    {
-        var folder = _appState.AktivnaFirma?.FolderPath;
-        if (string.IsNullOrWhiteSpace(folder)) return null;
-
-        var hit = NadjiDbf(folder, ime);
-        if (hit != null) return hit;
-
-        var root = FinWorkspaceResolver.NormalizeRootPath(folder);
-        hit = NadjiDbf(Path.Combine(root, "data00"), ime);
-        if (hit != null) return hit;
-
-        return NadjiDbf(Path.Combine(AppContext.BaseDirectory, "data00"), ime);
-    }
-
-    private static string? NadjiDbf(string folder, string ime)
-    {
-        if (!Directory.Exists(folder)) return null;
-        foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-        {
-            var p = Path.Combine(folder, naziv);
-            if (File.Exists(p)) return p;
-        }
-        return Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-    }
+    private string? DbfPutanja(string ime) => DbfHelper.NadjiDbf(_appState, ime);
 
     private static string DajStr(IDictionary<string, object?> r, string polje)
         => r.TryGetValue(polje, out var v) ? Convert.ToString(v)?.Trim() ?? string.Empty : string.Empty;

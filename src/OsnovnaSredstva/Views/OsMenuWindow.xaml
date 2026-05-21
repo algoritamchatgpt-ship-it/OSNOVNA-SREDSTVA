@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="FIN Osnovna sredstva"
-        Width="500" Height="680"
+        Width="500" Height="850"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="#F0F4FA"
@@ -133,10 +133,12 @@
         <!-- Separator između menija i footera -->
         <Border DockPanel.Dock="Bottom" Height="1" Background="#C5D5E8"/>
 
-        <!-- Meni dugmad — 2 kolone, 5 redova, isti red = ista boja -->
+        <!-- Meni dugmad — 2 kolone, 6 redova, isti red = ista boja -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8,8,8,4">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -207,6 +209,26 @@
                         Style="{StaticResource MenuDugme}"
                         Background="#512DA8"
                         Command="{Binding OtvoriPodatkeOFirmiCommand}"/>
+
+                <!-- Red 6: Sivo-smeđa (#5D4037) — Amortizacione grupe i OS podaci -->
+
+                <Button Grid.Row="5" Grid.Column="0"
+                        Content="Grupe amortizacije"
+                        Style="{StaticResource MenuDugme}"
+                        Background="#5D4037"
+                        Command="{Binding OtvoriGrupeAmortizacijeCommand}"/>
+                <Button Grid.Row="5" Grid.Column="1"
+                        Content="Podaci OS (period)"
+                        Style="{StaticResource MenuDugme}"
+                        Background="#5D4037"
+                        Command="{Binding OtvoriPodatkeOsCommand}"/>
+
+                <!-- Red 7: Tamnoplava (#006064) — Pregledi i izveštaji -->
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                        Content="Pregledi / Izveštaji OS"
+                        Style="{StaticResource MenuDugme}"
+                        Background="#006064"
+                        Command="{Binding OtvoriPregledeCommand}"/>
 
             </Grid>
         </ScrollViewer>

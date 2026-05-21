@@ -49,7 +49,7 @@ public partial class OsSaldoViewModel : ObservableObject
     {
         var vm = new OsSaldoViewModel();
         vm.Prikaz = OsSaldoPrikazTip.NabavkePoAgrupama;
-        vm.NazivKljucneKolone = "Konto";
+        vm.NazivKljucneKolone = "AG";
         vm.Naslov = "SALDO NABAVKE PO A.GRUPAMA";
 
         var filtrirane = periodOd.HasValue
@@ -58,7 +58,7 @@ public partial class OsSaldoViewModel : ObservableObject
 
         vm.Ucitaj(
             filtrirane,
-            k => string.IsNullOrWhiteSpace(k.Konto) ? "(bez konta)" : k.Konto.Trim(),
+            k => string.IsNullOrWhiteSpace(k.Ag) ? "(bez AG)" : k.Ag.Trim(),
             ukljuciTekuciMrs: false,
             ukljuciPoreskaPolja: false);
 
@@ -165,6 +165,89 @@ public partial class OsSaldoViewModel : ObservableObject
 
         foreach (var s in grupe.Values) Stavke.Add(s);
         Poruka = $"Ukupno {grupe.Count} grupe, {svi.Count} kartica.";
+    }
+
+    [CommunityToolkit.Mvvm.Input.RelayCommand]
+    private void Stampaj()
+    {
+        var dlg = new System.Windows.Controls.PrintDialog();
+        if (dlg.ShowDialog() != true) return;
+        try
+        {
+            var doc = new System.Windows.Documents.FlowDocument
+            {
+                PageWidth   = dlg.PrintableAreaWidth,
+                PageHeight  = dlg.PrintableAreaHeight,
+                ColumnWidth = dlg.PrintableAreaWidth,
+                FontFamily  = new System.Windows.Media.FontFamily("Courier New"),
+                FontSize    = 9
+            };
+
+            doc.Blocks.Add(new System.Windows.Documents.Paragraph(
+                new System.Windows.Documents.Run(Naslov))
+                { FontSize = 13, FontWeight = System.Windows.FontWeights.Bold });
+
+            var tbl = new System.Windows.Documents.Table { CellSpacing = 0 };
+            var sirine = new double[] { 90, 45, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+            foreach (var w in sirine)
+                tbl.Columns.Add(new System.Windows.Documents.TableColumn
+                    { Width = new System.Windows.GridLength(w) });
+
+            var rg = new System.Windows.Documents.TableRowGroup();
+            tbl.RowGroups.Add(rg);
+
+            void DodajRed(string[] c, bool header = false)
+            {
+                var row = new System.Windows.Documents.TableRow();
+                foreach (var cel in c)
+                {
+                    var para = new System.Windows.Documents.Paragraph(
+                        new System.Windows.Documents.Run(cel))
+                        { Padding = new System.Windows.Thickness(2, 1, 2, 1), TextAlignment = System.Windows.TextAlignment.Right };
+                    if (header) { para.FontWeight = System.Windows.FontWeights.Bold; para.TextAlignment = System.Windows.TextAlignment.Left; }
+                    row.Cells.Add(new System.Windows.Documents.TableCell(para)
+                    {
+                        BorderBrush     = System.Windows.Media.Brushes.Black,
+                        BorderThickness = new System.Windows.Thickness(0, 0, 0, header ? 1 : 0)
+                    });
+                }
+                rg.Rows.Add(row);
+            }
+
+            DodajRed([NazivKljucneKolone, "Br.", "Nab0", "Isp0", "Sad0", "Amort", "Isp.", "Sad.", "Sad02", "Nab2", "Isp2", "Amort2", "Sad2"], header: true);
+            foreach (var s in Stavke)
+                DodajRed([s.Sifra, s.BrojKartica.ToString(), s.Nab0.ToString("N2"), s.Isp0.ToString("N2"),
+                    s.Sad0.ToString("N2"), s.Amort.ToString("N2"), s.Isp.ToString("N2"), s.Sad.ToString("N2"),
+                    s.Sad02.ToString("N2"), s.Nab2.ToString("N2"), s.Isp2.ToString("N2"), s.Amort2.ToString("N2"), s.Sad2.ToString("N2")]);
+
+            doc.Blocks.Add(tbl);
+            var paginator = ((System.Windows.Documents.IDocumentPaginatorSource)doc).DocumentPaginator;
+            dlg.PrintDocument(paginator, Naslov);
+            Poruka = $"Štampanje završeno ({Stavke.Count} redova).";
+        }
+        catch (Exception ex) { Poruka = $"Greška štampanja: {ex.Message}"; }
+    }
+
+    [CommunityToolkit.Mvvm.Input.RelayCommand]
+    private void IzveziCsv()
+    {
+        var dlg = new Microsoft.Win32.SaveFileDialog
+        {
+            Title = "Izvoz u CSV",
+            Filter = "CSV (*.csv)|*.csv|Svi fajlovi (*.*)|*.*",
+            DefaultExt = ".csv",
+            FileName = Naslov.Replace(" ", "_") + ".csv"
+        };
+        if (dlg.ShowDialog() != true) return;
+        try
+        {
+            using var sw = new System.IO.StreamWriter(dlg.FileName, false, new System.Text.UTF8Encoding(true));
+            sw.WriteLine($"{NazivKljucneKolone};BrojKartica;Nab0;Isp0;Sad0;Amort;Isp;Sad;Sad02;Nab2;Isp2;Amort2;Sad2");
+            foreach (var s in Stavke)
+                sw.WriteLine($"{s.Sifra};{s.BrojKartica};{s.Nab0:N2};{s.Isp0:N2};{s.Sad0:N2};{s.Amort:N2};{s.Isp:N2};{s.Sad:N2};{s.Sad02:N2};{s.Nab2:N2};{s.Isp2:N2};{s.Amort2:N2};{s.Sad2:N2}");
+            Poruka = $"CSV izvoz završen: {dlg.FileName} ({Stavke.Count} redova).";
+        }
+        catch (Exception ex) { Poruka = $"Greška izvoza: {ex.Message}"; }
     }
 
     internal static decimal DajDec(OsKartica k, string polje)

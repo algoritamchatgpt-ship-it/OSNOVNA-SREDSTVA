@@ -3,14 +3,15 @@ using CommunityToolkit.Mvvm.Input;
 using OsnovnaSredstva.Models;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 
 namespace OsnovnaSredstva.ViewModels;
 
 public partial class OsGrupeAmortizacijeViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<OsGrupeAmortizacijeViewModel>();
     private readonly AppState _appState;
 
     [ObservableProperty] private ObservableCollection<OsAgPodStavka> _grupe  = [];
@@ -39,8 +40,9 @@ public partial class OsGrupeAmortizacijeViewModel : ObservableObject
                     IDBr    = (int)DbfReader.Dec(r, "IDBR"),
                 }));
             Poruka = $"Učitano {Grupe.Count} grupa za amortizaciju.";
+            _log.Debug("osagpod.dbf: učitano {Count} grupa", Grupe.Count);
         }
-        catch (Exception ex) { Grupe = []; Poruka = $"Greška pri čitanju: {ex.Message}"; }
+        catch (Exception ex) { Grupe = []; Poruka = $"Greška pri čitanju: {ex.Message}"; _log.Error(ex, "Greška pri čitanju osagpod.dbf"); }
     }
 
     [RelayCommand]
@@ -62,8 +64,9 @@ public partial class OsGrupeAmortizacijeViewModel : ObservableObject
                     _         => null
                 });
             Poruka = $"Sačuvano {Grupe.Count} zapisa.";
+            _log.Information("osagpod.dbf: sačuvano {Count} zapisa", Grupe.Count);
         }
-        catch (Exception ex) { Poruka = $"Greška pri snimanju: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška pri snimanju: {ex.Message}"; _log.Error(ex, "Greška pri snimanju osagpod.dbf"); }
     }
 
     [RelayCommand]
@@ -112,30 +115,5 @@ public partial class OsGrupeAmortizacijeViewModel : ObservableObject
         if (idx >= 0 && idx < Grupe.Count - 1) IzabranaGrupa = Grupe[idx + 1];
     }
 
-    private string? DbfPutanja(string ime)
-    {
-        var folder = _appState.AktivnaFirma?.FolderPath;
-        if (string.IsNullOrWhiteSpace(folder)) return null;
-
-        var hit = NadjiDbf(folder, ime);
-        if (hit != null) return hit;
-
-        var root = FinWorkspaceResolver.NormalizeRootPath(folder);
-        hit = NadjiDbf(Path.Combine(root, "data00"), ime);
-        if (hit != null) return hit;
-
-        return NadjiDbf(Path.Combine(AppContext.BaseDirectory, "data00"), ime);
-    }
-
-    private static string? NadjiDbf(string folder, string ime)
-    {
-        if (!Directory.Exists(folder)) return null;
-        foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-        {
-            var p = Path.Combine(folder, naziv);
-            if (File.Exists(p)) return p;
-        }
-        return Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-    }
+    private string? DbfPutanja(string ime) => DbfHelper.NadjiDbf(_appState, ime);
 }

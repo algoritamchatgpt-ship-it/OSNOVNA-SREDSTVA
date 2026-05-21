@@ -4,13 +4,14 @@ using OsnovnaSredstva.Models;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
 using OsnovnaSredstva.Views;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.IO;
 
 namespace OsnovnaSredstva.ViewModels;
 
 public partial class OsKarticeViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<OsKarticeViewModel>();
     private readonly AppState _appState;
 
     private List<OsKartica> _sveKartice = [];
@@ -117,6 +118,7 @@ public partial class OsKarticeViewModel : ObservableObject
             _sveKartice = stavke;
             PrimeniFIlter();
             Poruka = $"Učitano {_sveKartice.Count} kartica.";
+            _log.Debug("OsKartice — učitano {Count} kartica iz {File}", _sveKartice.Count, path);
             _izmijenjeno = false;
         }
         catch (Exception ex)
@@ -124,6 +126,7 @@ public partial class OsKarticeViewModel : ObservableObject
             _sveKartice = [];
             Kartice = [];
             Poruka = $"Greška: {ex.Message}";
+            _log.Error(ex, "OsKartice — greška pri učitavanju");
         }
     }
 
@@ -136,6 +139,7 @@ public partial class OsKarticeViewModel : ObservableObject
         PrimeniFIlter();
         IzabranaKartica = nova;
         Poruka = $"Nova kartica dodata sa sifrom {sledecaSifra}. Unesite podatke i kliknite Sačuvaj.";
+        _log.Information("OsKartice — dodana nova kartica {Sifra}", sledecaSifra);
         _izmijenjeno = true;
     }
 
@@ -159,6 +163,7 @@ public partial class OsKarticeViewModel : ObservableObject
         _sveKartice.Remove(IzabranaKartica);
         PrimeniFIlter();
         Poruka = $"Kartica {opis} obrisana. Kliknite Sačuvaj.";
+        _log.Information("OsKartice — obrisana kartica {Opis}", opis);
         _izmijenjeno = true;
     }
 
@@ -223,9 +228,14 @@ public partial class OsKarticeViewModel : ObservableObject
                 });
 
             Poruka = $"Kartice sačuvane ({_sveKartice.Count} zapisa).";
+            _log.Information("OsKartice — sačuvano {Count} kartica u {File}", _sveKartice.Count, path);
             _izmijenjeno = false;
         }
-        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
+        catch (Exception ex)
+        {
+            Poruka = $"Greška: {ex.Message}";
+            _log.Error(ex, "OsKartice — greška pri snimanju");
+        }
     }
 
     [RelayCommand]
@@ -433,21 +443,7 @@ public partial class OsKarticeViewModel : ObservableObject
         if (idx > 0) IzabranaKartica = Kartice[idx - 1];
     }
 
-    private string? DbfPutanja(string ime)
-    {
-        var folder = _appState.AktivnaFirma?.FolderPath;
-        if (string.IsNullOrWhiteSpace(folder)) return null;
-
-        foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-        {
-            var p = Path.Combine(folder, naziv);
-            if (File.Exists(p)) return p;
-        }
-
-        if (!Directory.Exists(folder)) return null;
-        return Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-    }
+    private string? DbfPutanja(string ime) => DbfHelper.NadjiDbf(_appState, ime);
 
     private string IzracunajSledecuSifru()
     {

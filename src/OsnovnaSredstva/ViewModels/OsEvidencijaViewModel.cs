@@ -4,6 +4,7 @@ using OsnovnaSredstva.Models;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
 using OsnovnaSredstva.Views;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -11,6 +12,7 @@ namespace OsnovnaSredstva.ViewModels;
 
 public partial class OsEvidencijaViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<OsEvidencijaViewModel>();
     private readonly AppState _appState;
     private readonly string _dbfIme;
 
@@ -123,6 +125,7 @@ public partial class OsEvidencijaViewModel : ObservableObject
             _osnovniPoredak = [.. stavke];
             PrimeniFiIlter();
             Poruka = $"Učitano {_sveKartice.Count} zapisa iz {_dbfIme}.";
+            _log.Debug("OsEvidencija — učitano {Count} zapisa iz {File}", _sveKartice.Count, path);
             _izmijenjeno = false;
         }
         catch (Exception ex)
@@ -131,6 +134,7 @@ public partial class OsEvidencijaViewModel : ObservableObject
             _osnovniPoredak = [];
             Kartice = [];
             Poruka = $"Greška: {ex.Message}";
+            _log.Error(ex, "OsEvidencija — greška pri učitavanju {File}", _dbfIme);
         }
     }
 
@@ -146,6 +150,7 @@ public partial class OsEvidencijaViewModel : ObservableObject
         PrimeniFiIlter();
         IzabranaKartica = nova;
         Poruka = "Novi red dodan. Unesite podatke i kliknite Sačuvaj.";
+        _log.Information("OsEvidencija — dodan novi red (IDBr={IDBr}) u {File}", nova.IDBr, _dbfIme);
         _izmijenjeno = true;
     }
 
@@ -183,9 +188,14 @@ public partial class OsEvidencijaViewModel : ObservableObject
                     _          => k.ExtraPolja.TryGetValue(f, out var v) ? v : null
                 });
             Poruka = $"Sačuvano ({_sveKartice.Count} zapisa).";
+            _log.Information("OsEvidencija — sačuvano {Count} zapisa u {File}", _sveKartice.Count, path);
             _izmijenjeno = false;
         }
-        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
+        catch (Exception ex)
+        {
+            Poruka = $"Greška: {ex.Message}";
+            _log.Error(ex, "OsEvidencija — greška pri snimanju {File}", _dbfIme);
+        }
     }
 
     [RelayCommand]
@@ -486,6 +496,7 @@ public partial class OsEvidencijaViewModel : ObservableObject
             obradjeno++;
         }
         Poruka = $"Obračun završen — {obradjeno} kartica obrađeno. Kliknite Sačuvaj.";
+        _log.Information("OsEvidencija — obračun amortizacije završen, obrađeno {Count} kartica", obradjeno);
         if (obradjeno > 0) _izmijenjeno = true;
     }
 
@@ -665,30 +676,5 @@ public partial class OsEvidencijaViewModel : ObservableObject
     }
 
 
-    private string? DbfPutanja(string ime)
-    {
-        var folder = _appState.AktivnaFirma?.FolderPath;
-        if (string.IsNullOrWhiteSpace(folder)) return null;
-
-        var hit = NadjiDbf(folder, ime);
-        if (hit != null) return hit;
-
-        var root = FinWorkspaceResolver.NormalizeRootPath(folder);
-        hit = NadjiDbf(Path.Combine(root, "data00"), ime);
-        if (hit != null) return hit;
-
-        return NadjiDbf(Path.Combine(AppContext.BaseDirectory, "data00"), ime);
-    }
-
-    private static string? NadjiDbf(string folder, string ime)
-    {
-        if (!Directory.Exists(folder)) return null;
-        foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-        {
-            var p = Path.Combine(folder, naziv);
-            if (File.Exists(p)) return p;
-        }
-        return Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-    }
+    private string? DbfPutanja(string ime) => DbfHelper.NadjiDbf(_appState, ime);
 }

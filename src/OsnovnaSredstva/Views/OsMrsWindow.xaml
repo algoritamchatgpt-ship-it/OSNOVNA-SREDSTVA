@@ -18,6 +18,14 @@
                 <Button Content="Zatvori" DockPanel.Dock="Right" Width="84" Height="28"
                         Background="#C62828" Foreground="White" BorderThickness="0"
                         Cursor="Hand" Click="OnZatvoriClick"/>
+                <Button Content="CSV" DockPanel.Dock="Right" Width="60" Height="28"
+                        Background="#1565C0" Foreground="White" BorderThickness="0"
+                        Cursor="Hand" Margin="0,0,4,0"
+                        Command="{Binding IzveziCsvCommand}"/>
+                <Button Content="Štampaj" DockPanel.Dock="Right" Width="74" Height="28"
+                        Background="#2E7D32" Foreground="White" BorderThickness="0"
+                        Cursor="Hand" Margin="0,0,4,0"
+                        Command="{Binding StampajCommand}"/>
                 <TextBlock Text="{Binding Poruka}" VerticalAlignment="Center"
                            Foreground="#333" FontSize="12"/>
             </DockPanel>

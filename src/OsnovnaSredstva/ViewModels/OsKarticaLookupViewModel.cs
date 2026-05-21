@@ -5,7 +5,6 @@ using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using System.Windows;
 
 namespace OsnovnaSredstva.ViewModels;
@@ -288,32 +287,11 @@ public partial class OsKarticaLookupViewModel : ObservableObject
 
     private string? PronadjiDbf(IEnumerable<string> kandidati)
     {
-        var folder = _appState.AktivnaFirma?.FolderPath;
-        if (string.IsNullOrWhiteSpace(folder))
-            return null;
-
         foreach (var ime in kandidati)
         {
-            foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-            {
-                var p = Path.Combine(folder, naziv);
-                if (File.Exists(p))
-                    return p;
-            }
+            var hit = DbfHelper.NadjiDbf(_appState, ime);
+            if (hit != null) return hit;
         }
-
-        if (!Directory.Exists(folder))
-            return null;
-
-        var svi = Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly);
-        foreach (var ime in kandidati)
-        {
-            var nadjen = svi.FirstOrDefault(f =>
-                Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-            if (nadjen != null)
-                return nadjen;
-        }
-
         return null;
     }
 

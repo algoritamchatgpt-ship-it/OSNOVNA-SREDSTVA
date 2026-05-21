@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -9,6 +10,7 @@ namespace OsnovnaSredstva.ViewModels;
 
 public partial class GradoviViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<GradoviViewModel>();
     private readonly string _finRootFolder;
     private readonly string _firmaFolderPath;
     private List<GradoviStavka> _sveStavke = [];
@@ -49,10 +51,12 @@ public partial class GradoviViewModel : ObservableObject
             ObrisiIndeksAkoPostoji(targetDbf);
             UcitajPodatke();
             Poruka = $"Tabela je ispraznjena: {targetDbf}";
+            _log.Information("mesta.dbf ispraznjena: {Path}", targetDbf);
         }
         catch (Exception ex)
         {
             Poruka = $"Greška pri pražnjenju MESTA: {ex.Message}";
+            _log.Error(ex, "Greška pri pražnjenju mesta.dbf");
         }
     }
 
@@ -85,10 +89,12 @@ public partial class GradoviViewModel : ObservableObject
             KopirajMestaDatoteke(sourceDbf, targetDbf);
             UcitajPodatke();
             Poruka = $"Tabela je popunjena iz: {sourceDbf}";
+            _log.Information("mesta.dbf popunjena iz izvora: {Source}", sourceDbf);
         }
         catch (Exception ex)
         {
             Poruka = $"Greška pri popunjavanju MESTA: {ex.Message}";
+            _log.Error(ex, "Greška pri popunjavanju mesta.dbf");
         }
     }
 
@@ -151,11 +157,13 @@ public partial class GradoviViewModel : ObservableObject
                     });
                 }
                 PrimeniFilter();
+                _log.Debug("mesta.dbf: učitano {Count} zapisa iz {Path}", _sveStavke.Count, dbfPath);
             }
         }
         catch (Exception ex)
         {
             Poruka = $"Greška pri čitanju: {ex.Message}";
+            _log.Error(ex, "Greška pri čitanju mesta.dbf");
         }
 
         Ucitava = false;
@@ -258,41 +266,13 @@ public partial class GradoviViewModel : ObservableObject
     }
 
     private static string? PronadjiMestaDbfUFolderu(string folderPath)
-    {
-        if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath)) return null;
-        return Directory.GetFiles(folderPath, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "mesta.dbf", StringComparison.OrdinalIgnoreCase));
-    }
+        => DbfHelper.NadjiDbfUFolderu(folderPath, "mesta.dbf");
 
     private static string? PronadjiMestaDbf(string finRootFolder)
     {
         if (string.IsNullOrWhiteSpace(finRootFolder)) return null;
-
-        var kandidati = new[]
-        {
-            Path.Combine(finRootFolder, "data00", "mesta.dbf"),
-            Path.Combine(finRootFolder, "DATA00", "MESTA.DBF"),
-            Path.Combine(finRootFolder, "mesta.dbf"),
-        };
-
-        foreach (var kandidat in kandidati)
-            if (File.Exists(kandidat)) return kandidat;
-
-        var data00 = Path.Combine(finRootFolder, "data00");
-        if (Directory.Exists(data00))
-        {
-            var fromData00 = Directory.GetFiles(data00, "*.dbf", SearchOption.TopDirectoryOnly)
-                .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "mesta.dbf", StringComparison.OrdinalIgnoreCase));
-            if (fromData00 != null) return fromData00;
-        }
-
-        if (Directory.Exists(finRootFolder))
-        {
-            return Directory.GetFiles(finRootFolder, "*.dbf", SearchOption.TopDirectoryOnly)
-                .FirstOrDefault(f => string.Equals(Path.GetFileName(f), "mesta.dbf", StringComparison.OrdinalIgnoreCase));
-        }
-
-        return null;
+        return DbfHelper.NadjiDbfUFolderu(Path.Combine(finRootFolder, "data00"), "mesta.dbf")
+            ?? DbfHelper.NadjiDbfUFolderu(finRootFolder, "mesta.dbf");
     }
 }
 

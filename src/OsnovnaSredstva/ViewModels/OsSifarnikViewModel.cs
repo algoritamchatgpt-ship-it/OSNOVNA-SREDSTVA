@@ -4,14 +4,15 @@ using OsnovnaSredstva.Models;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
 using OsnovnaSredstva.Views;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 
 namespace OsnovnaSredstva.ViewModels;
 
 public partial class OsSifarnikViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<OsSifarnikViewModel>();
     private readonly AppState _appState;
 
     [ObservableProperty] private int    _aktivniTab = 0;
@@ -278,8 +279,9 @@ public partial class OsSifarnikViewModel : ObservableObject
                     _         => null
                 });
             Poruka = $"Vrste OS sačuvane ({VrsteOs.Count} zapisa).";
+            _log.Information("osvrsta.dbf: sačuvano {Count} zapisa", VrsteOs.Count);
         }
-        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; _log.Error(ex, "Greška pri snimanju osvrsta.dbf"); }
     }
 
     private void SacuvajAmortGrupe()
@@ -301,8 +303,9 @@ public partial class OsSifarnikViewModel : ObservableObject
                     _         => null
                 });
             Poruka = $"Amortizacione grupe sačuvane ({AmortGrupe.Count} zapisa).";
+            _log.Information("osag.dbf: sačuvano {Count} zapisa", AmortGrupe.Count);
         }
-        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; _log.Error(ex, "Greška pri snimanju osag.dbf"); }
     }
 
     private void SacuvajAmortPodgrupe()
@@ -323,8 +326,9 @@ public partial class OsSifarnikViewModel : ObservableObject
                     _         => null
                 });
             Poruka = $"Podgrupe amortizacije sačuvane ({AmortPodgrupe.Count} zapisa).";
+            _log.Information("osagpod.dbf: sačuvano {Count} zapisa", AmortPodgrupe.Count);
         }
-        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; _log.Error(ex, "Greška pri snimanju osagpod.dbf"); }
     }
 
     private void SacuvajIzvorFinansiranja()
@@ -344,8 +348,9 @@ public partial class OsSifarnikViewModel : ObservableObject
                     _         => null
                 });
             Poruka = $"Izvor finansiranja sačuvan ({IzvoriFinansiranja.Count} zapisa).";
+            _log.Information("osizvorf.dbf: sačuvano {Count} zapisa", IzvoriFinansiranja.Count);
         }
-        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; _log.Error(ex, "Greška pri snimanju osizvorf.dbf"); }
     }
 
     private void SacuvajOsnKoriscenja()
@@ -365,8 +370,9 @@ public partial class OsSifarnikViewModel : ObservableObject
                     _          => null
                 });
             Poruka = $"Osnov korišćenja sačuvan ({OsnKoriscenja.Count} zapisa).";
+            _log.Information("ososnk.dbf: sačuvano {Count} zapisa", OsnKoriscenja.Count);
         }
-        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; }
+        catch (Exception ex) { Poruka = $"Greška: {ex.Message}"; _log.Error(ex, "Greška pri snimanju ososnk.dbf"); }
     }
 
     // ═══ KARTICA — otvara dijalog za uređivanje izabranog reda ═══
@@ -417,13 +423,6 @@ public partial class OsSifarnikViewModel : ObservableObject
     }
 
     // ═══ NAVIGACIJA ═══
-
-    [RelayCommand]
-    private void PrikaziTab(string tabIndex)
-    {
-        if (int.TryParse(tabIndex, out var idx))
-            AktivniTab = idx;
-    }
 
     [RelayCommand]
     private void Osvezi() => UcitajSve();
@@ -487,33 +486,5 @@ public partial class OsSifarnikViewModel : ObservableObject
 
     // ═══ HELPER ═══
 
-    private string? DbfPutanja(string ime)
-    {
-        var folder = _appState.AktivnaFirma?.FolderPath;
-        if (string.IsNullOrWhiteSpace(folder)) return null;
-
-        // 1. Firma folder
-        var hit = NadjiDbf(folder, ime);
-        if (hit != null) return hit;
-
-        // 2. FIN_ROOT/data00 (globalne tablice: osag.dbf, osagpod.dbf, ...)
-        var root = FinWorkspaceResolver.NormalizeRootPath(folder);
-        hit = NadjiDbf(Path.Combine(root, "data00"), ime);
-        if (hit != null) return hit;
-
-        // 3. Fallback: data00 pored exe (development/installed)
-        return NadjiDbf(Path.Combine(AppContext.BaseDirectory, "data00"), ime);
-    }
-
-    private static string? NadjiDbf(string folder, string ime)
-    {
-        if (!Directory.Exists(folder)) return null;
-        foreach (var naziv in new[] { ime, ime.ToUpperInvariant() })
-        {
-            var p = Path.Combine(folder, naziv);
-            if (File.Exists(p)) return p;
-        }
-        return Directory.GetFiles(folder, "*.dbf", SearchOption.TopDirectoryOnly)
-            .FirstOrDefault(f => Path.GetFileName(f).Equals(ime, StringComparison.OrdinalIgnoreCase));
-    }
+    private string? DbfPutanja(string ime) => DbfHelper.NadjiDbf(_appState, ime);
 }

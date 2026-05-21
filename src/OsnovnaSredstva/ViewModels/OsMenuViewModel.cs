@@ -158,4 +158,38 @@ public partial class OsMenuViewModel : ObservableObject
         OnPropertyChanged(nameof(Godina));
         OnPropertyChanged(nameof(NaslovHeader));
     }
+
+    [RelayCommand]
+    private void OtvoriPreglede()
+    {
+        if (_appState.AktivnaFirma is null)
+        {
+            MessageBox.Show("Nema aktivne firme.", "Pregledi", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+        var vm = new OsPreglediViewModel(_appState);
+        var win = new OsPreglediWindow(vm);
+        win.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void OtvoriGrupeAmortizacije()
+    {
+        var vm = new OsGrupeAmortizacijeViewModel(_appState);
+        var win = new OsGrupeAmortizacijeWindow(vm);
+        win.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void OtvoriPodatkeOs()
+    {
+        if (_appState.AktivnaFirma is null)
+        {
+            MessageBox.Show("Nema aktivne firme.", "Podaci OS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+        var vm = new OsPodaciViewModel(_appState);
+        var win = new OsPodaciWindow(vm);
+        win.ShowDialog();
+    }
 }

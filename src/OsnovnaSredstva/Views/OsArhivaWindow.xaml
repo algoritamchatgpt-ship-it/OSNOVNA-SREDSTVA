@@ -210,9 +210,10 @@
 
                 <!-- Kolona 4: sort, poa, izlaz (desno) -->
                 <StackPanel Grid.Column="4" Orientation="Vertical">
-                    <Button Content="SORT"          Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding SortCommand}"/>
-                    <Button Content="POA OBRAZAC"   Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding PoaObrazacCommand}"/>
-                    <Button Content="EVIDENCIJA POA" Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding EvidencijaPoaCommand}"/>
+                    <Button Content="SORT"              Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding SortCommand}"/>
+                    <Button Content="BRISANJE PRAZNINA" Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding BrisanjePrazninaCommand}"/>
+                    <Button Content="POA OBRAZAC"       Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding PoaObrazacCommand}"/>
+                    <Button Content="EVIDENCIJA POA"    Style="{StaticResource FoxDugme}" Width="150" Margin="0,0,0,4" Command="{Binding EvidencijaPoaCommand}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="SACUVAJ" Style="{StaticResource FoxDugme}" Width="90" Command="{Binding SacuvajCommand}"/>
                         <Button Content="IZLAZ"   Style="{StaticResource FoxDugme}" Width="90" Margin="0" Click="OnZatvoriClick"/>

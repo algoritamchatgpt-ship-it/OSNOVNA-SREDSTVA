@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using OsnovnaSredstva.Services;
 using OsnovnaSredstva.Services.Dbf;
 using OsnovnaSredstva.Views;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
@@ -11,6 +12,7 @@ namespace OsnovnaSredstva.ViewModels;
 
 public partial class PartneriViewModel : ObservableObject
 {
+    private static readonly ILogger _log = Log.ForContext<PartneriViewModel>();
     private readonly string _folderPath;
     private DbfOptimisticConcurrency.FileSnapshot? _snapshot;
 
@@ -56,11 +58,13 @@ public partial class PartneriViewModel : ObservableObject
             Stavke = new ObservableCollection<PartnerStavka>(lista);
             Selektovani = Stavke.FirstOrDefault();
             Poruka = $"Učitano {Stavke.Count} partnera iz an0.dbf.";
+            _log.Debug("an0.dbf: učitano {Count} partnera", Stavke.Count);
         }
         catch (Exception ex)
         {
             Stavke = [];
             Poruka = $"Greška pri učitavanju partnera: {ex.Message}";
+            _log.Error(ex, "Greška pri učitavanju an0.dbf");
         }
         finally { Ucitava = false; }
     }
@@ -138,10 +142,12 @@ public partial class PartneriViewModel : ObservableObject
             if (an0Path != null)
                 _snapshot = DbfOptimisticConcurrency.CaptureFileSnapshot(an0Path);
             Poruka = $"Sačuvano {Stavke.Count} partnera u an0.dbf.";
+            _log.Information("an0.dbf: sačuvano {Count} partnera", Stavke.Count);
         }
         catch (Exception ex)
         {
             Poruka = $"Greška pri čuvanju partnera: {ex.Message}";
+            _log.Error(ex, "Greška pri snimanju an0.dbf");
         }
     }
 
