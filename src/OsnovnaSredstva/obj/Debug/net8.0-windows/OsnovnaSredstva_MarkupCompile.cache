@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR
 C:\Users\sogib\Documents\OSNOVNA-SREDSTVA\src\OsnovnaSredstva\App.xaml
 28548962077
 285-1596932297
-1151800023594
+115612283665
 408-134441570
 Views\FirmaIzborWindow.xaml;Views\FirmaPodaciWindow.xaml;Views\FormiranjeLozinkiWindow.xaml;Views\GradoviWindow.xaml;Views\IzvozTabelaWindow.xaml;Views\LoginWindow.xaml;Views\OsArhivaWindow.xaml;Views\OsEvidencijaPretragaWindow.xaml;Views\OsEvidencijaWindow.xaml;Views\OsGrupeAmortizacijeWindow.xaml;Views\OsKarticaKarticaWindow.xaml;Views\OsKarticaLookupWindow.xaml;Views\OsKarticeWindow.xaml;Views\OsMenuWindow.xaml;Views\OsMrsWindow.xaml;Views\OsObrazacOaWindow.xaml;Views\OsPoaIzvestajWindow.xaml;Views\OsPodaciWindow.xaml;Views\OsPopisFilterWindow.xaml;Views\OsPrenosaWindow.xaml;Views\OsSaldoKontaIzborWindow.xaml;Views\OsSaldoWindow.xaml;Views\OsSifarnikKarticaWindow.xaml;Views\OsSifarnikPopisnaListaWindow.xaml;Views\OsSifarnikWindow.xaml;Views\PartneriWindow.xaml;Views\PartnerKarticaWindow.xaml;Views\PocetniWindow.xaml;
 
-True
+False
 
